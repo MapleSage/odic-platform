@@ -1,0 +1,12 @@
+{
+  "name": "@odic/ui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo build placeholder for ui",
+    "typecheck": "echo typecheck placeholder for ui",
+    "lint": "echo lint placeholder for ui"
+  }
+}

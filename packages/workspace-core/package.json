@@ -1,0 +1,12 @@
+{
+  "name": "@odic/workspace-core",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo build placeholder for workspace-core",
+    "typecheck": "echo typecheck placeholder for workspace-core",
+    "lint": "echo lint placeholder for workspace-core"
+  }
+}

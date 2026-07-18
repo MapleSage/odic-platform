@@ -1,0 +1,10 @@
+[project]
+name = "odic-fastapi-orchestration"
+version = "0.1.0"
+description = "ODIC orchestration service"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic"
+]

@@ -1,0 +1,12 @@
+{
+  "name": "@odic/ai-gia",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo build placeholder for ai-gia",
+    "typecheck": "echo typecheck placeholder for ai-gia",
+    "lint": "echo lint placeholder for ai-gia"
+  }
+}

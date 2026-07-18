@@ -1,0 +1,15 @@
+node_modules
+.pnpm-store
+.env
+.env.*
+dist
+build
+coverage
+.vite
+__pycache__
+*.pyc
+.pytest_cache
+.venv
+venv
+target
+.DS_Store
