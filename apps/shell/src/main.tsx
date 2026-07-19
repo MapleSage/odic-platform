@@ -74,6 +74,12 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'graph', label: 'Graph', code: 'GRPH' },
 ];
 
+type OrgProfile = { id: string; name: string; hasExposureNetwork: boolean; hasWorkspaceData: boolean };
+const ORGANIZATIONS: OrgProfile[] = [
+  { id: 'meridian', name: 'Meridian Health Systems', hasExposureNetwork: false, hasWorkspaceData: true },
+  { id: 'smartworld', name: 'Smartworld Developers', hasExposureNetwork: true, hasWorkspaceData: false },
+];
+
 const ORG_TABS: { id: OrgTabId; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'timeline', label: 'Timeline' },
@@ -368,6 +374,9 @@ function App() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
   const [workspace, setWorkspace] = useState<WorkspaceData>(DEFAULT_WORKSPACE);
   const [exposureFullScreen, setExposureFullScreen] = useState(false);
+  const [activeOrgId, setActiveOrgId] = useState(ORGANIZATIONS[0].id);
+  const [orgSwitcherOpen, setOrgSwitcherOpen] = useState(false);
+  const activeOrg = ORGANIZATIONS.find((o) => o.id === activeOrgId) ?? ORGANIZATIONS[0];
   const [dataState, setDataState] = useState<'seed' | 'live'>('seed');
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -458,7 +467,27 @@ function App() {
       </aside>
 
       <header className="topbar">
-        <div className="workspace-pill">Workspace: {workspace.organization.name}</div>
+        <div className="workspace-switcher">
+          <button className="workspace-pill" onClick={() => setOrgSwitcherOpen((v) => !v)}>
+            Workspace: {activeOrg.name} {orgSwitcherOpen ? '▴' : '▾'}
+          </button>
+          {orgSwitcherOpen && (
+            <div className="workspace-dropdown">
+              {ORGANIZATIONS.map((org) => (
+                <button
+                  key={org.id}
+                  className={`workspace-option ${org.id === activeOrgId ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveOrgId(org.id);
+                    setOrgSwitcherOpen(false);
+                  }}
+                >
+                  {org.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
         <div className="global-search">Search organizations, people, documents, risks, or ask Atlas...</div>
         <button className="gia-toggle" onClick={() => setGiaOpen((v) => !v)}>Ask Atlas</button>
         <button className="avatar" title={`Sign out (${user?.username ?? ''})`} onClick={() => logout()}>{userInitials}</button>
@@ -490,21 +519,33 @@ function App() {
         </section>
 
         {activeView === 'organization' && (
-          <OrganizationWorkspace
-            organization={workspace.organization}
-            activeOrgTab={activeOrgTab}
-            setActiveOrgTab={setActiveOrgTab}
-            activityFilter={activityFilter}
-            setActivityFilter={setActivityFilter}
-            filteredActivity={filteredActivity}
-          />
+          activeOrg.hasWorkspaceData ? (
+            <OrganizationWorkspace
+              organization={workspace.organization}
+              activeOrgTab={activeOrgTab}
+              setActiveOrgTab={setActiveOrgTab}
+              activityFilter={activityFilter}
+              setActivityFilter={setActivityFilter}
+              filteredActivity={filteredActivity}
+            />
+          ) : (
+            <NoOrgDataState orgName={activeOrg.name} suggestion="Switch to the Graph tab for this organization's Exposure Network intelligence." />
+          )
         )}
-        {activeView === 'search' && <SearchWorkspace search={workspace.search} />}
-        {activeView === 'reports' && <ReportsWorkspace reports={workspace.reports} />}
+        {activeView === 'search' && (
+          activeOrg.hasWorkspaceData ? <SearchWorkspace search={workspace.search} /> : <NoOrgDataState orgName={activeOrg.name} />
+        )}
+        {activeView === 'reports' && (
+          activeOrg.hasWorkspaceData ? <ReportsWorkspace reports={workspace.reports} /> : <NoOrgDataState orgName={activeOrg.name} />
+        )}
         {activeView === 'graph' && (
-          <div className="graph-workspace-embed">
-            <ExposureNetwork fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
-          </div>
+          activeOrg.hasExposureNetwork ? (
+            <div className="graph-workspace-embed">
+              <ExposureNetwork fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
+            </div>
+          ) : (
+            <NoOrgDataState orgName={activeOrg.name} suggestion="No Exposure Network has been built for this organization yet." />
+          )
         )}
       </main>
 
@@ -866,6 +907,15 @@ function Card({ title, subtitle, children, compact = false, dark = false }: { ti
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <div className="section-label">{children}</div>;
+}
+
+function NoOrgDataState({ orgName, suggestion }: { orgName: string; suggestion?: string }) {
+  return (
+    <div className="no-org-data">
+      <div className="no-org-data-title">No workspace data for {orgName}</div>
+      {suggestion && <div className="no-org-data-sub">{suggestion}</div>}
+    </div>
+  );
 }
 
 createRoot(document.getElementById('root')!).render(

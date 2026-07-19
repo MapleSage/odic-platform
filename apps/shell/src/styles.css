@@ -164,6 +164,51 @@ button {
   padding: 10px 14px;
   font-size: 13px;
   white-space: nowrap;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.workspace-switcher {
+  position: relative;
+}
+
+.workspace-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: #0d2b3d;
+  border: 1px solid #26476080;
+  border-radius: 10px;
+  padding: 6px;
+  min-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  display: grid;
+  gap: 2px;
+}
+
+.workspace-option {
+  background: none;
+  border: none;
+  color: #dbeaf3;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.workspace-option:hover {
+  background: #174d6d;
+}
+
+.workspace-option.active {
+  background: #f7761f;
+  color: #0d2b3d;
+  font-weight: 600;
 }
 
 .global-search {
@@ -821,6 +866,26 @@ button {
   color: #244255;
   border-color: #d6e0e7;
   padding: 8px 12px;
+}
+
+.no-org-data {
+  display: grid;
+  place-items: center;
+  min-height: 360px;
+  text-align: center;
+  gap: 8px;
+  color: #667686;
+}
+
+.no-org-data-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #162433;
+}
+
+.no-org-data-sub {
+  font-size: 14px;
+  color: #667686;
 }
 
 .graph-workspace-embed {
