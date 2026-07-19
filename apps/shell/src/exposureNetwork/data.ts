@@ -128,6 +128,8 @@ export type SpvDef = {
   commonDirectors: string;
   status: string;
   notes: string;
+  additionalRegistrations?: { rera: string; status: string }[];
+  deepDiligence?: EntitySection[];
 };
 
 export const SPV_DEFS: SpvDef[] = [
@@ -137,12 +139,80 @@ export const SPV_DEFS: SpvDef[] = [
     spv: 'Riverday Infrastructure Pvt Ltd',
     row: 0,
     cin: 'U70100HR2021PTC098078',
-    rera: 'RERA-GRG-1723-2024',
+    rera: 'RERA-GRG-1723-2024 / GGM/878/610/2024/105 dated 11.10.2024',
     address: '12A Floor, Tower 2, M3M IFC, Sector-66, Gurugram, Haryana',
     directors: 'Gaurav Bansal; Davinder Singh Malik',
     commonDirectors: 'Davinder Singh Malik; Bharat Vigmal',
-    status: 'Partial diligence',
-    notes: 'Change of developer to Riverday on 09.09.2024; licence migrated from 29 of 2009 to 90 of 2024.',
+    status: 'Partial diligence -- deep diligence in progress',
+    notes:
+      'Not a clean greenfield project: migrated licence history, SARFAESI-linked land transfer, change of developer, and regulator-recorded compliance conditions. Received/submitted 30.08.2024; APPROVED AND CERTIFICATE UPLOADED, certificate uploaded 21.01.2025. Hearings visible on 30.09.2024 and 07.10.2024.',
+    deepDiligence: [
+      {
+        heading: 'LAND OWNERSHIP CHAIN',
+        rows: [
+          {
+            label: 'HISTORY',
+            value:
+              'Earlier land traces to licence 29 of 2009 (24.06.2009). Modgen Developers Pvt Ltd purchased the earlier licensed land from Indiabulls Housing Finance Ltd under SARFAESI -- conveyance deed and sale certificate both dated 08.12.2022.',
+          },
+          {
+            label: 'AREA BREAKDOWN',
+            value:
+              'Existing building on 3.1875 acres had OC on 08.11.2019, conveyed to Neil Maxinfra Pvt Ltd. 0.3125 acres delicensed. Balance 11.5 acres migrated into licence 90 of 2024, plus 0.16875 acres fresh applied area -- total licensed area 11.66875 acres.',
+          },
+          {
+            label: 'STATUS',
+            value: 'Layered and non-trivial. Underlying conveyance deed, sale certificate, and title chain documents not yet obtained -- not treated as fully verified.',
+          },
+        ],
+      },
+      {
+        heading: 'DTCP / CLU / SANCTIONED PLAN',
+        rows: [
+          { label: 'CURRENT LICENCE', value: 'DTCP licence 90 of 2024, dated 18.07.2024, over 11.66875 acres.' },
+          { label: 'CHANGE OF DEVELOPER', value: 'Approved in favour of Riverday Infrastructure Pvt Ltd on 09.09.2024.' },
+          { label: 'BUILDING PLANS', value: 'Approved around 19-20.09.2024. Project developed in five distinct phases; HRERA application covers phase 1.' },
+          { label: 'MISSING', value: 'Underlying DTCP licence/order PDFs, change-of-developer approval document, sanctioned layout/phasing documents.' },
+        ],
+      },
+      {
+        heading: 'REGULATORY -- SUO MOTU PROCEEDING',
+        rows: [
+          {
+            label: 'FINDING',
+            value:
+              'On the promoter\'s own submission that there had been no sale/advertisement/marketing on the migrated 11.5-acre area, HRERA directed a public notice inviting objections and ordered separate suo motu proceedings against the erstwhile promoter for non-registration of the earlier licensed area under Section 3.',
+          },
+          { label: 'INTERPRETATION', value: 'Does not automatically mean Sky Arc itself is impaired, but the project sits on a regulatory history that should not be described as clean or routine.' },
+        ],
+      },
+      {
+        heading: 'ENVIRONMENTAL CLEARANCE',
+        rows: [
+          {
+            label: 'STATUS',
+            value:
+              'Not obviously closed at the 07.10.2024 hearing. Promoter submitted security-backed undertakings tied to later submission of approved service plans, fire scheme, and environment clearance -- a live diligence flag, not a closed item.',
+          },
+        ],
+      },
+      {
+        heading: 'FUNDING / ESCROW',
+        rows: [
+          { label: 'STRUCTURE', value: 'HRERA proceedings say Riverday entered via a development agreement on a revenue-sharing model (clause 3.1-3.4, Schedule-II).' },
+          { label: 'MISSING', value: 'Current project lender, escrow/RERA account bank, charge/security trustee filings not yet identified.' },
+        ],
+      },
+      {
+        heading: 'RISK CLASSIFICATION',
+        rows: [
+          { label: 'OPERATIONAL', value: 'Migrated licence history, change of developer shortly before registration, multi-party structure requiring separate diligence on licensee, developer, and land history.' },
+          { label: 'REGULATORY', value: 'Suo motu proceeding against erstwhile promoter; environment clearance not obviously closed; public-notice and compliance conditions recorded.' },
+          { label: 'LEGAL', value: 'SARFAESI-linked land transfer chain means title and transfer assumptions must be document-backed before any clean-title conclusion.' },
+          { label: 'COMMERCIAL', value: 'Five-phase structure means commercial incentives may differ by phase and inventory timing.' },
+        ],
+      },
+    ],
   },
   {
     id: 'onedxp',
@@ -150,12 +220,16 @@ export const SPV_DEFS: SpvDef[] = [
     spv: 'Nourish Developers Pvt Ltd',
     row: 1,
     cin: 'U70109HR2020PTC091616',
-    rera: 'RERA-GRG-1217-2022',
+    rera: 'RERA-GRG-1217-2022 / GGM/645/377/2022/120 dated 13.12.2022',
     address: '12A Floor, Tower 2, M3M IFC, Sector-66, Gurugram, Haryana',
     directors: 'Krishan Kumar Singhal; Davinder Singh Malik; Hari Easwaran',
     commonDirectors: 'Davinder Singh Malik; Hari Easwaran; Manik Sharma',
     status: 'Partial diligence',
-    notes: 'Licence 106 of 2022, valid to 04.08.2027; also covers One DXP Street and Phase-2 filings.',
+    notes: 'Licence 106 of 2022 dated 05.08.2022, valid to 04.08.2027. Developer/collaborator structure with Aspis Buildcon Pvt Ltd and Starcity Realtech Pvt Ltd as licensees.',
+    additionalRegistrations: [
+      { rera: 'One DXP Street -- RERA-GRG-1228-2022 (GGM/652/384/2022/127)', status: 'Registered -- 0.58 acre within 16.1125 acre total licensed area' },
+      { rera: 'One DXP Phase-2 -- RERA-GRG-1642-2024 (GGM/842/574/2024/69)', status: 'Registered -- director set expanded vs. 2022 filings (adds Pritam Parkash Agarwal, Anil Mittal)' },
+    ],
   },
   {
     id: 'orchard',
@@ -163,12 +237,21 @@ export const SPV_DEFS: SpvDef[] = [
     spv: 'Suposhaa Realcon Pvt Ltd',
     row: 2,
     cin: 'U70105HR2016PTC092957',
-    rera: 'RERA-GRG-948-2021',
+    rera: 'RERA-GRG-948-2021 / GGM/505/237/2021/73 dated 27.10.2021',
     address: 'Unit SB/C/2L/Office/017A, M3M Urbana, Sector-67, Gurugram',
     directors: 'Gaurav Bansal; Naman Gupta',
     commonDirectors: 'Gaurav Bansal; Naman Gupta; Hari Easwaran (later filings)',
     status: 'Multiple registrations, ongoing',
-    notes: 'Multi-licensee stack of 12+ entities; structurally the most complex SPV in the portfolio.',
+    notes: 'Multi-licensee stack of 12+ entities (incl. IREO Pvt Ltd, Ornamental Realtors, Regal Green Lands, Fiverivers Buildcon) -- structurally the most complex SPV in the portfolio. 7 known HRERA registrations across 2021-2025.',
+    additionalRegistrations: [
+      { rera: 'RERA-GRG-957-2021 (GGM/506/238/2021/74)', status: 'Registered' },
+      { rera: 'RERA-GRG-1039-2022 (GGM/616/348/2022/91)', status: 'Registered' },
+      { rera: 'RERA-GRG-1121-2022 (GGM/617/349/2022/92)', status: 'Ongoing -- expanded licence set (62 of 2022 + 68 of 2021)' },
+      { rera: 'RERA-GRG-1483-2023', status: 'In process' },
+      { rera: 'RERA-GRG-1835-2024', status: 'In process' },
+      { rera: 'RERA-GRG-2045-2025', status: 'In process' },
+      { rera: 'Orchard Street -- RERA-GRG-1488-2023 (GGM/773/505/2023/117)', status: 'Registered' },
+    ],
   },
   {
     id: 'edition',
@@ -176,12 +259,12 @@ export const SPV_DEFS: SpvDef[] = [
     spv: 'Etsy Realcon Pvt Ltd',
     row: 3,
     cin: 'U70109HR2021PTC098644',
-    rera: 'RERA-GRG-1395-2023',
+    rera: 'RERA-GRG-1395-2023 / GGM/756/488/2023/100 dated 06.11.2023',
     address: '12A Floor, Tower 2, M3M IFC, Sector-66, Gurugram, Haryana',
     directors: 'Anil Mittal; Hari Easwaran; Davinder Singh Malik',
     commonDirectors: 'Hari Easwaran; Davinder Singh Malik; Bharat Vigmal',
     status: 'Partial diligence',
-    notes: 'Owner-licensee filing; licence 83 of 2022 valid to 17.04.2028.',
+    notes: 'Owner-licensee filing; licence 83 of 2022 dated 18.04.2023, valid to 17.04.2028.',
   },
   {
     id: 'gems',
@@ -189,12 +272,18 @@ export const SPV_DEFS: SpvDef[] = [
     spv: 'Adhikaansh Realtors Pvt Ltd',
     row: 4,
     cin: 'U70109HR2020PTC090928',
-    rera: 'RERA-GRG-939-2021',
+    rera: 'RERA-GRG-939-2021 / GGM/502/234/2021/70 dated 25.10.2021',
     address: 'Unit SB/C/2L/Office/017A, M3M Urbana, Sector-67, Gurugram',
     directors: 'Gaurav Bansal; Naman Gupta',
     commonDirectors: 'Gaurav Bansal; Naman Gupta',
     status: 'Partial diligence, multiple phases',
-    notes: 'Owner-licensee in 2021; later Gems 2 filing shifts to collaborator model over Aawam Residency Pvt Ltd.',
+    notes: 'Owner-licensee in 2021 (licence 32 of 2021, dated 03.07.2021); Gems 2 filing shifts to collaborator model over Aawam Residency Pvt Ltd, registered address moves to M3M IFC / Smartworld email cluster.',
+    additionalRegistrations: [
+      { rera: 'Gems 2 -- RERA-GRG-1308-2023 (GGM/858/590/2024/85)', status: 'Registered -- directors Anil Mittal, Davinder Singh Malik, Hari Easwaran' },
+      { rera: 'Gems 2 -- RERA-GRG-1742-2024', status: 'In process' },
+      { rera: 'Gems -- RERA-GRG-2023-2025', status: 'In process' },
+      { rera: 'Gems 3 -- RERA-GRG-1906-2025 (GGM/951/683/2025/54)', status: 'Registered' },
+    ],
   },
   {
     id: 'naturescourt',
@@ -202,12 +291,34 @@ export const SPV_DEFS: SpvDef[] = [
     spv: 'Svabhumi Realtors Pvt Ltd',
     row: 5,
     cin: 'U68100HR2023PTC111218',
-    rera: 'RERA-GRG-2126-2025',
+    rera: 'RERA-GRG-2126-2025 / GGM/1029/761/2026/01 dated 02.01.2026',
     address: '12A Floor, Tower-2, M3M IFC, Sector-66, Gurugram, Haryana',
     directors: 'Rajeev Kumar Agrawal; Sujeet Ranjan Tiwari',
     commonDirectors: 'Bharat Vigmal',
     status: 'Partial diligence',
     notes: 'Primary-source bridge from a Smartworld-branded project to an explicit M3M legal entity as licensee.',
+  },
+];
+
+// Promoter / family-office network. Deliberately kept separate from the
+// A-D sourced SPV/relationship network above: every entry here is at "lead"
+// confidence, pending retrieval of underlying governance/annual-report
+// filing language, per the dossier's own source-confidence rubric --
+// never inferred from surname overlap alone, never presented as fact.
+export type PromoterLead = { name: string; role: string; note: string };
+export const PROMOTER_NETWORK: PromoterLead[] = [
+  { name: 'Basant Bansal', role: 'Principal (M3M) -- context', note: 'Working promoter-hierarchy context; no filing-level detail retrieved yet.' },
+  { name: 'Roop Bansal', role: 'Principal (M3M) -- context', note: 'Working promoter-hierarchy context; no filing-level detail retrieved yet.' },
+  { name: 'Pankaj Bansal', role: 'Promoter / Smartworld founder context', note: 'Pending retrieval of governance-filing language establishing promoter/founder role.' },
+  {
+    name: 'Aishwarya Bansal',
+    role: 'Co-founder context, Smartworld',
+    note: 'Media page lists as co-founder. Governance disclosures reportedly identify her as Pankaj Bansal\'s wife -- pending documentary verification, not confirmed.',
+  },
+  {
+    name: 'Dr. Payal Kanodia',
+    role: 'Chairperson & Trustee, M3M Foundation',
+    note: 'Public ESG/CSR leadership role (sustainability, rural livelihoods, women entrepreneurship, skilling). Governance disclosures reportedly identify her as Pankaj Bansal\'s sister -- pending documentary verification, not confirmed. Do not infer any Datamatics/Kanodia-family link from surname alone.',
   },
 ];
 

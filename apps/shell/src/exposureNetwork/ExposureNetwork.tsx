@@ -14,6 +14,7 @@ import {
   RIGHT_EXTRAS,
   INTERLOCKS,
   PLATFORM_MODAL,
+  PROMOTER_NETWORK,
   type Grade,
   type FlankDef,
 } from './data';
@@ -190,6 +191,14 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
                   { label: 'COMMON / INTERLOCKING DIRECTORS', value: s.commonDirectors },
                 ],
               },
+              ...(s.additionalRegistrations
+                ? [
+                    {
+                      heading: `ADDITIONAL REGISTRATIONS -- ${s.additionalRegistrations.length} MORE`,
+                      rows: s.additionalRegistrations.map((r) => ({ label: r.rera, value: r.status })),
+                    },
+                  ]
+                : []),
               {
                 heading: 'DILIGENCE NOTE',
                 rows: [
@@ -197,6 +206,7 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
                   { label: 'GRADE', value: '[A] Primary source -- Haryana RERA project filing' },
                 ],
               },
+              ...(s.deepDiligence ?? []),
             ],
           }),
       })),
@@ -428,6 +438,23 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
               </div>
             ))}
           </div>
+        </div>
+
+        <div style={{ marginTop: 20, background: '#1a1408', border: '1px dashed #D4A017', borderRadius: 8, padding: 16 }}>
+          <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#D4A017', marginBottom: 4 }}>PROMOTER &amp; FAMILY OFFICE NETWORK -- PENDING VERIFICATION</div>
+          <div style={{ fontSize: 11, color: '#c9a86b', marginBottom: 10, fontFamily: "'IBM Plex Sans', sans-serif" }}>
+            Every entry below is a lead pending underlying governance/filing retrieval, not a confirmed fact. Family relationships are never inferred from surname overlap alone.
+          </div>
+          {PROMOTER_NETWORK.map((p) => (
+            <button
+              key={p.name}
+              onClick={() => setSelected({ title: p.name, subtitle: p.role, rows: [{ label: 'STATUS', value: 'Pending verification' }, { label: 'NOTE', value: p.note }] })}
+              style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 0, borderTop: '1px solid #3a2f12', padding: '8px 0', fontSize: 12, lineHeight: 1.5, fontFamily: "'IBM Plex Sans', sans-serif", cursor: 'pointer', color: 'inherit' }}
+            >
+              <span style={{ fontWeight: 600 }}>{p.name}</span>
+              <span style={{ color: '#c9a86b' }}> -- {p.role}</span>
+            </button>
+          ))}
         </div>
 
         <div style={{ marginTop: 20, background: '#0E1826', border: '1px solid #22364a', borderRadius: 8, padding: 16 }}>
