@@ -17,7 +17,12 @@ spec:
     spec:
       containers:
         - name: atlas-backend
-          image: sageinfranewdev01.azurecr.io/odic/backend:v1
+          image: sageinfranewdev01.azurecr.io/odic/backend:v2
+          env:
+            - name: ENTRA_TENANT_ID
+              value: "e9394f90-446d-41dd-8c8c-98ac08c5f090"
+            - name: ENTRA_CLIENT_ID
+              value: "30d2deb0-ee52-4949-a8f8-035e6053a812"
           ports:
             - name: http
               containerPort: 8000

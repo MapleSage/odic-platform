@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { AuthProvider, useAuth } from '@odic/auth';
 import './styles.css';
 
 type ViewId = 'organization' | 'search' | 'reports' | 'graph';
@@ -311,7 +312,22 @@ function mergeWorkspaceData(base: WorkspaceData, api: ApiWorkspaceData): Workspa
   };
 }
 
+function SignInScreen() {
+  const { login } = useAuth();
+  return (
+    <div className="signin-screen">
+      <div className="signin-card">
+        <div className="brand-mark"><img src="/favicon.svg" alt="SageSure" /></div>
+        <div className="brand-title">Atlas</div>
+        <div className="brand-subtitle">Enterprise Intelligence OS</div>
+        <button className="gia-toggle" onClick={() => login()}>Sign in with Microsoft</button>
+      </div>
+    </div>
+  );
+}
+
 function App() {
+  const { isAuthenticated, isLoading, user, logout, getAccessToken } = useAuth();
   const [activeView, setActiveView] = useState<ViewId>('organization');
   const [activeOrgTab, setActiveOrgTab] = useState<OrgTabId>('overview');
   const [giaOpen, setGiaOpen] = useState(true);
@@ -323,11 +339,16 @@ function App() {
   const [apiError, setApiError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     const controller = new AbortController();
 
     async function loadWorkspace() {
       try {
-        const response = await fetch(`${API_BASE}/api/workspace`, { signal: controller.signal });
+        const token = await getAccessToken();
+        const response = await fetch(`${API_BASE}/api/workspace`, {
+          signal: controller.signal,
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const json = (await response.json()) as ApiWorkspaceData;
         const merged = mergeWorkspaceData(DEFAULT_WORKSPACE, json);
@@ -346,7 +367,22 @@ function App() {
 
     loadWorkspace();
     return () => controller.abort();
-  }, []);
+  }, [isAuthenticated, getAccessToken]);
+
+  if (isLoading) {
+    return <div className="signin-screen"><div className="signin-card">Loading Atlas...</div></div>;
+  }
+
+  if (!isAuthenticated) {
+    return <SignInScreen />;
+  }
+
+  const userInitials = (user?.name ?? user?.username ?? '??')
+    .split(/\s+/)
+    .map((part: string) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   const filteredActivity = useMemo(() => {
     return workspace.organization.activity.filter((item) => activityFilter === 'all' || item.ch === activityFilter);
@@ -358,7 +394,7 @@ function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <div className="brand-mark">AT</div>
+          <div className="brand-mark"><img src="/favicon.svg" alt="SageSure" /></div>
           <div>
             <div className="brand-title">Atlas</div>
             <div className="brand-subtitle">Enterprise Intelligence OS</div>
@@ -390,7 +426,7 @@ function App() {
         <div className="workspace-pill">Workspace: {workspace.organization.name}</div>
         <div className="global-search">Search organizations, people, documents, risks, or ask Atlas...</div>
         <button className="gia-toggle" onClick={() => setGiaOpen((v) => !v)}>Ask Atlas</button>
-        <div className="avatar">MS</div>
+        <button className="avatar" title={`Sign out (${user?.username ?? ''})`} onClick={() => logout()}>{userInitials}</button>
       </header>
 
       <main className="main-content">
@@ -912,6 +948,8 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
 );

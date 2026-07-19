@@ -1,10 +1,13 @@
 FROM node:22-slim AS build
+RUN npm install -g pnpm@10.33.2
 WORKDIR /repo
-COPY tsconfig.base.json ./tsconfig.base.json
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json ./
 COPY apps/shell/package.json apps/shell/package.json
-RUN cd apps/shell && npm install
+COPY packages/auth/package.json packages/auth/package.json
+RUN pnpm install --frozen-lockfile --filter @odic/shell...
 COPY apps/shell apps/shell
-RUN cd apps/shell && npm run build
+COPY packages/auth packages/auth
+RUN pnpm --filter @odic/shell build
 
 FROM nginx:1.27-alpine
 COPY --from=build /repo/apps/shell/dist /usr/share/nginx/html

@@ -1,15 +1,19 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from auth import get_current_user
 
 app = FastAPI(title="ODIC Orchestration")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://atlas.sagesure.io", "http://localhost:3000", "http://localhost:4173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+api = APIRouter(dependencies=[Depends(get_current_user)])
 
 WORKSPACE_DATA = {
     "organization": {
@@ -88,26 +92,29 @@ def health():
     return {"status": "ok", "service": "fastapi-orchestration"}
 
 
-@app.get('/api/workspace')
+@api.get('/api/workspace')
 def workspace():
     return WORKSPACE_DATA
 
 
-@app.get('/api/workspace/organization')
+@api.get('/api/workspace/organization')
 def workspace_organization():
     return WORKSPACE_DATA["organization"]
 
 
-@app.get('/api/workspace/search')
+@api.get('/api/workspace/search')
 def workspace_search():
     return WORKSPACE_DATA["search"]
 
 
-@app.get('/api/workspace/reports')
+@api.get('/api/workspace/reports')
 def workspace_reports():
     return WORKSPACE_DATA["reports"]
 
 
-@app.get('/api/workspace/graph')
+@api.get('/api/workspace/graph')
 def workspace_graph():
     return WORKSPACE_DATA["graph"]
+
+
+app.include_router(api)

@@ -8,5 +8,15 @@
     "build": "echo build placeholder for auth",
     "typecheck": "echo typecheck placeholder for auth",
     "lint": "echo lint placeholder for auth"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^3.27.0"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "typescript": "^5.9.3"
   }
 }
