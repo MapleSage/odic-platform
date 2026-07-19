@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D2B3D'/%3E%3Ctext x='16' y='22' font-family='monospace' font-weight='700' font-size='14' fill='%23F7761F' text-anchor='middle'%3EOD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;background:oklch(97% 0.006 240);font-family:'IBM Plex Sans',sans-serif;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:oklch(85% 0.01 240);border-radius:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  a{color:oklch(45% 0.1 235);text-decoration:none;}
+  a:hover{color:oklch(38% 0.12 235);}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</helmet>
+
+<div style="display:grid;grid-template-columns:212px 1fr 56px {{ giaPanelWidth }}px;grid-template-rows:64px 1fr;height:100vh;width:100vw;background:oklch(97% 0.006 240);color:oklch(22% 0.03 250);overflow:hidden;">
+
+  <div style="grid-column:1/5;display:flex;align-items:center;gap:20px;padding:0 16px;background:#0D2B3D;color:oklch(96% 0.005 240);">
+    <div style="display:flex;align-items:center;gap:8px;min-width:150px;">
+      <div style="width:28px;height:28px;border-radius:6px;background:#F7761F;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:12px;color:#0D2B3D;">OD</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;letter-spacing:0.4px;">ODIC</div>
+        <div style="font-size:10px;color:oklch(75% 0.03 240);">Intelligence Workspace</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:6px;background:#174D6D;cursor:pointer;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#3D9CA2;letter-spacing:0.5px;">WORKSPACE</div>
+      <div style="font-size:13px;font-weight:500;">{{ orgName }}</div>
+      <div style="font-size:10px;color:oklch(75% 0.03 240);">v</div>
+    </div>
+    <div style="flex:1;max-width:520px;display:flex;align-items:center;gap:8px;background:#174D6D;border-radius:6px;padding:9px 12px;">
+      <div style="font-size:13px;color:oklch(75% 0.03 240);">Search policies, organizations, people, or ask GIA...</div>
+    </div>
+    <div style="flex:1;"></div>
+    <div onclick="{{ toggleGia }}" style="display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:6px;background:{{ giaBarBg }};cursor:pointer;">
+      <div style="width:8px;height:8px;border-radius:50%;background:#3D9CA2;"></div>
+      <div style="font-size:13px;font-weight:500;">Ask GIA</div>
+    </div>
+    <div style="width:32px;height:32px;border-radius:50%;background:#F7761F;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:#0D2B3D;">RM</div>
+  </div>
+
+  <div style="grid-column:1;grid-row:2;background:#0D2B3D;color:oklch(90% 0.01 240);display:flex;flex-direction:column;padding:14px 10px;gap:18px;overflow-y:auto;">
+    <div>
+      <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.8px;color:oklch(70% 0.02 240);padding:0 8px 8px;">WORKSPACES</div>
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
+        <div onclick="{{ item.onClick }}" style="display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:6px;cursor:pointer;margin-bottom:2px;background:{{ item.bg }};">
+          <div style="width:34px;height:20px;border-radius:4px;background:{{ item.badgeBg }};color:{{ item.badgeColor }};font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;letter-spacing:0.4px;">{{ item.code }}</div>
+          <div style="font-size:13px;font-weight:500;color:{{ item.textColor }};">{{ item.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div>
+      <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.8px;color:oklch(70% 0.02 240);padding:0 8px 8px;">RECENT</div>
+      <sc-for list="{{ recentItems }}" as="r" hint-placeholder-count="3">
+        <div style="padding:7px 8px;font-size:12.5px;color:oklch(80% 0.02 240);cursor:pointer;border-radius:6px;">{{ r }}</div>
+      </sc-for>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="padding:9px 8px;font-size:12px;color:oklch(70% 0.02 240);border-top:1px solid oklch(32% 0.03 250);padding-top:12px;">Settings - Admin</div>
+  </div>
+
+  <div style="grid-column:2;grid-row:2;overflow-y:auto;padding:20px 24px;animation:fadeIn 0.2s ease;">
+
+    <sc-if value="{{ viewOrganization }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="font-size:24px;font-weight:700;">{{ orgName }}</div>
+              <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;padding:3px 8px;border-radius:4px;background:oklch(92% 0.08 40);color:oklch(45% 0.16 35);">{{ orgMeta.riskLevel }}</div>
+            </div>
+            <div style="font-size:13px;color:oklch(45% 0.02 250);margin-top:4px;">{{ orgMeta.industry }} - {{ orgMeta.hq }} - {{ orgMeta.employees }} employees</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div style="padding:9px 14px;border-radius:6px;border:1px solid oklch(85% 0.01 240);background:white;font-size:12.5px;cursor:pointer;">Generate Report</div>
+            <div style="padding:9px 14px;border-radius:6px;background:#F7761F;color:white;font-size:12.5px;font-weight:600;cursor:pointer;">Take Action</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;">
+          <sc-for list="{{ statCards }}" as="s" hint-placeholder-count="4">
+            <div style="background:white;border-radius:8px;padding:14px;border-top:3px solid {{ s.accent }};box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+              <div style="font-size:11px;color:oklch(50% 0.02 250);font-family:'IBM Plex Mono',monospace;letter-spacing:0.4px;">{{ s.label }}</div>
+              <div style="font-size:24px;font-weight:700;margin-top:6px;color:oklch(22% 0.03 250);">{{ s.value }}</div>
+              <div style="font-size:12px;margin-top:4px;color:{{ s.subColor }};">{{ s.sub }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;gap:4px;border-bottom:1px solid oklch(88% 0.008 240);margin-bottom:16px;">
+          <sc-for list="{{ orgTabs }}" as="t" hint-placeholder-count="5">
+            <div onclick="{{ t.onClick }}" style="padding:10px 14px;font-size:13px;font-weight:500;cursor:pointer;color:{{ t.color }};border-bottom:2px solid {{ t.borderColor }};">{{ t.label }}</div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ orgTabOverview }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+                <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Key People</div>
+                <sc-for list="{{ people }}" as="p" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid oklch(92% 0.006 240);">
+                    <div>
+                      <div style="font-size:13px;font-weight:500;">{{ p.name }}</div>
+                      <div style="font-size:12px;color:oklch(50% 0.02 250);">{{ p.title }} - {{ p.dept }}</div>
+                    </div>
+                    <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(60% 0.01 240);">{{ p.lastActivity }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+                <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Recent Activity</div>
+                <sc-for list="{{ activities }}" as="a" hint-placeholder-count="4">
+                  <div style="display:flex;gap:10px;padding:7px 0;border-top:1px solid oklch(92% 0.006 240);">
+                    <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(60% 0.01 240);min-width:52px;">{{ a.time }}</div>
+                    <div style="font-size:12.5px;color:oklch(30% 0.02 250);">{{ a.text }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+                <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Risks</div>
+                <sc-for list="{{ risks }}" as="rk" hint-placeholder-count="3">
+                  <div style="padding:9px 0;border-top:1px solid oklch(92% 0.006 240);">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 6px;border-radius:4px;background:{{ rk.dimColor }};color:{{ rk.color }};">{{ rk.severity }}</div>
+                      <div style="font-size:12.5px;font-weight:500;">{{ rk.title }}</div>
+                    </div>
+                    <div style="font-size:12px;color:oklch(50% 0.02 250);margin-top:3px;">{{ rk.detail }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+                <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Opportunities</div>
+                <sc-for list="{{ opportunities }}" as="op" hint-placeholder-count="2">
+                  <div style="padding:9px 0;border-top:1px solid oklch(92% 0.006 240);">
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                      <div style="font-size:12.5px;font-weight:500;">{{ op.title }}</div>
+                      <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(50% 0.1 155);">{{ op.value }}</div>
+                    </div>
+                    <div style="font-size:12px;color:oklch(50% 0.02 250);margin-top:3px;">{{ op.stage }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ orgTabTimeline }}" hint-placeholder-val="{{ false }}">
+          <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+            <sc-for list="{{ timelineEvents }}" as="te" hint-placeholder-count="6">
+              <div style="display:flex;gap:14px;padding:12px 0;border-top:1px solid oklch(92% 0.006 240);">
+                <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(60% 0.01 240);min-width:74px;">{{ te.date }}</div>
+                <div style="width:8px;height:8px;border-radius:50%;background:{{ te.dotColor }};margin-top:4px;"></div>
+                <div>
+                  <div style="font-size:13px;font-weight:500;">{{ te.label }}</div>
+                  <div style="font-size:12.5px;color:oklch(50% 0.02 250);margin-top:2px;">{{ te.detail }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ orgTabRelationships }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:1fr 340px;gap:16px;">
+            <div style="background:white;border-radius:8px;padding:24px;display:flex;align-items:center;justify-content:center;min-height:360px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);background-image:repeating-linear-gradient(135deg,oklch(95% 0.006 240) 0 2px,transparent 2px 10px);">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(55% 0.02 250);text-align:center;">relationship graph canvas -- force-directed org / person / document network</div>
+            </div>
+            <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+              <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Connections</div>
+              <sc-for list="{{ relationships }}" as="rel" hint-placeholder-count="5">
+                <div style="padding:8px 0;border-top:1px solid oklch(92% 0.006 240);font-size:12.5px;">
+                  <span style="color:oklch(22% 0.03 250);font-weight:500;">{{ rel.from }}</span>
+                  <span style="color:oklch(60% 0.01 240);"> -&gt; {{ rel.type }} -&gt; </span>
+                  <span style="color:oklch(22% 0.03 250);font-weight:500;">{{ rel.to }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ orgTabDocuments }}" hint-placeholder-val="{{ false }}">
+          <div style="background:white;border-radius:8px;overflow:hidden;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:10px 16px;font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(55% 0.02 250);border-bottom:1px solid oklch(88% 0.008 240);">
+              <div>NAME</div><div>TYPE</div><div>TAG</div><div>DATE</div>
+            </div>
+            <sc-for list="{{ documents }}" as="d" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:11px 16px;font-size:13px;border-top:1px solid oklch(92% 0.006 240);align-items:center;">
+                <div style="font-weight:500;">{{ d.name }}</div>
+                <div style="color:oklch(50% 0.02 250);">{{ d.type }}</div>
+                <div><span style="font-size:11px;padding:2px 7px;border-radius:4px;background:oklch(92% 0.05 200);color:#102D7B;">{{ d.tag }}</span></div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(60% 0.01 240);">{{ d.date }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ orgTabInsights }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+            <sc-for list="{{ aiInsights }}" as="ai" hint-placeholder-count="4">
+              <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                  <div style="width:8px;height:8px;border-radius:50%;background:#3D9CA2;"></div>
+                  <div style="font-size:13px;font-weight:600;">{{ ai.title }}</div>
+                </div>
+                <div style="font-size:12.5px;color:oklch(45% 0.02 250);line-height:1.5;margin-bottom:10px;">{{ ai.body }}</div>
+                <div style="display:inline-block;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;border:1px solid #3D9CA2;color:#102D7B;cursor:pointer;">{{ ai.action }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ orgTabActivityFeed }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+            <sc-for list="{{ syncStatuses }}" as="sy" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:6px;background:white;border-radius:6px;padding:7px 12px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+                <div style="width:7px;height:7px;border-radius:50%;background:{{ sy.color }};"></div>
+                <div style="font-size:11.5px;font-weight:500;">{{ sy.channel }}</div>
+                <div style="font-size:10.5px;color:oklch(55% 0.02 250);">{{ sy.status }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-bottom:14px;">
+            <sc-for list="{{ activityFilters }}" as="fc" hint-placeholder-count="6">
+              <div onclick="{{ fc.onClick }}" style="font-size:12px;font-weight:500;padding:6px 12px;border-radius:14px;cursor:pointer;background:{{ fc.bg }};color:{{ fc.color }};border:1px solid {{ fc.border }};">{{ fc.label }}</div>
+            </sc-for>
+          </div>
+
+          <div style="background:white;border-radius:8px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);overflow:hidden;">
+            <sc-for list="{{ filteredActivity }}" as="fa" hint-placeholder-count="6">
+              <div style="display:flex;gap:12px;padding:13px 16px;border-top:1px solid oklch(92% 0.006 240);align-items:flex-start;">
+                <div style="width:34px;height:22px;border-radius:4px;background:{{ fa.badgeBg }};color:{{ fa.badgeColor }};font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">{{ fa.code }}</div>
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;justify-content:space-between;gap:8px;">
+                    <div style="font-size:13px;font-weight:500;">{{ fa.title }}</div>
+                    <div style="font-size:11px;color:oklch(55% 0.02 250);white-space:nowrap;">{{ fa.time }}</div>
+                  </div>
+                  <div style="font-size:12.5px;color:oklch(45% 0.02 250);margin-top:2px;">{{ fa.snippet }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ viewSearch }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:220px 1fr 320px;gap:16px;">
+        <div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Filters</div>
+          <sc-for list="{{ searchFacets }}" as="f" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;color:oklch(30% 0.02 250);">
+              <div>{{ f.label }}</div>
+              <div style="color:oklch(60% 0.01 240);font-family:'IBM Plex Mono',monospace;font-size:12px;">{{ f.count }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div style="font-size:13px;color:oklch(45% 0.02 250);margin-bottom:10px;">{{ searchResultsCountLabel }}</div>
+          <sc-for list="{{ searchResults }}" as="sr" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:8px;margin-bottom:8px;cursor:pointer;background:white;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+              <div style="width:34px;height:20px;border-radius:4px;background:{{ sr.badgeBg }};color:{{ sr.badgeColor }};font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ sr.code }}</div>
+              <div style="flex:1;">
+                <div style="font-size:13.5px;font-weight:500;">{{ sr.name }}</div>
+                <div style="font-size:12px;color:oklch(50% 0.02 250);">{{ sr.sub }}</div>
+              </div>
+              <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(60% 0.01 240);">{{ sr.tag }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px;">{{ orgName }}</div>
+          <div style="font-size:12.5px;color:oklch(45% 0.02 250);line-height:1.5;">{{ orgMeta.industry }} health system operating {{ orgMeta.employees }} employees across {{ orgMeta.hq }}. Selected from search results for quick preview without leaving the workspace.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ viewReports }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;">
+        <div style="position:sticky;top:0;">
+          <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(55% 0.02 250);letter-spacing:0.5px;margin-bottom:10px;">CONTENTS</div>
+          <sc-for list="{{ reportSections }}" as="rs" hint-placeholder-count="8">
+            <a href="{{ rs.href }}" style="display:block;font-size:12.5px;padding:6px 0;color:oklch(45% 0.02 250);">{{ rs.label }}</a>
+          </sc-for>
+        </div>
+        <div style="max-width:760px;">
+          <div style="font-size:20px;font-weight:700;margin-bottom:4px;">Q3 Regional Health Systems Risk Report</div>
+          <div style="font-size:12px;color:oklch(55% 0.02 250);font-family:'IBM Plex Mono',monospace;margin-bottom:20px;">Generated by GIA - v3 - updated 2h ago</div>
+
+          <div id="exec" style="margin-bottom:22px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Executive Summary</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">Three regional health systems, including Meridian Health Systems, show elevated vendor-contract and compliance risk this quarter, offset by a strong facilities-expansion pipeline. GIA recommends prioritizing outreach to CFO/CIO contacts ahead of Q4 renewal cycles.</div>
+          </div>
+          <div id="evidence" style="margin-bottom:22px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Evidence</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">Findings are drawn from 14 filings, 6 news signals, and 22 relationship changes ingested over the last 30 days across the tracked organization set.</div>
+          </div>
+          <div id="relationships" style="margin-bottom:22px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Relationships</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">Vendor and board-level relationship shifts correlate with two of the three flagged risks - see graph view for full traversal.</div>
+          </div>
+          <div id="viz" style="margin-bottom:22px;background:white;border-radius:8px;padding:24px;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);background-image:repeating-linear-gradient(135deg,oklch(95% 0.006 240) 0 2px,transparent 2px 10px);min-height:180px;display:flex;align-items:center;justify-content:center;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(55% 0.02 250);">visualization - risk trend chart</div>
+          </div>
+          <div id="timeline" style="margin-bottom:22px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Timeline</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">Key events are sequenced in the Organization Workspace timeline tab for each entity referenced in this report.</div>
+          </div>
+          <div id="sources" style="margin-bottom:22px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Sources</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">SEC/state filings, Microsoft 365 signals, HubSpot activity, and licensed news feeds.</div>
+          </div>
+          <div id="ai" style="margin-bottom:22px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">AI Analysis</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">GIA weighs recency and source credibility to rank risks; confidence for the top-ranked finding is 0.86.</div>
+          </div>
+          <div id="recs" style="margin-bottom:8px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Recommendations</div>
+            <div style="font-size:13.5px;line-height:1.7;color:oklch(30% 0.02 250);">Engage CFO contacts on vendor renewals within 14 days; monitor compliance filings weekly through quarter close.</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ viewGraph }}" hint-placeholder-val="{{ false }}">
+      <div style="height:calc(100vh - 140px);display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.6px;color:#0D2B3D;">360&deg; COUNTERPARTY &amp; EXPOSURE NETWORK</div>
+          <a href="ODIC Exposure Network.dc.html" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#F7761F;">OPEN FULL SCREEN &rarr;</a>
+        </div>
+        <div style="flex:1;border-radius:8px;overflow:hidden;box-shadow:0 1px 2px oklch(0% 0 0 / 6%);">
+          <dc-import name="ODIC Exposure Network" hint-size="100%,100%"></dc-import>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+
+  <div style="grid-column:3;grid-row:2;background:white;border-left:1px solid oklch(90% 0.006 240);display:flex;flex-direction:column;align-items:center;gap:14px;padding:14px 0;">
+    <div onclick="{{ toggleGia }}" style="width:36px;height:36px;border-radius:8px;background:{{ giaRailBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <div style="width:8px;height:8px;border-radius:50%;background:#3D9CA2;"></div>
+    </div>
+    <div style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;font-family:'IBM Plex Mono',monospace;color:oklch(45% 0.02 250);">3</div>
+    <div style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;font-family:'IBM Plex Mono',monospace;color:oklch(45% 0.02 250);">CTX</div>
+  </div>
+
+  <div style="grid-column:4;grid-row:2;overflow:hidden;background:white;border-left:1px solid oklch(90% 0.006 240);">
+    <sc-if value="{{ giaOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="width:380px;height:100%;display:flex;flex-direction:column;padding:16px;overflow-y:auto;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:600;">GIA - Intelligence Layer</div>
+          <div onclick="{{ toggleGia }}" style="font-size:16px;color:oklch(55% 0.02 250);cursor:pointer;">x</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:oklch(95% 0.006 240);border-radius:6px;padding:10px 12px;margin-bottom:16px;">
+          <div style="font-size:13px;color:oklch(55% 0.02 250);">Ask GIA anything about this workspace...</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+          <sc-for list="{{ giaQuickActions }}" as="q" hint-placeholder-count="3">
+            <div style="font-size:11.5px;padding:6px 10px;border-radius:14px;border:1px solid oklch(88% 0.008 240);color:oklch(45% 0.02 250);cursor:pointer;">{{ q }}</div>
+          </sc-for>
+        </div>
+        <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:oklch(55% 0.02 250);letter-spacing:0.5px;margin-bottom:8px;">RECOMMENDATIONS</div>
+        <sc-for list="{{ giaCards }}" as="g" hint-placeholder-count="3">
+          <div style="background:oklch(98% 0.004 240);border:1px solid oklch(90% 0.006 240);border-radius:8px;padding:14px;margin-bottom:10px;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px;">{{ g.title }}</div>
+            <div style="font-size:12.5px;color:oklch(45% 0.02 250);line-height:1.5;margin-bottom:8px;">{{ g.body }}</div>
+            <div style="display:inline-block;font-size:11.5px;font-weight:500;padding:5px 10px;border-radius:6px;background:#F7761F;color:white;cursor:pointer;">{{ g.action }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    activeView: 'organization',
+    activeOrgTab: 'overview',
+    giaOpen: false,
+    expandedGraphEdge: null,
+    graphMode: 'matrix',
+    activityFilter: 'all',
+  };
+
+  setView(v) { this.setState({ activeView: v }); }
+  setOrgTab(t) { this.setState({ activeOrgTab: t }); }
+  setActivityFilter(f) { this.setState({ activityFilter: f }); }
+  toggleGraphEdge(i) { this.setState((st) => ({ expandedGraphEdge: st.expandedGraphEdge === i ? null : i })); }
+  setGraphMode(m) { this.setState({ graphMode: m }); }
+
+  renderVals() {
+    const s = this.state;
+    const NAV = [
+      { id: 'organization', label: 'Organization', code: 'ORG' },
+      { id: 'search', label: 'Search', code: 'SRCH' },
+      { id: 'reports', label: 'Reports', code: 'RPT' },
+      { id: 'graph', label: 'Graph', code: 'GRPH' },
+    ];
+    const navItems = NAV.map((n) => {
+      const active = s.activeView === n.id;
+      return Object.assign({}, n, {
+        onClick: () => this.setView(n.id),
+        bg: active ? '#174D6D' : 'transparent',
+        textColor: active ? 'oklch(98% 0.005 240)' : 'oklch(80% 0.02 240)',
+        badgeBg: active ? '#F7761F' : '#174D6D',
+        badgeColor: active ? '#0D2B3D' : 'oklch(80% 0.02 240)',
+      });
+    });
+
+    const ORG_TABS = [
+      { id: 'overview', label: 'Overview' },
+      { id: 'timeline', label: 'Timeline' },
+      { id: 'relationships', label: 'Relationships' },
+      { id: 'documents', label: 'Documents' },
+      { id: 'insights', label: 'AI Insights' },
+      { id: 'activity', label: 'Activity Feed' },
+    ];
+    const orgTabs = ORG_TABS.map((t) => {
+      const active = s.activeOrgTab === t.id;
+      return Object.assign({}, t, {
+        onClick: () => this.setOrgTab(t.id),
+        color: active ? 'oklch(22% 0.03 250)' : 'oklch(55% 0.02 250)',
+        borderColor: active ? '#F7761F' : 'transparent',
+      });
+    });
+
+    return {
+      giaPanelWidth: s.giaOpen ? 380 : 0,
+      giaBarBg: s.giaOpen ? '#3D9CA2' : '#174D6D',
+      giaRailBg: s.giaOpen ? '#e8f4f4' : 'transparent',
+      toggleGia: () => this.setState((st) => ({ giaOpen: !st.giaOpen })),
+
+      orgName: 'Meridian Health Systems',
+      orgMeta: { industry: 'Healthcare Delivery', hq: 'Columbus, OH', employees: '8,200', riskLevel: 'ELEVATED RISK' },
+
+      navItems: navItems,
+      recentItems: ['Northstar Regional Medical', 'Vantage Behavioral Health', 'Q3 Risk Report'],
+
+      viewOrganization: s.activeView === 'organization',
+      viewSearch: s.activeView === 'search',
+      viewReports: s.activeView === 'reports',
+      viewGraph: s.activeView === 'graph',
+
+      statCards: [
+        { label: 'OPEN RISKS', value: '3', sub: '1 critical', subColor: 'oklch(50% 0.16 35)', accent: '#F7761F' },
+        { label: 'OPPORTUNITIES', value: '2', sub: '$4.2M pipeline', subColor: 'oklch(50% 0.1 155)', accent: 'oklch(60% 0.11 155)' },
+        { label: 'ACTIVE PROJECTS', value: '5', sub: '2 at risk', subColor: 'oklch(45% 0.03 250)', accent: 'oklch(35% 0.08 250)' },
+        { label: 'LAST FILING', value: '6d ago', sub: 'compliance', subColor: 'oklch(45% 0.02 250)', accent: 'oklch(60% 0.1 200)' },
+      ],
+
+      orgTabs: orgTabs,
+      orgTabOverview: s.activeOrgTab === 'overview',
+      orgTabTimeline: s.activeOrgTab === 'timeline',
+      orgTabRelationships: s.activeOrgTab === 'relationships',
+      orgTabDocuments: s.activeOrgTab === 'documents',
+      orgTabInsights: s.activeOrgTab === 'insights',
+      orgTabActivityFeed: s.activeOrgTab === 'activity',
+
+      people: [
+        { name: 'Dana Ferris', title: 'CFO', dept: 'Finance', lastActivity: '2d ago' },
+        { name: 'Owen Mackey', title: 'CIO', dept: 'Technology', lastActivity: '5d ago' },
+        { name: 'Priya Shah', title: 'VP Facilities', dept: 'Operations', lastActivity: '1w ago' },
+        { name: 'Leon Ward', title: 'Compliance Director', dept: 'Legal', lastActivity: '3d ago' },
+      ],
+      activities: [
+        { time: '09:14', text: 'GIA flagged vendor contract renewal overdue' },
+        { time: 'Mon', text: 'New compliance filing detected' },
+        { time: 'Fri', text: 'Meeting logged with Dana Ferris (CFO)' },
+        { time: 'Wed', text: 'Relationship change: new board member added' },
+      ],
+      risks: [
+        { severity: 'CRITICAL', title: 'Vendor contract renewal overdue', detail: 'Master services agreement lapsed 12 days ago', color: 'oklch(45% 0.16 35)', dimColor: 'oklch(92% 0.08 40)' },
+        { severity: 'HIGH', title: 'Compliance audit flagged', detail: 'State audit cited two documentation gaps', color: 'oklch(48% 0.13 65)', dimColor: 'oklch(93% 0.07 70)' },
+        { severity: 'MEDIUM', title: 'Staffing vacancy in Facilities', detail: 'VP Facilities role open 45+ days', color: 'oklch(45% 0.1 155)', dimColor: 'oklch(93% 0.06 150)' },
+      ],
+      opportunities: [
+        { title: 'EHR Modernization RFP', stage: 'Qualification', value: '$2.8M' },
+        { title: 'Facilities Expansion - East Campus', stage: 'Proposal', value: '$1.4M' },
+      ],
+      timelineEvents: [
+        { date: 'Jul 16', label: 'Compliance filing submitted', detail: 'State health authority - routine filing', dotColor: '#3D9CA2' },
+        { date: 'Jul 12', label: 'Vendor contract lapsed', detail: 'MSA with Northgate Supply not renewed', dotColor: 'oklch(50% 0.16 35)' },
+        { date: 'Jul 8', label: 'New board member added', detail: 'Relationship graph updated automatically', dotColor: 'oklch(50% 0.1 155)' },
+        { date: 'Jun 30', label: 'RFP published', detail: 'EHR modernization opportunity opened', dotColor: 'oklch(50% 0.1 155)' },
+        { date: 'Jun 22', label: 'Facilities VP departure', detail: 'Staffing vacancy risk opened', dotColor: 'oklch(48% 0.13 65)' },
+      ],
+      relationships: [
+        { from: 'Meridian Health Systems', type: 'contracts with', to: 'Northgate Supply Co.' },
+        { from: 'Dana Ferris', type: 'reports to', to: 'CEO - Meridian Health Systems' },
+        { from: 'Meridian Health Systems', type: 'shares board member with', to: 'Vantage Behavioral Health' },
+        { from: 'Meridian Health Systems', type: 'filed with', to: 'Ohio Dept. of Health' },
+        { from: 'Owen Mackey', type: 'sponsors', to: 'EHR Modernization RFP' },
+      ],
+      documents: [
+        { name: '2026 Compliance Filing.pdf', type: 'Filing', tag: 'Compliance', date: 'Jul 16' },
+        { name: 'Vendor Master Agreement - Northgate.docx', type: 'Contract', tag: 'Risk', date: 'Jul 12' },
+        { name: 'Board Minutes - Q2.pdf', type: 'Minutes', tag: 'Governance', date: 'Jun 28' },
+        { name: 'EHR Modernization RFP.pdf', type: 'RFP', tag: 'Opportunity', date: 'Jun 30' },
+        { name: 'Facilities Expansion Brief.pptx', type: 'Brief', tag: 'Opportunity', date: 'Jun 18' },
+      ],
+      aiInsights: [
+        { title: 'Renewal risk rising', body: 'Vendor contract lapse plus a compliance flag increases churn risk on the Northgate relationship this quarter.', action: 'Draft outreach' },
+        { title: 'RFP alignment', body: 'EHR Modernization RFP scope matches two prior wins in this vertical - high propensity to convert.', action: 'View similar deals' },
+        { title: 'Staffing signal', body: 'The Facilities VP vacancy correlates with delayed expansion timelines in comparable organizations.', action: 'Flag for review' },
+        { title: 'Filing pattern', body: 'Filing cadence is 20% slower than peer organizations, worth monitoring through quarter close.', action: 'Add to watchlist' },
+      ],
+
+      searchFacets: [
+        { label: 'Organizations', count: 128 },
+        { label: 'People', count: 412 },
+        { label: 'Documents', count: 1204 },
+        { label: 'Risks', count: 37 },
+      ],
+      searchResultsCountLabel: '1,781 results across all intelligence objects',
+      searchResults: [
+        { code: 'ORG', name: 'Meridian Health Systems', sub: 'Healthcare Delivery - Columbus, OH', tag: 'Elevated Risk', badgeBg: 'oklch(90% 0.05 220)', badgeColor: 'oklch(40% 0.1 220)' },
+        { code: 'PPL', name: 'Dana Ferris', sub: 'CFO - Meridian Health Systems', tag: 'Person', badgeBg: 'oklch(93% 0.06 150)', badgeColor: 'oklch(42% 0.1 155)' },
+        { code: 'DOC', name: '2026 Compliance Filing.pdf', sub: 'Filing - Meridian Health Systems', tag: 'Jul 16', badgeBg: 'oklch(93% 0.07 70)', badgeColor: 'oklch(45% 0.12 65)' },
+        { code: 'ORG', name: 'Northstar Regional Medical', sub: 'Healthcare Delivery - Toledo, OH', tag: 'Watchlist', badgeBg: 'oklch(90% 0.05 220)', badgeColor: 'oklch(40% 0.1 220)' },
+        { code: 'RSK', name: 'Vendor contract renewal overdue', sub: 'Risk - Meridian Health Systems', tag: 'Critical', badgeBg: 'oklch(92% 0.08 40)', badgeColor: 'oklch(45% 0.16 35)' },
+        { code: 'PPL', name: 'Owen Mackey', sub: 'CIO - Meridian Health Systems', tag: 'Person', badgeBg: 'oklch(93% 0.06 150)', badgeColor: 'oklch(42% 0.1 155)' },
+      ],
+
+      reportSections: [
+        { id: 'exec', href: '#exec', label: 'Executive Summary' },
+        { id: 'evidence', href: '#evidence', label: 'Evidence' },
+        { id: 'relationships', href: '#relationships', label: 'Relationships' },
+        { id: 'viz', href: '#viz', label: 'Visualizations' },
+        { id: 'timeline', href: '#timeline', label: 'Timeline' },
+        { id: 'sources', href: '#sources', label: 'Sources' },
+        { id: 'ai', href: '#ai', label: 'AI Analysis' },
+        { id: 'recs', href: '#recs', label: 'Recommendations' },
+      ],
+
+      graphMode: this.state.graphMode,
+      graphModeLedger: this.state.graphMode === 'ledger',
+      graphModeMatrix: this.state.graphMode === 'matrix',
+      setGraphLedger: () => this.setGraphMode('ledger'),
+      setGraphMatrix: () => this.setGraphMode('matrix'),
+      matrixTabBg: this.state.graphMode === 'matrix' ? '#3D9CA2' : 'transparent',
+      matrixTabColor: this.state.graphMode === 'matrix' ? '#0B1F2E' : '#7FA8BD',
+      ledgerTabBg: this.state.graphMode === 'ledger' ? '#3D9CA2' : 'transparent',
+      ledgerTabColor: this.state.graphMode === 'ledger' ? '#0B1F2E' : '#7FA8BD',
+      orgCoreLabel: this.props.orgCoreLabel || 'MERIDIAN SPV CORE',
+      graphGridCols: this.state.graphMode === 'ledger' ? '1fr 300px' : '1fr',
+
+      exposureStats: [
+        { label: 'EXPOSURE SCORE', value: '71', color: '#F7761F' },
+        { label: 'SUPPLIERS/VENDORS', value: '4', color: '#3D9CA2' },
+        { label: 'COUNTERPARTIES', value: '5', color: '#5FA86B' },
+        { label: 'CRITICAL DEPENDENCIES', value: '1', color: '#D3492E' },
+      ],
+      supplyLeft: [
+        { code: 'VEN', name: 'Northgate Supply Co.', meta: 'Master Services Agreement -- lapsed', metric: '$4.1M/yr', color: '#D3492E' },
+        { code: 'SUP', name: 'Apex EHR Systems', meta: 'Core clinical software supplier', metric: '$2.8M/yr', color: '#3D9CA2' },
+        { code: 'SUP', name: 'MedTech Equipment Partners', meta: 'Imaging & device supplier', metric: '$1.6M/yr', color: '#3D9CA2' },
+        { code: 'VEN', name: 'CleanLine Facilities Services', meta: 'Facilities & maintenance vendor', metric: '$0.9M/yr', color: '#3D9CA2' },
+      ],
+      capitalRight: [
+        { code: 'INV', name: 'Heartland Health Capital Partners', meta: 'Institutional investor -- 18% stake', metric: '18%', color: '#5FA86B' },
+        { code: 'INV', name: 'Ohio Public Employees Retirement Sys.', meta: 'Institutional investor -- 9% stake', metric: '9%', color: '#5FA86B' },
+        { code: 'HNI', name: 'R. Whitfield Family Office', meta: 'High-net-worth individual -- 6% stake', metric: '6%', color: '#8A8FAE' },
+        { code: 'BUY', name: 'Vantage Behavioral Health', meta: 'Shared-services buyer, shared board', metric: '$1.2M/yr', color: '#F7761F' },
+        { code: 'GOV', name: 'Ohio Dept. of Health', meta: 'Regulator -- compliance filings', metric: 'n/a', color: '#8A8FAE' },
+      ],
+
+      graphLegend: [
+        { label: 'ORG', color: '#3D9CA2' },
+        { label: 'PPL', color: '#5FA86B' },
+        { label: 'RSK', color: '#D3492E' },
+        { label: 'OPP', color: '#F7761F' },
+        { label: 'GOV', color: '#8A8FAE' },
+      ],
+      graphEdges: (() => {
+        const defs = [
+          { label: 'employs', code: 'PPL', label2: 'Dana Ferris -- CFO', color: '#5FA86B', chartTop: 'Dana Ferris -- CFO', chartReports: ['Treasury Lead', 'FP&A Manager', 'Controller'], bars: [40, 65, 50, 80, 55, 70] },
+          { label: 'employs', code: 'PPL', label2: 'Owen Mackey -- CIO', color: '#5FA86B', chartTop: 'Owen Mackey -- CIO', chartReports: ['IT Director', 'Security Lead', 'Data Architect'], bars: [30, 45, 60, 40, 75, 60] },
+          { label: 'employs', code: 'PPL', label2: 'Priya Shah -- VP Facilities', color: '#5FA86B', chartTop: 'Priya Shah -- VP Facilities', chartReports: ['Ops Manager', 'Site Lead'], bars: [50, 40, 35, 45, 30, 25] },
+          { label: 'contracts with', code: 'ORG', label2: 'Northgate Supply Co.', color: '#3D9CA2', chartTop: 'Northgate Supply Co.', chartReports: ['Account Team', 'Contracts Desk', 'Logistics'], bars: [60, 55, 70, 90, 85, 95] },
+          { label: 'shares board', code: 'ORG', label2: 'Vantage Behavioral Health', color: '#3D9CA2', chartTop: 'Vantage Behavioral Health', chartReports: ['Board Chair', 'CEO'], bars: [20, 30, 25, 35, 40, 30] },
+          { label: 'filed with', code: 'GOV', label2: 'Ohio Dept. of Health', color: '#8A8FAE', chartTop: 'Ohio Dept. of Health', chartReports: ['Licensing Board', 'Compliance Office'], bars: [45, 50, 40, 55, 48, 52] },
+          { label: 'sponsors', code: 'OPP', label2: 'EHR Modernization RFP', color: '#F7761F', chartTop: 'EHR Modernization RFP', chartReports: ['Vendor Panel', 'Steering Committee'], bars: [25, 40, 55, 70, 85, 100] },
+          { label: 'flagged by GIA', code: 'RSK', label2: 'Vendor Contract Renewal Risk', color: '#D3492E', chartTop: 'Vendor Contract Renewal Risk', chartReports: ['Northgate MSA', 'Legal Review'], bars: [80, 85, 90, 95, 92, 98] },
+        ];
+        return defs.map((e, i) => {
+          const expanded = this.state.expandedGraphEdge === i;
+          return Object.assign({}, e, {
+            expanded,
+            chevron: expanded ? '\u25be' : '\u25b8',
+            rowBg: expanded ? '#16344a' : '#12293A',
+            onClick: () => this.toggleGraphEdge(i),
+          });
+        });
+      })(),
+
+      syncStatuses: [
+        { channel: 'Email', status: 'Live', color: '#5FA86B' },
+        { channel: 'Calls', status: 'Live', color: '#5FA86B' },
+        { channel: 'Social', status: 'Delayed 12m', color: '#F7C948' },
+        { channel: 'Filings', status: 'Live', color: '#5FA86B' },
+        { channel: 'CRM', status: 'Live', color: '#5FA86B' },
+      ],
+      activityFilters: (() => {
+        const opts = [
+          { id: 'all', label: 'All' }, { id: 'email', label: 'Email' }, { id: 'call', label: 'Calls' },
+          { id: 'social', label: 'Social' }, { id: 'filing', label: 'Filings' }, { id: 'crm', label: 'CRM' },
+        ];
+        return opts.map((o) => {
+          const active = s.activityFilter === o.id;
+          return { ...o, onClick: () => this.setActivityFilter(o.id), bg: active ? '#0D2B3D' : 'white', color: active ? 'white' : 'oklch(30% 0.02 250)', border: active ? '#0D2B3D' : 'oklch(85% 0.01 240)' };
+        });
+      })(),
+      filteredActivity: (() => {
+        const CH = {
+          email: { code: 'EML', bg: '#e8f0fb', color: '#1E4EA8' }, call: { code: 'CALL', bg: '#eaf6ec', color: '#2E7D46' },
+          social: { code: 'SOC', bg: '#fdf1e0', color: '#B36A0C' }, filing: { code: 'FILE', bg: '#f3ecfb', color: '#6B3FA0' }, crm: { code: 'CRM', bg: '#fdeaea', color: '#B0392F' },
+        };
+        const items = [
+          { ch: 'email', title: 'Dana Ferris replied on Northgate renewal', snippet: '"We can get legal on a call Thursday to review the lapsed MSA terms."', time: '12m ago' },
+          { ch: 'call', title: '24-min call logged with Owen Mackey (CIO)', snippet: 'Discussed EHR Modernization RFP timeline and vendor shortlist.', time: '1h ago' },
+          { ch: 'social', title: 'LinkedIn: VP Facilities role reposted', snippet: 'Meridian Health Systems facilities leadership opening gaining engagement.', time: '2h ago' },
+          { ch: 'filing', title: 'New compliance filing detected', snippet: 'State health authority filing indexed and linked to Documents tab.', time: '6h ago' },
+          { ch: 'crm', title: 'Opportunity stage changed', snippet: 'EHR Modernization RFP moved from Qualification \u2192 Proposal.', time: 'Yesterday' },
+          { ch: 'email', title: 'Compliance team requested escrow statement', snippet: 'Leon Ward asked for an updated 70% escrow account statement.', time: 'Yesterday' },
+          { ch: 'call', title: 'Missed call from Leon Ward (Compliance Director)', snippet: 'No voicemail left -- flagged for callback.', time: '2d ago' },
+          { ch: 'social', title: 'Regional business journal mention', snippet: 'Press coverage of facilities expansion plans picked up by GIA monitoring.', time: '3d ago' },
+        ];
+        return items.filter((it) => s.activityFilter === 'all' || it.ch === s.activityFilter).map((it) => ({
+          ...it, code: CH[it.ch].code, badgeBg: CH[it.ch].bg, badgeColor: CH[it.ch].color,
+        }));
+      })(),
+
+      giaQuickActions: ['Generate Report', 'Summarize Changes', 'Flag Risk'],
+      giaCards: [
+        { title: 'Renewal risk on Northgate contract', body: 'Contract lapsed 12 days ago with no renewal activity logged. Recommend outreach to CFO this week.', action: 'Draft outreach email' },
+        { title: 'Weekly workspace summary', body: '3 risks, 2 opportunities, and 5 document changes since last Monday across your watched organizations.', action: 'View full summary' },
+        { title: 'Peer comparison available', body: 'Meridians filing cadence is slower than 3 comparable regional systems - worth a closer look.', action: 'Open comparison' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D2B3D'/%3E%3Ctext x='16' y='22' font-family='monospace' font-weight='700' font-size='14' fill='%23F7761F' text-anchor='middle'%3EOD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;background:#050810;font-family:'IBM Plex Mono',monospace;}
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-thumb{background:#22364a;border-radius:5px;}
+  ::-webkit-scrollbar-track{background:#050810;}
+  a{color:#3D9CA2;text-decoration:none;}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#050810;color:oklch(94% 0.01 240);">
+
+  <div style="background:#0A0F1A;border-bottom:1px solid #1E2E40;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="ODIC Workspace Shell v2.dc.html" style="font-size:11px;color:#7FA8BD;">&larr; WORKSPACE</a>
+      <div style="font-size:17px;font-weight:700;color:#F7761F;">SWD IN <span style="color:#7FA8BD;font-weight:400;font-size:14px;">Equity</span></div>
+    </div>
+    <div style="font-size:13px;color:oklch(96% 0.005 240);">360&deg; Counterparty Exposure -- click any box or line for evidence</div>
+  </div>
+
+  <div style="background:#0D1420;border-bottom:1px solid #1E2E40;padding:10px 24px;display:flex;gap:36px;flex-wrap:wrap;align-items:center;">
+    <div style="font-size:12px;color:#3D9CA2;">Viewing: <span style="color:oklch(94% 0.01 240);">Smartworld Developers Pvt. Ltd.</span></div>
+    <div style="font-size:12px;color:#7FA8BD;">Every line = one sourced relationship. Every box = one entity with its own record.</div>
+    <div style="display:flex;gap:12px;margin-left:auto;">
+      <sc-for list="{{ confidenceLegend }}" as="cl" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:#7FA8BD;">
+          <span style="color:{{ cl.color }};font-weight:700;">[{{ cl.grade }}]</span>{{ cl.label }}
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;padding:20px 0 10px;">
+    <div style="position:relative;width:1600px;min-height:900px;margin:0 auto;">
+      <svg width="1600" height="900" style="position:absolute;top:0;left:0;">
+        <sc-for list="{{ fanLines }}" as="ln" hint-placeholder-count="24">
+          <line onclick="{{ ln.onClick }}" x1="{{ ln.x1 }}" y1="{{ ln.y1 }}" x2="{{ ln.x2 }}" y2="{{ ln.y2 }}" stroke="transparent" stroke-width="12" style="cursor:pointer;"></line>
+          <line x1="{{ ln.x1 }}" y1="{{ ln.y1 }}" x2="{{ ln.x2 }}" y2="{{ ln.y2 }}" stroke="{{ ln.color }}" stroke-width="{{ ln.width }}" stroke-dasharray="{{ ln.dash }}" opacity="{{ ln.opacity }}" style="pointer-events:none;"></line>
+        </sc-for>
+      </svg>
+
+      <sc-for list="{{ leftCards }}" as="c" hint-placeholder-count="7">
+        <div onclick="{{ c.onClick }}" style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:445px;height:88px;background:#0E1826;border:1px solid #22364a;border-left:5px solid {{ c.color }};display:flex;flex-direction:column;justify-content:center;padding:0 16px;box-sizing:border-box;z-index:2;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div style="font-size:14px;font-weight:700;color:oklch(96% 0.005 240);">{{ c.name }}</div>
+            <div style="font-size:11px;color:{{ c.color }};font-weight:700;">[{{ c.grade }}]</div>
+          </div>
+          <div style="font-size:11px;color:#7FA8BD;margin-top:4px;">{{ c.role }}</div>
+        </div>
+      </sc-for>
+
+      <sc-for list="{{ rightCards }}" as="c" hint-placeholder-count="7">
+        <div onclick="{{ c.onClick }}" style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:445px;height:88px;background:#0E1826;border:1px solid #22364a;border-left:5px solid {{ c.color }};display:flex;flex-direction:column;justify-content:center;padding:0 16px;box-sizing:border-box;z-index:2;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div style="font-size:14px;font-weight:700;color:oklch(96% 0.005 240);">{{ c.name }}</div>
+            <div style="font-size:11px;color:{{ c.color }};font-weight:700;">[{{ c.grade }}]</div>
+          </div>
+          <div style="font-size:11px;color:#7FA8BD;margin-top:4px;">{{ c.role }}</div>
+        </div>
+      </sc-for>
+
+      <div onclick="{{ platformClick }}" style="position:absolute;left:640px;top:56px;width:320px;height:64px;background:#1a1408;border:2px solid #F7761F;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;cursor:pointer;">
+        <div style="font-size:13.5px;font-weight:700;color:#F7761F;">SMARTWORLD DEVELOPERS</div>
+        <div style="font-size:10.5px;color:#c99a6b;margin-top:3px;">Corporate Platform Node</div>
+      </div>
+
+      <sc-for list="{{ spvCards }}" as="s" hint-placeholder-count="6">
+        <div onclick="{{ s.onClick }}" style="position:absolute;left:640px;top:{{ s.y }}px;width:320px;height:88px;background:#0A1A22;border:1.5px solid #3DD6E8;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;cursor:pointer;">
+          <div style="font-size:13.5px;font-weight:700;color:#3DD6E8;">{{ s.project }}</div>
+          <div style="font-size:11px;color:#7FA8BD;margin-top:4px;">{{ s.spv }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1600px;margin:0 auto;padding:0 28px 20px;">
+    <div style="background:#0E1826;border:1.5px solid #3D9CA2;border-radius:8px;padding:16px 20px;">
+      <div style="font-size:10.5px;letter-spacing:0.5px;color:#3D9CA2;margin-bottom:8px;">EVIDENCE INSPECTOR</div>
+      <div style="font-size:15px;font-weight:700;color:oklch(96% 0.005 240);">{{ selected.title }}</div>
+      <div style="font-size:12px;color:#7FA8BD;margin-top:2px;font-family:'IBM Plex Sans',sans-serif;">{{ selected.subtitle }}</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:10px;">
+        <sc-for list="{{ selected.rows }}" as="r" hint-placeholder-count="3">
+          <div>
+            <div style="font-size:9.5px;color:#7FA8BD;letter-spacing:0.4px;">{{ r.label }}</div>
+            <div style="font-size:12.5px;color:oklch(94% 0.01 240);font-family:'IBM Plex Sans',sans-serif;">{{ r.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onclick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:10;display:flex;align-items:center;justify-content:center;padding:30px;">
+      <div onclick="{{ stopClick }}" style="background:#0A121C;border:1.5px solid #3DD6E8;border-radius:10px;width:100%;max-width:760px;max-height:85vh;overflow-y:auto;padding:24px;">
+        <sc-if value="{{ breadcrumbsVisible }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+            <sc-for list="{{ breadcrumbs }}" as="bc" hint-placeholder-count="2">
+              <div onclick="{{ bc.onClick }}" style="font-size:11px;color:#3DD6E8;cursor:pointer;">{{ bc.label }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+          <div>
+            <div style="font-size:19px;font-weight:700;color:oklch(97% 0.005 240);font-family:'IBM Plex Sans',sans-serif;">{{ modal.title }}</div>
+            <div style="font-size:12.5px;color:#7FA8BD;margin-top:3px;font-family:'IBM Plex Sans',sans-serif;">{{ modal.subtitle }}</div>
+          </div>
+          <div onclick="{{ closeModal }}" style="cursor:pointer;font-size:20px;color:#7FA8BD;line-height:1;">&times;</div>
+        </div>
+        <sc-for list="{{ modal.sections }}" as="sec" hint-placeholder-count="3">
+          <div style="margin-top:18px;">
+            <div style="font-size:10.5px;letter-spacing:0.5px;color:#3DD6E8;margin-bottom:8px;">{{ sec.heading }}</div>
+            <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="2">
+              <div style="display:flex;gap:14px;padding:7px 0;border-top:1px solid #1E2E40;">
+                <div style="font-size:10.5px;color:#7FA8BD;min-width:150px;flex-shrink:0;">{{ r.label }}</div>
+                <div style="font-size:12.5px;color:oklch(94% 0.01 240);font-family:'IBM Plex Sans',sans-serif;line-height:1.5;">{{ r.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ modalHasChildren }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div style="font-size:10.5px;letter-spacing:0.5px;color:#F7761F;">SUB-ENTITIES -- {{ modal.childList.length }} GROUP COMPANIES</div>
+              <div onclick="{{ modal.openChartClick }}" style="font-size:11px;color:#F7761F;border:1px solid #F7761F;padding:5px 10px;border-radius:5px;cursor:pointer;">Open as Full Chart &rarr;</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <sc-for list="{{ modal.childList }}" as="ch" hint-placeholder-count="6">
+                <div onclick="{{ ch.onClick }}" style="background:#0E1826;border:1px solid #22364a;border-radius:6px;padding:9px 12px;cursor:pointer;">
+                  <div style="font-size:12.5px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;">{{ ch.name }}</div>
+                  <div style="font-size:10.5px;color:#7FA8BD;font-family:'IBM Plex Sans',sans-serif;margin-top:2px;">{{ ch.role }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ chartOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:#050810;z-index:20;overflow-y:auto;">
+      <div style="background:#0A0F1A;border-bottom:1px solid #1E2E40;padding:14px 24px;display:flex;align-items:center;gap:16px;">
+        <div onclick="{{ closeChart }}" style="font-size:11px;color:#7FA8BD;cursor:pointer;">&larr; BACK TO EXPOSURE NETWORK</div>
+        <div style="font-size:15px;font-weight:700;color:#F7761F;font-family:'IBM Plex Sans',sans-serif;">{{ chart.title }}</div>
+      </div>
+      <div style="padding:40px 60px;">
+        <div style="max-width:420px;margin:0 auto 40px;background:#1a1408;border:2px solid #F7761F;border-radius:8px;padding:16px;text-align:center;">
+          <div style="font-size:15px;font-weight:700;color:#F7761F;font-family:'IBM Plex Sans',sans-serif;">{{ chart.title }}</div>
+          <div style="font-size:11.5px;color:#c99a6b;margin-top:4px;font-family:'IBM Plex Sans',sans-serif;">{{ chart.subtitle }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px;margin:0 auto;">
+          <sc-for list="{{ chart.children }}" as="ch" hint-placeholder-count="9">
+            <div onclick="{{ ch.onClick }}" style="background:#0E1826;border:1.5px solid #3DD6E8;border-radius:8px;padding:14px;cursor:pointer;">
+              <div style="font-size:13px;font-weight:700;color:#3DD6E8;font-family:'IBM Plex Sans',sans-serif;">{{ ch.name }}</div>
+              <div style="font-size:11px;color:#7FA8BD;margin-top:5px;font-family:'IBM Plex Sans',sans-serif;">{{ ch.role }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="max-width:1500px;margin:0 auto;padding:0 28px 40px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:10.5px;letter-spacing:0.5px;color:#3D9CA2;margin-bottom:10px;">SUPPLEMENTARY LEFT FLANK -- EPC, DESIGN &amp; REGULATORY</div>
+        <sc-for list="{{ leftExtras }}" as="le" hint-placeholder-count="3">
+          <div onclick="{{ le.onClick }}" style="display:flex;align-items:center;gap:8px;background:#0E1826;border:1px solid #22364a;border-radius:6px;padding:9px 10px;margin-bottom:6px;cursor:pointer;">
+            <div style="width:20px;height:20px;border-radius:4px;background:{{ le.gradeColor }};color:#050810;font-weight:700;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ le.grade }}</div>
+            <div style="min-width:0;flex:1;">
+              <div style="font-size:12px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;">{{ le.name }}</div>
+              <div style="font-size:10.5px;color:#7FA8BD;font-family:'IBM Plex Sans',sans-serif;">{{ le.role }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div>
+        <div style="font-size:10.5px;letter-spacing:0.5px;color:#5FA86B;margin-bottom:10px;">SUPPLEMENTARY RIGHT FLANK -- CAPITAL &amp; BUYER POOLS</div>
+        <sc-for list="{{ rightExtras }}" as="re" hint-placeholder-count="3">
+          <div onclick="{{ re.onClick }}" style="display:flex;align-items:center;gap:8px;background:#0E1826;border:1px solid #22364a;border-radius:6px;padding:9px 10px;margin-bottom:6px;cursor:pointer;">
+            <div style="min-width:0;flex:1;">
+              <div style="font-size:12px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;">{{ re.name }}</div>
+              <div style="font-size:10.5px;color:#7FA8BD;font-family:'IBM Plex Sans',sans-serif;">{{ re.role }}</div>
+            </div>
+            <div style="width:20px;height:20px;border-radius:4px;background:{{ re.gradeColor }};color:#050810;font-weight:700;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ re.grade }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:#0E1826;border:1px solid #22364a;border-radius:8px;padding:16px;">
+      <div style="font-size:10.5px;letter-spacing:0.5px;color:#F7761F;margin-bottom:10px;">INTERLOCKING DIRECTORATE &amp; COMMON CONTROL</div>
+      <sc-for list="{{ interlocks }}" as="il" hint-placeholder-count="4">
+        <div style="padding:8px 0;border-top:1px solid #22364a;font-size:12px;line-height:1.5;font-family:'IBM Plex Sans',sans-serif;">
+          <span style="font-weight:600;">{{ il.name }}</span>
+          <span style="color:#7FA8BD;"> -- {{ il.bridges }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { selected: null, modal: null, drillStack: [], chartView: null };
+
+  select(obj) { this.setState({ selected: obj }); }
+  openModal(obj) { this.setState({ modal: obj, drillStack: [obj] }); }
+  closeModal() { this.setState({ modal: null, drillStack: [] }); }
+  pushDrill(obj) { this.setState((st) => ({ modal: obj, drillStack: [...st.drillStack, obj] })); }
+  popDrillTo(i) { this.setState((st) => { const stack = st.drillStack.slice(0, i + 1); return { drillStack: stack, modal: stack[stack.length - 1] }; }); }
+  openChart(id) { this.setState({ chartView: id, modal: null, drillStack: [] }); }
+  closeChart() { this.setState({ chartView: null }); }
+
+  renderVals() {
+    const GRADE_COLOR = { A: '#4CAF6D', B: '#3D9CA2', C: '#D4A017', D: '#9B6FD1' };
+    const GRADE_LABEL = { A: 'Primary source (MCA/HRERA/DTCP/court)', B: 'Independent verification', C: 'First-party disclosure', D: 'Analytical hypothesis' };
+    const CARD_W = 445, CARD_H = 88;
+    const ROW_Y = [150, 268, 386, 504, 622, 740, 858];
+    const select = (obj) => this.select(obj);
+    const openModal = (obj) => this.openModal(obj);
+    const pushDrill = (obj) => this.pushDrill(obj);
+    const openChart = (id) => this.openChart(id);
+
+    const entityRegistry = {};
+    const reg = (id, def) => { entityRegistry[id] = { id, ...def }; return entityRegistry[id]; };
+
+    reg('ltimindtree', {
+      title: 'LTIMindtree', subtitle: 'Listed IT services & digital transformation company',
+      sections: [
+        { heading: 'OVERVIEW', rows: [
+          { label: 'FORMED', value: 'Merger of Larsen & Toubro Infotech (LTI) and Mindtree, effective Nov 2022' },
+          { label: 'HEADCOUNT', value: '~20,000+ employees under the legacy LTI entity alone; 80,000+ combined group-wide' },
+          { label: 'LISTING', value: 'NSE/BSE listed; L&T Group is the promoter/majority shareholder' },
+        ] },
+        { heading: 'RELATIONSHIP TO SMARTWORLD DILIGENCE', rows: [
+          { label: 'GRADE', value: '[D] Analytical hypothesis -- no direct vendor relationship to Smartworld evidenced' },
+          { label: 'NOTE', value: 'Tracked only as part of the L&T group ecosystem being tested as an EPC/smart-infra vendor hypothesis; LTIMindtree itself is an IT services business, not a construction vendor.' },
+        ] },
+      ],
+      children: [],
+    });
+
+    const ltChildDefs = [
+      { id: 'ltimindtree', name: 'LTIMindtree', role: 'IT services & digital transformation -- listed entity' },
+      { id: 'lt-construction', name: 'L&T Construction', role: 'EPC & infrastructure construction -- core legacy business' },
+      { id: 'lt-finance', name: 'L&T Finance', role: 'NBFC -- retail & wholesale finance' },
+      { id: 'lt-technology', name: 'L&T Technology Services', role: 'Engineering R&D services -- listed entity' },
+      { id: 'lt-realty', name: 'L&T Realty', role: 'Real estate development' },
+      { id: 'lt-power', name: 'L&T Power', role: 'Power plant EPC & equipment' },
+      { id: 'lt-defence', name: 'L&T Defence', role: 'Defence & aerospace manufacturing' },
+      { id: 'lt-shipbuilding', name: 'L&T Shipbuilding', role: 'Shipyards -- defence & commercial vessels' },
+      { id: 'lt-metro', name: 'L&T Metro Rail (Hyderabad)', role: 'Metro rail concession & operations' },
+      { id: 'lt-hydrocarbon', name: 'L&T Energy-Hydrocarbon', role: 'Oil & gas EPC engineering' },
+      { id: 'lt-electrical', name: 'L&T Electrical & Automation', role: 'Switchgear, automation -- divested to Schneider Electric' },
+      { id: 'lt-smartworld-comm', name: 'L&T Smart World & Communication', role: 'Smart city, safety & surveillance systems integrator' },
+    ];
+    ltChildDefs.forEach((c) => { if (!entityRegistry[c.id]) reg(c.id, {
+      title: c.name, subtitle: c.role,
+      sections: [ { heading: 'STATUS', rows: [ { label: 'RELATIONSHIP TO SMARTWORLD', value: 'Not separately evidenced -- tracked only via parent L&T Group hypothesis' }, { label: 'GRADE', value: '[D] Analytical hypothesis' } ] } ],
+      children: [],
+    }); });
+
+    reg('lt', {
+      title: 'Larsen & Toubro (L&T) Group', subtitle: 'Diversified Indian multinational conglomerate -- EPC contractor hypothesis for Smartworld',
+      sections: [
+        { heading: 'RELATIONSHIP TO SMARTWORLD', rows: [
+          { label: 'HYPOTHESIS', value: 'Possible EPC / smart-infrastructure vendor across Smartworld brand and SPVs' },
+          { label: 'GRADE', value: '[D] Analytical hypothesis -- not yet evidenced by any filing' },
+          { label: 'NOTE', value: 'L&T operates ~18 independently-run group companies across construction, finance, technology, defence and more. Diligence must test the vendor hypothesis at the specific operating-company level, not against the L&T brand as a whole.' },
+        ] },
+      ],
+      children: ltChildDefs,
+    });
+
+    function openEntity(id) {
+      const e = entityRegistry[id];
+      if (!e) return;
+      const childList = (e.children || []).map((c) => ({ ...c, onClick: () => openEntity(c.id) }));
+      pushDrill(Object.assign({}, e, { childList, openChartClick: () => openChart(id) }));
+    }
+
+    const spvDefs = [
+      { id: 'skyarc', project: 'Smartworld Sky Arc', spv: 'Riverday Infrastructure Pvt Ltd', row: 0, cin: 'U70100HR2021PTC098078', rera: 'RERA-GRG-1723-2024', address: '12A Floor, Tower 2, M3M IFC, Sector-66, Gurugram, Haryana', directors: 'Gaurav Bansal; Davinder Singh Malik', commonDirectors: 'Davinder Singh Malik; Bharat Vigmal', status: 'Partial diligence', notes: 'Change of developer to Riverday on 09.09.2024; licence migrated from 29 of 2009 to 90 of 2024.' },
+      { id: 'onedxp', project: 'Smartworld One DXP', spv: 'Nourish Developers Pvt Ltd', row: 1, cin: 'U70109HR2020PTC091616', rera: 'RERA-GRG-1217-2022', address: '12A Floor, Tower 2, M3M IFC, Sector-66, Gurugram, Haryana', directors: 'Krishan Kumar Singhal; Davinder Singh Malik; Hari Easwaran', commonDirectors: 'Davinder Singh Malik; Hari Easwaran; Manik Sharma', status: 'Partial diligence', notes: 'Licence 106 of 2022, valid to 04.08.2027; also covers One DXP Street and Phase-2 filings.' },
+      { id: 'orchard', project: 'Smartworld Orchard', spv: 'Suposhaa Realcon Pvt Ltd', row: 2, cin: 'U70105HR2016PTC092957', rera: 'RERA-GRG-948-2021', address: 'Unit SB/C/2L/Office/017A, M3M Urbana, Sector-67, Gurugram', directors: 'Gaurav Bansal; Naman Gupta', commonDirectors: 'Gaurav Bansal; Naman Gupta; Hari Easwaran (later filings)', status: 'Multiple registrations, ongoing', notes: 'Multi-licensee stack of 12+ entities; structurally the most complex SPV in the portfolio.' },
+      { id: 'edition', project: 'Smartworld The Edition', spv: 'Etsy Realcon Pvt Ltd', row: 3, cin: 'U70109HR2021PTC098644', rera: 'RERA-GRG-1395-2023', address: '12A Floor, Tower 2, M3M IFC, Sector-66, Gurugram, Haryana', directors: 'Anil Mittal; Hari Easwaran; Davinder Singh Malik', commonDirectors: 'Hari Easwaran; Davinder Singh Malik; Bharat Vigmal', status: 'Partial diligence', notes: 'Owner-licensee filing; licence 83 of 2022 valid to 17.04.2028.' },
+      { id: 'gems', project: 'Smartworld Gems', spv: 'Adhikaansh Realtors Pvt Ltd', row: 4, cin: 'U70109HR2020PTC090928', rera: 'RERA-GRG-939-2021', address: 'Unit SB/C/2L/Office/017A, M3M Urbana, Sector-67, Gurugram', directors: 'Gaurav Bansal; Naman Gupta', commonDirectors: 'Gaurav Bansal; Naman Gupta', status: 'Partial diligence, multiple phases', notes: 'Owner-licensee in 2021; later Gems 2 filing shifts to collaborator model over Aawam Residency Pvt Ltd.' },
+      { id: 'naturescourt', project: "Smartworld Nature's Court I", spv: 'Svabhumi Realtors Pvt Ltd', row: 5, cin: 'U68100HR2023PTC111218', rera: 'RERA-GRG-2126-2025', address: '12A Floor, Tower-2, M3M IFC, Sector-66, Gurugram, Haryana', directors: 'Rajeev Kumar Agrawal; Sujeet Ranjan Tiwari', commonDirectors: 'Bharat Vigmal', status: 'Partial diligence', notes: 'Primary-source bridge from a Smartworld-branded project to an explicit M3M legal entity as licensee.' },
+    ];
+    const spvCards = spvDefs.map((s) => ({
+      ...s, y: ROW_Y[s.row], midY: ROW_Y[s.row] + CARD_H / 2,
+      onClick: () => openModal({
+        title: s.project, subtitle: `Executing SPV: ${s.spv}`,
+        sections: [
+          { heading: 'CORPORATE RECORD', rows: [
+            { label: 'CIN', value: s.cin }, { label: 'RERA REGISTRATION', value: s.rera },
+            { label: 'REGISTERED ADDRESS', value: s.address }, { label: 'STATUS', value: s.status },
+          ] },
+          { heading: 'GOVERNANCE', rows: [
+            { label: 'DIRECTORS', value: s.directors }, { label: 'COMMON / INTERLOCKING DIRECTORS', value: s.commonDirectors },
+          ] },
+          { heading: 'DILIGENCE NOTE', rows: [ { label: 'EVIDENCE', value: s.notes }, { label: 'GRADE', value: '[A] Primary source -- Haryana RERA project filing' } ] },
+        ],
+      }),
+    }));
+    const byId = Object.fromEntries(spvCards.map((s) => [s.id, s]));
+
+    const leftDefs = [
+      { name: 'Modgen Developers Pvt Ltd', role: 'Licensee -- SARFAESI title migration', grade: 'A', target: 'skyarc', edgeLabel: 'licensee_structure_with', note: 'Registered dev. rights agreement; DTCP Licence 90 of 2024, migrated from Licence 29 of 2009.', src: 'HRERA-007' },
+      { name: 'Aspis Buildcon & Starcity', role: 'Disclosed land licensees', grade: 'A', target: 'onedxp', edgeLabel: 'land_licensee_of', note: 'Pre-licence collaboration agreement; DTCP Licence 106 of 2022.', src: 'HRERA-001' },
+      { name: 'IREO Pvt Ltd & 11+ Co-Lic.', role: 'Multi-licensee landholding cluster', grade: 'A', target: 'orchard', edgeLabel: 'land_licensee_of', note: 'Collab agreement 3346 & addendum 4978; DTCP Licence 68 of 2021.', src: 'HRERA-003' },
+      { name: 'Owner-Licensee Standard', role: 'No external land licensee disclosed', grade: 'A', target: 'edition', edgeLabel: 'owner_licensee', note: 'Owner-licensee filing; licence 83 of 2022 valid to 17.04.2028.', src: 'HRERA-002' },
+      { name: 'Owner-Licensee / Aawam Residency', role: 'Owner-licensee, later collaborator model', grade: 'A', target: 'gems', edgeLabel: 'land_licensee_of', note: 'Later Gems 2 filing shifts to collaborator model over Aawam Residency Pvt Ltd.', src: 'HRERA-004;HRERA-011' },
+      { name: 'M3M India Infrastructures Pvt Ltd', role: 'Land licensee -- explicit M3M node', grade: 'A', target: 'naturescourt', edgeLabel: 'land_licensee_of', note: 'Primary-source bridge from Smartworld-branded project to explicit M3M legal entity.', src: 'HRERA-005' },
+      { id: 'lt', name: 'Larsen & Toubro (L&T)', role: 'EPC contractor -- diligence hypothesis', grade: 'D', target: 'ALL', edgeLabel: 'possible_epc_vendor', note: 'Hypothesis to test across brand and SPVs -- not yet evidenced by any filing.', src: 'open' },
+    ];
+    const rightDefs = [
+      { name: 'Indiabulls Housing Finance Ltd', role: 'Prior lender -- SARFAESI deed node', grade: 'A', target: 'skyarc', edgeLabel: 'prior_lender_sarfaesi', note: 'Conveyance deed & sale certificate dated 08.12.2022 to Modgen.', src: 'SWD-Sky-Arc-01' },
+      { name: 'Neil Maxinfra Pvt Ltd', role: 'Bulk buyer -- conveyed OC asset', grade: 'A', target: 'skyarc', edgeLabel: 'commercial_off_taker', note: 'Conveyed 3.1875-acre existing building with 08.11.2019 OC.', src: 'SWD-Sky-Arc-02' },
+      { name: '9k Expressway Catchment', role: 'Retail & institutional comm. pool', grade: 'A', target: 'onedxp', edgeLabel: 'buyer_catchment', note: 'Sales & catchment claim tied to One DXP corridor positioning.', src: 'HRERA-001' },
+      { name: 'Sector 61 Retail Buyers', role: 'Orchard retail allottee base', grade: 'A', target: 'orchard', edgeLabel: 'buyer_catchment', note: 'HRERA hearing allottees tied to Orchard registrations.', src: 'HRERA-003' },
+      { name: 'Sector 66 HNI/UHNI Pool', role: 'High-net-worth target allocations', grade: 'A', target: 'edition', edgeLabel: 'buyer_catchment', note: 'Targeted HNI/UHNI catchment within 5km of The Edition.', src: 'HRERA-002' },
+      { name: 'Global City Catchment Links', role: "Nature's Court institutional & retail links", grade: 'A', target: 'naturescourt', edgeLabel: 'buyer_catchment', note: 'Institutional & retail buyer links disclosed alongside M3M bridge.', src: 'HRERA-005' },
+      { name: 'Escrow Banks & Trustees', role: 'RERA 70% escrow custodians -- all SPVs', grade: 'B', target: 'ALL', edgeLabel: 'escrow_account_holder', note: 'Statutory RERA banking charge and institutional debt security across all project SPVs.', src: 'RERA-statute' },
+    ];
+
+    function makeCard(defs, xPos, side) {
+      return defs.map((c, i) => {
+        const x = xPos, y = ROW_Y[i], midY = y + CARD_H / 2;
+        const targetLabel = c.target === 'ALL' ? 'All 6 project SPVs' : (byId[c.target] ? byId[c.target].project : c.target);
+        return { ...c, x, y, midY, color: GRADE_COLOR[c.grade], onClick: () => {
+          if (c.id && entityRegistry[c.id]) { openEntity(c.id); return; }
+          openModal({
+            title: c.name, subtitle: c.role,
+            sections: [
+              { heading: 'RELATIONSHIP', rows: [
+                { label: 'CONNECTED SPV / PROJECT', value: targetLabel }, { label: 'RELATIONSHIP TYPE', value: c.edgeLabel },
+                { label: 'SIDE', value: side === 'left' ? 'Left flank -- supplier / vendor / licensee' : 'Right flank -- capital / institution / buyer' },
+              ] },
+              { heading: 'EVIDENCE', rows: [
+                { label: 'GRADE', value: `[${c.grade}] ${GRADE_LABEL[c.grade]}` }, { label: 'NOTE', value: c.note }, { label: 'SOURCE ID', value: c.src },
+              ] },
+            ],
+          });
+        } };
+      });
+    }
+    const leftCards = makeCard(leftDefs, 70, 'left');
+    const rightCards = makeCard(rightDefs, 1085, 'right');
+
+    const fanLines = [];
+    function pushEdge(fromCard, isLeft) {
+      const targets = fromCard.target === 'ALL' ? spvCards : [byId[fromCard.target]];
+      targets.forEach((s) => {
+        const line = isLeft
+          ? { x1: fromCard.x + CARD_W, y1: fromCard.midY, x2: 640, y2: s.midY }
+          : { x1: 960, y1: s.midY, x2: fromCard.x, y2: fromCard.midY };
+        fanLines.push({
+          ...line,
+          color: fromCard.grade === 'D' ? '#9B6FD1' : (isLeft ? '#B0424F' : '#3E8A5A'),
+          width: fromCard.target === 'ALL' ? 1 : 1.6,
+          dash: fromCard.grade === 'D' ? '4,3' : 'none',
+          opacity: fromCard.target === 'ALL' ? 0.35 : 0.8,
+          onClick: () => select({ title: `${fromCard.name} \u2192 ${s.project}`, subtitle: fromCard.edgeLabel, rows: [
+            { label: 'GRADE', value: `[${fromCard.grade}] ${GRADE_LABEL[fromCard.grade]}` }, { label: 'EVIDENCE', value: fromCard.note }, { label: 'SOURCE ID', value: fromCard.src },
+          ] }),
+        });
+      });
+    }
+    leftCards.forEach((c) => pushEdge(c, true));
+    rightCards.forEach((c) => pushEdge(c, false));
+
+    const leftExtras = [
+      { name: 'ELIE SAAB / ELIE SAAB Maison', role: 'Branded design & luxury interior licensor', grade: 'C', gradeColor: GRADE_COLOR.C, onClick: () => select({ title: 'ELIE SAAB / ELIE SAAB Maison', subtitle: 'Branded design & luxury interior licensor', rows: [{ label: 'GRADE', value: '[C] First-party disclosure' }, { label: 'EVIDENCE', value: 'Official brand positioning for Smartworld Residences by ELIE SAAB (Sector 98, Noida).' }] }) },
+      { name: 'UHA London', role: 'Architectural & fa\u00e7ade design partner (One DXP)', grade: 'C', gradeColor: GRADE_COLOR.C, onClick: () => select({ title: 'UHA London', subtitle: 'Architectural & fa\u00e7ade design partner', rows: [{ label: 'GRADE', value: '[C] First-party disclosure' }, { label: 'EVIDENCE', value: 'Official project fa\u00e7ade designer disclosure for One DXP.' }] }) },
+      { name: 'DTCP Haryana & Haryana RERA', role: 'Regulatory licensing & project oversight -- all SPVs', grade: 'A', gradeColor: GRADE_COLOR.A, onClick: () => select({ title: 'DTCP Haryana & Haryana RERA', subtitle: 'Regulatory licensing & project oversight', rows: [{ label: 'GRADE', value: '[A] Primary source' }, { label: 'EVIDENCE', value: 'Statutory authority granting licenses, RERA certs, and hearing orders across all project SPVs.' }] }) },
+    ];
+    const rightExtras = [
+      { name: 'HNI & UHNI Catchment Buyers', role: 'Targeted high-net-worth residential investors', grade: 'C', gradeColor: GRADE_COLOR.C, onClick: () => select({ title: 'HNI & UHNI Catchment Buyers', subtitle: 'Targeted high-net-worth residential investors', rows: [{ label: 'GRADE', value: '[C] First-party disclosure' }, { label: 'EVIDENCE', value: 'Targeted 50,000+ HNI/UHNI families within 5km of luxury corridors (marketing claim).' }] }) },
+      { name: 'MNC / IT Corporate Catchment', role: 'Commercial off-take -- IT hub corridors', grade: 'C', gradeColor: GRADE_COLOR.C, onClick: () => select({ title: 'MNC / IT Corporate Catchment', subtitle: 'Commercial & retail high-street off-takers', rows: [{ label: 'GRADE', value: '[C] First-party disclosure' }, { label: 'EVIDENCE', value: 'Catchments of 2-5 lakh+ individuals across IT/MNC hubs (marketing claim).' }] }) },
+      { name: '~35,000 Retail Homebuyers', role: 'End-user customer base & allottees', grade: 'C', gradeColor: GRADE_COLOR.C, onClick: () => select({ title: '~35,000 Retail Homebuyers', subtitle: 'End-user customer base & allottee associations', rows: [{ label: 'GRADE', value: '[C] First-party disclosure' }, { label: 'EVIDENCE', value: 'Official scale claim; CRM lounge servicing; HRERA hearing allottees.' }] }) },
+    ];
+    const interlocks = [
+      { name: 'Hari Easwaran & Davinder Singh Malik', bridges: 'Bridge Nourish Developers (One DXP) and Etsy Realcon (The Edition); Malik also sits on Riverday Infrastructure (Sky Arc)' },
+      { name: 'Gaurav Bansal & Naman Gupta', bridges: 'Co-manage Suposhaa Realcon (Orchard) and Adhikaansh Realtors (Gems); Bansal also directs Riverday Infrastructure' },
+      { name: 'Bharat Vigmal', bridges: 'Authorised representative across Riverday, Etsy Realcon and Svabhumi Realtors -- standardizes filings across entities' },
+      { name: 'M3M IFC / M3M Urbana address clusters', bridges: 'Shared registered-office infrastructure links Riverday, Nourish, Etsy, Svabhumi (IFC) and Suposhaa, Adhikaansh (Urbana)' },
+    ];
+
+    return {
+      confidenceLegend: [
+        { grade: 'A', label: 'Primary source', color: GRADE_COLOR.A },
+        { grade: 'B', label: 'Independent verification', color: GRADE_COLOR.B },
+        { grade: 'C', label: 'First-party disclosure', color: GRADE_COLOR.C },
+        { grade: 'D', label: 'Analytical hypothesis', color: GRADE_COLOR.D },
+      ],
+      leftCards, rightCards, spvCards, fanLines,
+      platformClick: () => openModal({
+        title: 'Smartworld Developers', subtitle: 'Corporate Platform Node',
+        sections: [
+          { heading: 'PLATFORM', rows: [ { label: 'ADDRESS', value: 'M3M IFC, Sector-66, Gurugram, Haryana' }, { label: 'AUM CLAIM', value: '\u20b940,000 CR' }, { label: 'DELIVERED', value: '~6.5M SQ FT across 6 project SPVs' } ] },
+          { heading: 'NOTE', rows: [ { label: 'GRADE', value: '[C] First-party disclosure of platform address' }, { label: 'EVIDENCE', value: 'Brand overlays distinct SPVs bound by shared registered offices and recurring executive directors, not a single balance sheet.' } ] },
+        ],
+      }),
+      selected: this.state.selected || { title: 'Click any box or connecting line', subtitle: 'Every element carries its own sourced record -- nothing here is decorative.', rows: [] },
+      modal: this.state.modal || { title: '', subtitle: '', sections: [], childList: [] },
+      modalOpen: !!this.state.modal,
+      modalHasChildren: !!(this.state.modal && this.state.modal.childList && this.state.modal.childList.length),
+      closeModal: () => this.closeModal(),
+      stopClick: (e) => e.stopPropagation(),
+      breadcrumbsVisible: this.state.drillStack.length > 1,
+      breadcrumbs: this.state.drillStack.map((d, i) => ({ label: d.title + (i < this.state.drillStack.length - 1 ? ' /' : ''), onClick: () => this.popDrillTo(i) })),
+      chartOpen: !!this.state.chartView,
+      chart: (() => {
+        const e = this.state.chartView ? entityRegistry[this.state.chartView] : null;
+        if (!e) return { title: '', subtitle: '', children: [] };
+        return { title: e.title, subtitle: e.subtitle, children: (e.children || []).map((c) => ({ ...c, onClick: () => { this.setState({ chartView: null }); openEntity(c.id); } })) };
+      })(),
+      closeChart: () => this.closeChart(),
+      leftExtras, rightExtras, interlocks,
+    };
+  }
+}
+</script>
+</body>
+</html>

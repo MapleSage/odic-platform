@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;background:oklch(96% 0.004 240);font-family:'IBM Plex Sans',sans-serif;}
+  a{color:#0D2B3D;text-decoration:none;}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:oklch(96% 0.004 240);padding:32px;">
+  <div style="max-width:1400px;margin:0 auto;">
+    <div style="margin-bottom:6px;font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;color:oklch(50% 0.02 250);">ODIC INTEGRATION SURFACE</div>
+    <div style="font-size:20px;font-weight:700;margin-bottom:4px;">HubSpot CRM Cards -- ODIC Intelligence</div>
+    <div style="font-size:13px;color:oklch(45% 0.02 250);margin-bottom:28px;max-width:680px;">Three CRM record cards (Company, Contact, Deal) surfacing ODIC intelligence natively inside HubSpot record pages via the CRM Cards API. Shown here in situ within a schematic HubSpot record layout.</div>
+
+    <div style="display:flex;gap:6px;margin-bottom:20px;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+        <div onclick="{{ t.onClick }}" style="padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};">{{ t.label }}</div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ showCompany }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:20px;">
+        <div style="background:white;border-radius:8px;border:1px solid oklch(90% 0.006 240);padding:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="width:44px;height:44px;border-radius:6px;background:oklch(90% 0.02 250);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:oklch(35% 0.03 250);">MHS</div>
+            <div>
+              <div style="font-size:18px;font-weight:700;">Meridian Health Systems</div>
+              <div style="font-size:12.5px;color:oklch(50% 0.02 250);">Company record &middot; Healthcare Delivery</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;border-bottom:1px solid oklch(90% 0.006 240);padding-bottom:10px;">
+            <sc-for list="{{ recordTabs }}" as="rt" hint-placeholder-count="5">
+              <div style="font-size:12.5px;padding:6px 10px;color:oklch(45% 0.02 250);">{{ rt }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top:16px;color:oklch(55% 0.02 250);font-size:12.5px;">About &middot; Deals &middot; Tickets &middot; Activity feed render here in the native record page -- unaffected by the card at right.</div>
+        </div>
+
+        <div style="background:white;border-radius:8px;border:1px solid oklch(88% 0.008 240);overflow:hidden;box-shadow:0 1px 3px oklch(0% 0 0 / 5%);">
+          <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid oklch(90% 0.006 240);">
+            <div style="width:18px;height:18px;border-radius:4px;background:#FF7A59;flex-shrink:0;"></div>
+            <div style="font-size:13px;font-weight:600;">ODIC Intelligence</div>
+            <div style="margin-left:auto;font-size:10.5px;color:oklch(55% 0.02 250);">Synced 2m ago</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;padding:3px 8px;border-radius:4px;background:oklch(92% 0.08 40);color:oklch(45% 0.16 35);">ELEVATED RISK</div>
+              <div style="font-size:11.5px;color:oklch(50% 0.02 250);">Exposure score 71</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+              <sc-for list="{{ companyStats }}" as="cs" hint-placeholder-count="4">
+                <div>
+                  <div style="font-size:10px;color:oklch(55% 0.02 250);letter-spacing:0.3px;">{{ cs.label }}</div>
+                  <div style="font-size:16px;font-weight:700;margin-top:2px;">{{ cs.value }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="border-top:1px solid oklch(92% 0.006 240);padding-top:12px;margin-bottom:14px;">
+              <div style="font-size:10.5px;font-weight:600;color:oklch(35% 0.02 250);margin-bottom:6px;">GIA RECOMMENDATION</div>
+              <div style="font-size:12.5px;color:oklch(40% 0.02 250);line-height:1.5;">Vendor contract lapse plus a compliance flag increases churn risk on the Northgate relationship this quarter.</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <a href="ODIC Workspace Shell v2.dc.html" style="flex:1;text-align:center;font-size:12.5px;font-weight:600;padding:8px 0;border-radius:6px;background:#FF7A59;color:white;">Open in ODIC</a>
+              <div style="flex:1;text-align:center;font-size:12.5px;font-weight:500;padding:8px 0;border-radius:6px;border:1px solid oklch(85% 0.01 240);color:oklch(30% 0.02 250);cursor:pointer;">Generate Report</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showContact }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:20px;">
+        <div style="background:white;border-radius:8px;border:1px solid oklch(90% 0.006 240);padding:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:oklch(90% 0.02 250);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:oklch(35% 0.03 250);">DF</div>
+            <div>
+              <div style="font-size:18px;font-weight:700;">Dana Ferris</div>
+              <div style="font-size:12.5px;color:oklch(50% 0.02 250);">Contact record &middot; CFO, Meridian Health Systems</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;border-bottom:1px solid oklch(90% 0.006 240);padding-bottom:10px;">
+            <sc-for list="{{ recordTabs }}" as="rt" hint-placeholder-count="5">
+              <div style="font-size:12.5px;padding:6px 10px;color:oklch(45% 0.02 250);">{{ rt }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top:16px;color:oklch(55% 0.02 250);font-size:12.5px;">Email thread, meeting notes and deal associations render in the native record page.</div>
+        </div>
+
+        <div style="background:white;border-radius:8px;border:1px solid oklch(88% 0.008 240);overflow:hidden;box-shadow:0 1px 3px oklch(0% 0 0 / 5%);">
+          <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid oklch(90% 0.006 240);">
+            <div style="width:18px;height:18px;border-radius:4px;background:#FF7A59;flex-shrink:0;"></div>
+            <div style="font-size:13px;font-weight:600;">ODIC Intelligence</div>
+            <div style="margin-left:auto;font-size:10.5px;color:oklch(55% 0.02 250);">Synced 12m ago</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:10.5px;font-weight:600;color:oklch(35% 0.02 250);margin-bottom:8px;">ROLE IN KNOWLEDGE GRAPH</div>
+            <div style="font-size:12.5px;color:oklch(40% 0.02 250);margin-bottom:16px;">Finance decision-maker on the Northgate vendor renewal and EHR Modernization RFP.</div>
+
+            <div style="border-top:1px solid oklch(92% 0.006 240);padding-top:12px;margin-bottom:12px;">
+              <div style="font-size:10.5px;font-weight:600;color:oklch(35% 0.02 250);margin-bottom:8px;">LINKED RISKS &amp; OPPORTUNITIES</div>
+              <sc-for list="{{ contactLinks }}" as="cl" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;">
+                  <div style="font-size:12.5px;">{{ cl.name }}</div>
+                  <div style="font-size:10.5px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;border-radius:4px;background:{{ cl.bg }};color:{{ cl.color }};">{{ cl.tag }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border-top:1px solid oklch(92% 0.006 240);padding-top:12px;margin-bottom:14px;">
+              <div style="font-size:10.5px;font-weight:600;color:oklch(35% 0.02 250);margin-bottom:6px;">LAST ACTIVITY</div>
+              <div style="font-size:12.5px;color:oklch(40% 0.02 250);">Replied on Northgate renewal thread &middot; 12m ago</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <a href="ODIC Workspace Shell v2.dc.html" style="flex:1;text-align:center;font-size:12.5px;font-weight:600;padding:8px 0;border-radius:6px;background:#FF7A59;color:white;">Open in ODIC</a>
+              <div style="flex:1;text-align:center;font-size:12.5px;font-weight:500;padding:8px 0;border-radius:6px;border:1px solid oklch(85% 0.01 240);color:oklch(30% 0.02 250);cursor:pointer;">Log to Timeline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showDeal }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:20px;">
+        <div style="background:white;border-radius:8px;border:1px solid oklch(90% 0.006 240);padding:24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="width:44px;height:44px;border-radius:6px;background:oklch(90% 0.02 250);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:oklch(35% 0.03 250);">$</div>
+            <div>
+              <div style="font-size:18px;font-weight:700;">EHR Modernization RFP</div>
+              <div style="font-size:12.5px;color:oklch(50% 0.02 250);">Deal record &middot; Meridian Health Systems &middot; $2.8M</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;border-bottom:1px solid oklch(90% 0.006 240);padding-bottom:10px;">
+            <sc-for list="{{ recordTabs }}" as="rt" hint-placeholder-count="5">
+              <div style="font-size:12.5px;padding:6px 10px;color:oklch(45% 0.02 250);">{{ rt }}</div>
+            </sc-for>
+          </div>
+          <div style="margin-top:16px;color:oklch(55% 0.02 250);font-size:12.5px;">Deal pipeline stage, line items and associated contacts render in the native record page.</div>
+        </div>
+
+        <div style="background:white;border-radius:8px;border:1px solid oklch(88% 0.008 240);overflow:hidden;box-shadow:0 1px 3px oklch(0% 0 0 / 5%);">
+          <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid oklch(90% 0.006 240);">
+            <div style="width:18px;height:18px;border-radius:4px;background:#FF7A59;flex-shrink:0;"></div>
+            <div style="font-size:13px;font-weight:600;">ODIC Intelligence</div>
+            <div style="margin-left:auto;font-size:10.5px;color:oklch(55% 0.02 250);">Synced 4m ago</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;padding:3px 8px;border-radius:4px;background:oklch(93% 0.06 150);color:oklch(45% 0.1 155);">STAGE: PROPOSAL</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+              <div>
+                <div style="font-size:10px;color:oklch(55% 0.02 250);">DEAL VALUE</div>
+                <div style="font-size:16px;font-weight:700;margin-top:2px;">$2.8M</div>
+              </div>
+              <div>
+                <div style="font-size:10px;color:oklch(55% 0.02 250);">WIN PROPENSITY</div>
+                <div style="font-size:16px;font-weight:700;margin-top:2px;color:oklch(45% 0.1 155);">High</div>
+              </div>
+            </div>
+            <div style="border-top:1px solid oklch(92% 0.006 240);padding-top:12px;margin-bottom:14px;">
+              <div style="font-size:10.5px;font-weight:600;color:oklch(35% 0.02 250);margin-bottom:6px;">GIA RECOMMENDATION</div>
+              <div style="font-size:12.5px;color:oklch(40% 0.02 250);line-height:1.5;">RFP scope matches two prior wins in this vertical -- high propensity to convert. Owen Mackey (CIO) is the internal sponsor.</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <a href="ODIC Workspace Shell v2.dc.html" style="flex:1;text-align:center;font-size:12.5px;font-weight:600;padding:8px 0;border-radius:6px;background:#FF7A59;color:white;">Open in ODIC</a>
+              <div style="flex:1;text-align:center;font-size:12.5px;font-weight:500;padding:8px 0;border-radius:6px;border:1px solid oklch(85% 0.01 240);color:oklch(30% 0.02 250);cursor:pointer;">View Similar Deals</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:28px;background:white;border-radius:8px;border:1px solid oklch(90% 0.006 240);padding:18px 20px;max-width:900px;">
+      <div style="font-size:11.5px;font-weight:600;color:oklch(35% 0.02 250);margin-bottom:6px;">BUILD NOTE</div>
+      <div style="font-size:12.5px;color:oklch(45% 0.02 250);line-height:1.6;">These are visual specs for HubSpot's CRM Cards integration (one card per object type: Company, Contact, Deal). Each card is static here with sample data -- once the backend/API layer is ready, the same layout renders live values via the CRM Cards API (token fields, a title, and up to a few actions per card). Card content should stay short: 3-5 data points plus one primary and one secondary action, matching HubSpot's own card density conventions.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  state = { tab: 'company' };
+  setTab(t) { this.setState({ tab: t }); }
+
+  renderVals() {
+    const TABS = [
+      { id: 'company', label: 'Company Card' },
+      { id: 'contact', label: 'Contact Card' },
+      { id: 'deal', label: 'Deal Card' },
+    ];
+    const tabs = TABS.map((t) => {
+      const active = this.state.tab === t.id;
+      return { ...t, onClick: () => this.setTab(t.id), bg: active ? '#0D2B3D' : 'white', color: active ? 'white' : 'oklch(30% 0.02 250)' };
+    });
+    return {
+      tabs,
+      showCompany: this.state.tab === 'company',
+      showContact: this.state.tab === 'contact',
+      showDeal: this.state.tab === 'deal',
+      recordTabs: ['Overview', 'Activities', 'Notes', 'Emails', 'Deals'],
+      companyStats: [
+        { label: 'OPEN RISKS', value: '3' },
+        { label: 'OPPORTUNITIES', value: '2' },
+        { label: 'ACTIVE PROJECTS', value: '5' },
+        { label: 'LAST FILING', value: '6d ago' },
+      ],
+      contactLinks: [
+        { name: 'Vendor contract renewal overdue', tag: 'CRITICAL', bg: 'oklch(92% 0.08 40)', color: 'oklch(45% 0.16 35)' },
+        { name: 'EHR Modernization RFP', tag: '$2.8M', bg: 'oklch(93% 0.06 150)', color: 'oklch(45% 0.1 155)' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
