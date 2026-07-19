@@ -228,6 +228,14 @@ button {
   margin-top: 20px;
 }
 
+.auth-error {
+  margin-top: 16px;
+  max-width: 420px;
+  color: #f7761f;
+  font-size: 13px;
+  text-align: center;
+}
+
 .main-content {
   grid-column: 2;
   grid-row: 2;

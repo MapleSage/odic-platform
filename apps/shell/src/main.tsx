@@ -313,17 +313,50 @@ function mergeWorkspaceData(base: WorkspaceData, api: ApiWorkspaceData): Workspa
 }
 
 function SignInScreen() {
-  const { login } = useAuth();
+  const { login, authError } = useAuth();
   return (
     <div className="signin-screen">
       <div className="signin-card">
         <div className="brand-mark"><img src="/favicon.svg" alt="SageSure" /></div>
         <div className="brand-title">Atlas</div>
         <div className="brand-subtitle">Enterprise Intelligence OS</div>
-        <button className="gia-toggle" onClick={() => login()}>Sign in with Microsoft</button>
+        {authError ? (
+          <div className="auth-error">Sign-in is unavailable right now: {authError}</div>
+        ) : (
+          <button className="gia-toggle" onClick={() => login()}>Sign in with Microsoft</button>
+        )}
       </div>
     </div>
   );
+}
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: Error | null }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('[Atlas] Unhandled render error:', error, info);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="signin-screen">
+          <div className="signin-card">
+            <div className="brand-title">Atlas hit an error</div>
+            <div className="auth-error">{this.state.error.message}</div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 function App() {
@@ -948,8 +981,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 );
