@@ -1,0 +1,31 @@
+# Findings
+
+## 2026-07-19
+- Live working branch is `real-app`, tracking `origin/main` at commit `a450e7d` (`Claude-Design Frontend HandOver`).
+- Current `apps/shell/src/main.tsx` is still a placeholder scaffold and needs full replacement.
+- Claude handoff files available locally:
+  - `design_handoff_odic_intelligence_platform/workspace-shell.html`
+  - `design_handoff_odic_intelligence_platform/exposure-network.html`
+  - `design_handoff_odic_intelligence_platform/hubspot-cards.html`
+- Local worktree already contains ODIC-side backend/infra scaffolding not yet committed:
+  - `docs/backend/`
+  - `infra/`
+  - `services/rust-events-service/`
+  - `services/rust-ingestion-service/`
+- `infra/k8s/base/namespace.yaml` already defines namespace `odic-dev01`.
+- Fastest path to “up and running” is frontend-first: implement workspace shell with local mock state, keep backend integration points obvious, and validate with Vite build.
+- Implemented first runnable ODIC shell in `apps/shell/src/main.tsx` + `apps/shell/src/styles.css` with:
+  - workspace shell chrome
+  - Organization / Search / Reports / Graph workspaces
+  - Organization sub-tabs (Overview, Timeline, Relationships, Documents, AI Insights, Activity Feed)
+  - GIA side panel toggle
+  - initial dark-theme graph/exposure workspace surface
+- Build now succeeds locally from `apps/shell` via `npm run build` after adapting scripts to avoid `.bin` symlink dependence on this filesystem.
+- Local preview responded successfully on `http://127.0.0.1:4173` after starting Vite preview.
+- `services/fastapi-orchestration/app.py` now exposes initial ODIC workspace data endpoints instead of only `/health`.
+- FastAPI app syntax verifies cleanly with `python3 -m py_compile services/fastapi-orchestration/app.py`.
+- `apps/shell/src/main.tsx` now fetches `/api/workspace`, merges live API data over the seeded shell defaults, and falls back cleanly if the backend is unavailable.
+- `apps/shell/vite.config.ts` now proxies `/api` to `http://127.0.0.1:8000` for dev/preview.
+- Real FastAPI runtime is still blocked in this container because `pip` / `venv ensurepip` are unavailable; added `services/fastapi-orchestration/mock_workspace_server.py` as a dependency-free local API shim.
+- Verified proxied API path through the frontend preview with `curl http://127.0.0.1:4173/api/workspace`.
+- Added `docs/backend/local-run-and-dev01-handoff.md` with exact local run commands and dev01 next actions.
