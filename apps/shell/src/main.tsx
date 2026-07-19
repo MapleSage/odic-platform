@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AuthProvider, useAuth } from '@odic/auth';
+import { ExposureNetwork } from './exposureNetwork/ExposureNetwork';
 import './styles.css';
 
 type ViewId = 'organization' | 'search' | 'reports' | 'graph';
@@ -365,9 +366,8 @@ function App() {
   const [activeOrgTab, setActiveOrgTab] = useState<OrgTabId>('overview');
   const [giaOpen, setGiaOpen] = useState(true);
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
-  const [graphMode, setGraphMode] = useState<GraphMode>('ledger');
   const [workspace, setWorkspace] = useState<WorkspaceData>(DEFAULT_WORKSPACE);
-  const [selectedGraphEdge, setSelectedGraphEdge] = useState<GraphEdge>(DEFAULT_WORKSPACE.graph.edges[0]);
+  const [exposureFullScreen, setExposureFullScreen] = useState(false);
   const [dataState, setDataState] = useState<'seed' | 'live'>('seed');
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -386,13 +386,11 @@ function App() {
         const json = (await response.json()) as ApiWorkspaceData;
         const merged = mergeWorkspaceData(DEFAULT_WORKSPACE, json);
         setWorkspace(merged);
-        setSelectedGraphEdge(merged.graph.edges[0]);
         setDataState('live');
         setApiError(null);
       } catch (error) {
         if (controller.signal.aborted) return;
         setWorkspace(DEFAULT_WORKSPACE);
-        setSelectedGraphEdge(DEFAULT_WORKSPACE.graph.edges[0]);
         setDataState('seed');
         setApiError(error instanceof Error ? error.message : 'Unknown API error');
       }
@@ -422,6 +420,10 @@ function App() {
     .toUpperCase();
 
   const pageMeta = workspace.organization.meta;
+
+  if (exposureFullScreen) {
+    return <ExposureNetwork fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />;
+  }
 
   return (
     <div className="app-shell">
@@ -500,13 +502,9 @@ function App() {
         {activeView === 'search' && <SearchWorkspace search={workspace.search} />}
         {activeView === 'reports' && <ReportsWorkspace reports={workspace.reports} />}
         {activeView === 'graph' && (
-          <GraphWorkspace
-            graph={workspace.graph}
-            graphMode={graphMode}
-            setGraphMode={setGraphMode}
-            selectedGraphEdge={selectedGraphEdge}
-            setSelectedGraphEdge={setSelectedGraphEdge}
-          />
+          <div className="graph-workspace-embed">
+            <ExposureNetwork fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
+          </div>
         )}
       </main>
 
@@ -851,115 +849,6 @@ function ReportsWorkspace({ reports }: { reports: ReportsViewData }) {
   );
 }
 
-function GraphWorkspace({
-  graph,
-  graphMode,
-  setGraphMode,
-  selectedGraphEdge,
-  setSelectedGraphEdge,
-}: {
-  graph: GraphViewData;
-  graphMode: GraphMode;
-  setGraphMode: (mode: GraphMode) => void;
-  selectedGraphEdge: GraphEdge;
-  setSelectedGraphEdge: (edge: GraphEdge) => void;
-}) {
-  return (
-    <section className="graph-workspace">
-      <div className="graph-toolbar">
-        <div>
-          <div className="graph-title">Exposure Network</div>
-          <div className="graph-subtitle">Workspace-linked counterparties, relationship signals, and operating dependencies</div>
-        </div>
-        <div className="graph-mode-toggle">
-          <button className={graphMode === 'ledger' ? 'active' : ''} onClick={() => setGraphMode('ledger')}>Ledger</button>
-          <button className={graphMode === 'matrix' ? 'active' : ''} onClick={() => setGraphMode('matrix')}>Matrix</button>
-        </div>
-      </div>
-
-      <div className="graph-stats">
-        {graph.stats.map((item) => (
-          <div key={item.label} className="graph-stat-card">
-            <div className="stat-label">{item.label}</div>
-            <div className="stat-value" style={{ color: item.color }}>{item.value}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="network-board">
-        <div className="network-column">
-          <div className="network-heading">Supply / Vendor Side</div>
-          {graph.vendors.map((node) => (
-            <button key={node.name} className="network-node" onClick={() => setSelectedGraphEdge(graph.edges[3] ?? graph.edges[0])}>
-              <span className="network-code" style={{ background: `${node.color}22`, color: node.color }}>{node.code}</span>
-              <div>
-                <div className="network-name">{node.name}</div>
-                <div className="network-meta">{node.meta}</div>
-              </div>
-              <span className="network-metric">{node.metric}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="network-center">
-          <div className="platform-core">MERIDIAN SPV CORE</div>
-          <div className="platform-stack">
-            {['EHR Modernization', 'Compliance / Filings', 'Vendor Renewals', 'Shared Board Exposure'].map((item) => (
-              <div key={item} className="platform-card">{item}</div>
-            ))}
-          </div>
-        </div>
-
-        <div className="network-column">
-          <div className="network-heading">Capital / Counterparty Side</div>
-          {graph.counterparties.map((node) => (
-            <button key={node.name} className="network-node" onClick={() => setSelectedGraphEdge(graph.edges[4] ?? graph.edges[0])}>
-              <span className="network-code" style={{ background: `${node.color}22`, color: node.color }}>{node.code}</span>
-              <div>
-                <div className="network-name">{node.name}</div>
-                <div className="network-meta">{node.meta}</div>
-              </div>
-              <span className="network-metric">{node.metric}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="graph-detail-grid">
-        <Card title="Evidence Inspector" dark>
-          <div className="inspector-title">{selectedGraphEdge.chartTop}</div>
-          <div className="inspector-subtitle">Relationship type: {selectedGraphEdge.label}</div>
-          <div className="mini-chart">
-            {selectedGraphEdge.bars.map((bar, idx) => (
-              <div key={`${selectedGraphEdge.chartTop}-${idx}`} className="mini-bar-wrap">
-                <div className="mini-bar" style={{ height: `${bar}%`, background: selectedGraphEdge.color }} />
-              </div>
-            ))}
-          </div>
-          <div className="inspector-list">
-            {selectedGraphEdge.chartReports.map((item) => (
-              <div key={item} className="inspector-pill">{item}</div>
-            ))}
-          </div>
-        </Card>
-
-        <Card title={graphMode === 'ledger' ? 'Relationship Ledger' : 'Relationship Matrix'} dark>
-          <div className="edge-list">
-            {graph.edges.map((edge) => (
-              <button key={`${edge.label}-${edge.label2}`} className="edge-row" onClick={() => setSelectedGraphEdge(edge)}>
-                <span className="edge-code" style={{ color: edge.color, borderColor: edge.color }}>{edge.code}</span>
-                <div>
-                  <div className="row-title dark">{edge.label2}</div>
-                  <div className="row-sub dark">{edge.label}</div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </section>
-  );
-}
 
 function Card({ title, subtitle, children, compact = false, dark = false }: { title: string; subtitle?: string; children: React.ReactNode; compact?: boolean; dark?: boolean }) {
   return (

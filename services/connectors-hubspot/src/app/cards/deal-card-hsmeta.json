@@ -1,0 +1,11 @@
+{
+  "uid": "atlas_deal_card",
+  "type": "card",
+  "config": {
+    "name": "Atlas Intelligence",
+    "description": "Deal value, win propensity, and Atlas AI recommendation for this deal.",
+    "entrypoint": "/app/cards/DealCard.tsx",
+    "location": "crm.record.tab",
+    "objectTypes": ["DEALS"]
+  }
+}

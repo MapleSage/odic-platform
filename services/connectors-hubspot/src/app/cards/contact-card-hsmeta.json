@@ -1,0 +1,11 @@
+{
+  "uid": "atlas_contact_card",
+  "type": "card",
+  "config": {
+    "name": "Atlas Intelligence",
+    "description": "This contact's role in the Atlas knowledge graph, linked risks/opportunities, and last activity.",
+    "entrypoint": "/app/cards/ContactCard.tsx",
+    "location": "crm.record.tab",
+    "objectTypes": ["CONTACT"]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "uid": "atlas_company_card",
+  "type": "card",
+  "config": {
+    "name": "Atlas Intelligence",
+    "description": "Risk level, exposure score, open risks/opportunities, and Atlas AI recommendation for this company.",
+    "entrypoint": "/app/cards/CompanyCard.tsx",
+    "location": "crm.record.tab",
+    "objectTypes": ["COMPANY"]
+  }
+}

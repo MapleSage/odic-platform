@@ -1,0 +1,29 @@
+{
+  "uid": "atlas_intelligence_app",
+  "type": "app",
+  "config": {
+    "name": "Atlas Intelligence",
+    "description": "Surfaces Atlas (SageSure Enterprise Intelligence OS) risk, opportunity, and relationship intelligence directly on HubSpot Company, Contact, and Deal records.",
+    "distribution": "private",
+    "auth": {
+      "type": "static",
+      "requiredScopes": [
+        "crm.objects.companies.read",
+        "crm.objects.contacts.read",
+        "crm.objects.deals.read"
+      ],
+      "optionalScopes": [],
+      "conditionallyRequiredScopes": []
+    },
+    "permittedUrls": {
+      "fetch": [],
+      "iframe": [],
+      "img": []
+    },
+    "support": {
+      "supportEmail": "info@maplesage.com",
+      "documentationUrl": "https://atlas.sagesure.io",
+      "supportUrl": "https://atlas.sagesure.io"
+    }
+  }
+}
