@@ -402,6 +402,10 @@ function App() {
     return () => controller.abort();
   }, [isAuthenticated, getAccessToken]);
 
+  const filteredActivity = useMemo(() => {
+    return workspace.organization.activity.filter((item) => activityFilter === 'all' || item.ch === activityFilter);
+  }, [activityFilter, workspace.organization.activity]);
+
   if (isLoading) {
     return <div className="signin-screen"><div className="signin-card">Loading Atlas...</div></div>;
   }
@@ -416,10 +420,6 @@ function App() {
     .join('')
     .slice(0, 2)
     .toUpperCase();
-
-  const filteredActivity = useMemo(() => {
-    return workspace.organization.activity.filter((item) => activityFilter === 'all' || item.ch === activityFilter);
-  }, [activityFilter, workspace.organization.activity]);
 
   const pageMeta = workspace.organization.meta;
 
