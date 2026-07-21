@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: atlas-backend
-          image: sageinfranewdev01.azurecr.io/odic/backend:v6
+          image: sageinfranewdev01.azurecr.io/odic/backend:v8
           env:
             - name: ENTRA_TENANT_ID
               value: "e9394f90-446d-41dd-8c8c-98ac08c5f090"
@@ -38,6 +38,21 @@ spec:
                 secretKeyRef:
                   name: atlas-openai
                   key: deployment
+            - name: AZURE_SEARCH_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-search
+                  key: endpoint
+            - name: AZURE_SEARCH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-search
+                  key: api-key
+            - name: AZURE_SEARCH_INDEX
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-search
+                  key: index
           ports:
             - name: http
               containerPort: 8000

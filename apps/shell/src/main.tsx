@@ -4,7 +4,8 @@ import { AuthProvider, useAuth } from '@odic/auth';
 import { ExposureNetwork } from './exposureNetwork/ExposureNetwork';
 import './styles.css';
 
-type ViewId = 'organization' | 'search' | 'reports' | 'graph';
+type ViewId = 'organization' | 'search' | 'reports' | 'graph' | 'connect';
+type Pack = 'workspace-data' | 'exposure-network' | 'gia' | 'connect';
 type OrgTabId = 'overview' | 'timeline' | 'relationships' | 'documents' | 'insights' | 'activity';
 type ActivityFilter = 'all' | 'email' | 'call' | 'social' | 'filing' | 'crm';
 type GraphMode = 'ledger' | 'matrix';
@@ -51,6 +52,12 @@ type IntelligenceEvent = {
   processingStatus: string;
   status?: string;
   deepDiligenceState?: string;
+};
+type ConnectChannel = { configured: boolean; provider: string; note?: string };
+type ConnectStatus = {
+  pack: string;
+  channels: { email: ConnectChannel; whatsapp: ConnectChannel; voice: ConnectChannel };
+  note: string;
 };
 type GraphStat = { label: string; value: string; color: string };
 type GraphNode = { code: string; name: string; meta: string; metric: string; color: string };
@@ -100,12 +107,13 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'search', label: 'Search', code: 'SRCH' },
   { id: 'reports', label: 'Reports', code: 'RPT' },
   { id: 'graph', label: 'Graph', code: 'GRPH' },
+  { id: 'connect', label: 'Connect', code: 'CNCT' },
 ];
 
-type OrgProfile = { id: string; name: string; hasExposureNetwork: boolean; hasWorkspaceData: boolean };
+type OrgProfile = { id: string; name: string; packs: Pack[] };
 const ORGANIZATIONS: OrgProfile[] = [
-  { id: 'meridian', name: 'Meridian Health Systems', hasExposureNetwork: false, hasWorkspaceData: true },
-  { id: 'smartworld', name: 'Smartworld Developers', hasExposureNetwork: true, hasWorkspaceData: false },
+  { id: 'meridian', name: 'Meridian Health Systems', packs: ['workspace-data', 'gia', 'connect'] },
+  { id: 'smartworld', name: 'Smartworld Developers', packs: ['exposure-network', 'gia'] },
 ];
 
 const ORG_TABS: { id: OrgTabId; label: string }[] = [
@@ -425,6 +433,7 @@ function App() {
   const [exposureFullScreen, setExposureFullScreen] = useState(false);
   const [intelligenceStatus, setIntelligenceStatus] = useState<IntelligenceStatus | null>(null);
   const [intelligenceEvents, setIntelligenceEvents] = useState<IntelligenceEvent[]>([]);
+  const [connectStatus, setConnectStatus] = useState<ConnectStatus | null>(null);
   const [activeOrgId, setActiveOrgId] = useState(ORGANIZATIONS[0].id);
   const [orgSwitcherOpen, setOrgSwitcherOpen] = useState(false);
   const activeOrg = ORGANIZATIONS.find((o) => o.id === activeOrgId) ?? ORGANIZATIONS[0];
@@ -447,13 +456,15 @@ function App() {
         const merged = mergeWorkspaceData(DEFAULT_WORKSPACE, json);
 
         const authHeaders = token ? { Authorization: `Bearer ${token}` } : undefined;
-        const [statusResult, eventsResult] = await Promise.allSettled([
+        const [statusResult, eventsResult, connectResult] = await Promise.allSettled([
           fetch(`${API_BASE}/api/intelligence/status`, { signal: controller.signal, headers: authHeaders }),
           fetch(`${API_BASE}/api/intelligence/events`, { signal: controller.signal, headers: authHeaders }),
+          fetch(`${API_BASE}/api/connect/status`, { signal: controller.signal, headers: authHeaders }),
         ]);
 
         let nextIntelligenceStatus: IntelligenceStatus | null = null;
         let nextIntelligenceEvents: IntelligenceEvent[] = [];
+        let nextConnectStatus: ConnectStatus | null = null;
         if (statusResult.status === 'fulfilled' && statusResult.value.ok) {
           nextIntelligenceStatus = (await statusResult.value.json()) as IntelligenceStatus;
         }
@@ -461,10 +472,14 @@ function App() {
           const eventsJson = (await eventsResult.value.json()) as { events?: IntelligenceEvent[] };
           nextIntelligenceEvents = Array.isArray(eventsJson.events) ? eventsJson.events : [];
         }
+        if (connectResult.status === 'fulfilled' && connectResult.value.ok) {
+          nextConnectStatus = (await connectResult.value.json()) as ConnectStatus;
+        }
 
         setWorkspace(merged);
         setIntelligenceStatus(nextIntelligenceStatus);
         setIntelligenceEvents(nextIntelligenceEvents);
+        setConnectStatus(nextConnectStatus);
         setDataState('live');
         setApiError(null);
       } catch (error) {
@@ -598,7 +613,9 @@ function App() {
           )}
         </div>
         <div className="global-search">Search policies, organizations, people, or ask Atlas...</div>
-        <button className="gia-toggle" onClick={() => setGiaOpen((v) => !v)}>Ask Atlas</button>
+        {activeOrg.packs.includes('gia') && (
+          <button className="gia-toggle" onClick={() => setGiaOpen((v) => !v)}>Ask Atlas</button>
+        )}
         <button className="avatar" title={`Sign out (${user?.username ?? ''})`} onClick={() => logout()}>{userInitials}</button>
       </header>
 
@@ -628,7 +645,7 @@ function App() {
         </section>
 
         {activeView === 'organization' && (
-          activeOrg.hasWorkspaceData ? (
+          activeOrg.packs.includes('workspace-data') ? (
             <OrganizationWorkspace
               organization={workspace.organization}
               activeOrgTab={activeOrgTab}
@@ -644,13 +661,13 @@ function App() {
           )
         )}
         {activeView === 'search' && (
-          activeOrg.hasWorkspaceData ? <SearchWorkspace search={workspace.search} /> : <NoOrgDataState orgName={activeOrg.name} />
+          activeOrg.packs.includes('workspace-data') ? <SearchWorkspace search={workspace.search} /> : <NoOrgDataState orgName={activeOrg.name} />
         )}
         {activeView === 'reports' && (
-          activeOrg.hasWorkspaceData ? <ReportsWorkspace reports={workspace.reports} /> : <NoOrgDataState orgName={activeOrg.name} />
+          activeOrg.packs.includes('workspace-data') ? <ReportsWorkspace reports={workspace.reports} /> : <NoOrgDataState orgName={activeOrg.name} />
         )}
         {activeView === 'graph' && (
-          activeOrg.hasExposureNetwork ? (
+          activeOrg.packs.includes('exposure-network') ? (
             <div className="graph-workspace-embed">
               <ExposureNetwork fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
             </div>
@@ -658,15 +675,24 @@ function App() {
             <NoOrgDataState orgName={activeOrg.name} suggestion="No Exposure Network has been built for this organization yet." />
           )
         )}
+        {activeView === 'connect' && (
+          activeOrg.packs.includes('connect') ? (
+            <ConnectWorkspace status={connectStatus} getAccessToken={getAccessToken} />
+          ) : (
+            <NoOrgDataState orgName={activeOrg.name} suggestion="Connect isn't enabled as a pack for this workspace yet." />
+          )
+        )}
       </main>
 
       <aside className="utility-rail">
-        <button className={`utility-button ${giaOpen ? 'active' : ''}`} onClick={() => setGiaOpen((v) => !v)}>✦</button>
+        {activeOrg.packs.includes('gia') && (
+          <button className={`utility-button ${giaOpen ? 'active' : ''}`} onClick={() => setGiaOpen((v) => !v)}>✦</button>
+        )}
         <button className="utility-button">12</button>
         <button className="utility-button">⌘</button>
       </aside>
 
-      <aside className={`gia-panel ${giaOpen ? 'open' : ''}`}>
+      <aside className={`gia-panel ${activeOrg.packs.includes('gia') && giaOpen ? 'open' : ''}`}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -1083,6 +1109,117 @@ function ReportsWorkspace({ reports }: { reports: ReportsViewData }) {
   );
 }
 
+
+function ConnectWorkspace({ status, getAccessToken }: { status: ConnectStatus | null; getAccessToken: () => Promise<string | null> }) {
+  const [emailTo, setEmailTo] = useState('');
+  const [emailSubject, setEmailSubject] = useState('');
+  const [emailBody, setEmailBody] = useState('');
+  const [emailResult, setEmailResult] = useState<string | null>(null);
+  const [emailSending, setEmailSending] = useState(false);
+
+  const [waTo, setWaTo] = useState('');
+  const [waMessage, setWaMessage] = useState('');
+  const [waResult, setWaResult] = useState<string | null>(null);
+  const [waSending, setWaSending] = useState(false);
+
+  const channels = status?.channels;
+
+  async function sendEmail(event: React.FormEvent) {
+    event.preventDefault();
+    setEmailSending(true);
+    setEmailResult(null);
+    try {
+      const token = await getAccessToken();
+      const response = await fetch(`${API_BASE}/api/connect/email/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ to: emailTo, subject: emailSubject, body: emailBody }),
+      });
+      const data = await response.json().catch(() => ({}));
+      setEmailResult(response.ok ? 'Sent.' : data.detail ?? `HTTP ${response.status}`);
+    } catch (error) {
+      setEmailResult(error instanceof Error ? error.message : 'Send failed');
+    } finally {
+      setEmailSending(false);
+    }
+  }
+
+  async function sendWhatsApp(event: React.FormEvent) {
+    event.preventDefault();
+    setWaSending(true);
+    setWaResult(null);
+    try {
+      const token = await getAccessToken();
+      const response = await fetch(`${API_BASE}/api/connect/whatsapp/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ to: waTo, message: waMessage }),
+      });
+      const data = await response.json().catch(() => ({}));
+      setWaResult(response.ok ? 'Sent.' : data.detail ?? `HTTP ${response.status}`);
+    } catch (error) {
+      setWaResult(error instanceof Error ? error.message : 'Send failed');
+    } finally {
+      setWaSending(false);
+    }
+  }
+
+  return (
+    <div className="connect-layout">
+      <Card title="Connect" subtitle="GTM comms pack -- email, WhatsApp, and voice alongside your intelligence workspace">
+        <div className="sync-chip-row">
+          <div className="sync-chip">
+            <span className="status-dot" style={{ background: channels?.email.configured ? '#5FA86B' : '#8A8FAE' }} />
+            <span>Email</span>
+            <span className="sync-label">{channels?.email.configured ? 'Live (Azure SMTP)' : 'Not configured'}</span>
+          </div>
+          <div className="sync-chip">
+            <span className="status-dot" style={{ background: channels?.whatsapp.configured ? '#5FA86B' : '#8A8FAE' }} />
+            <span>WhatsApp</span>
+            <span className="sync-label">{channels?.whatsapp.configured ? 'Live (Infobip)' : 'Not configured'}</span>
+          </div>
+          <div className="sync-chip">
+            <span className="status-dot" style={{ background: '#F7C948' }} />
+            <span>Voice</span>
+            <span className="sync-label">Scaffolded</span>
+          </div>
+        </div>
+        <div className="preview-copy" style={{ marginTop: 12 }}>
+          {status?.note ?? 'Connect status is unavailable right now -- check the backend deployment.'}
+        </div>
+      </Card>
+
+      <Card title="Send Email" subtitle={channels?.email.configured ? 'Sends via Azure SMTP' : 'Configure AZURE_SMTP_* to enable'}>
+        <form className="connect-form" onSubmit={sendEmail}>
+          <input className="connect-input" placeholder="To" value={emailTo} onChange={(e) => setEmailTo(e.target.value)} required />
+          <input className="connect-input" placeholder="Subject" value={emailSubject} onChange={(e) => setEmailSubject(e.target.value)} required />
+          <textarea className="connect-textarea" placeholder="Message" value={emailBody} onChange={(e) => setEmailBody(e.target.value)} required />
+          <button className="primary-button" type="submit" disabled={emailSending || !channels?.email.configured}>
+            {emailSending ? 'Sending...' : 'Send Email'}
+          </button>
+          {emailResult && <div className="connect-result">{emailResult}</div>}
+        </form>
+      </Card>
+
+      <Card title="Send WhatsApp" subtitle={channels?.whatsapp.configured ? 'Sends via Infobip' : 'Configure INFOBIP_* to enable'}>
+        <form className="connect-form" onSubmit={sendWhatsApp}>
+          <input className="connect-input" placeholder="To (E.164 phone number)" value={waTo} onChange={(e) => setWaTo(e.target.value)} required />
+          <textarea className="connect-textarea" placeholder="Message" value={waMessage} onChange={(e) => setWaMessage(e.target.value)} required />
+          <button className="primary-button" type="submit" disabled={waSending || !channels?.whatsapp.configured}>
+            {waSending ? 'Sending...' : 'Send WhatsApp'}
+          </button>
+          {waResult && <div className="connect-result">{waResult}</div>}
+        </form>
+      </Card>
+    </div>
+  );
+}
 
 function Card({ title, subtitle, children, compact = false, dark = false }: { title: string; subtitle?: string; children: React.ReactNode; compact?: boolean; dark?: boolean }) {
   return (

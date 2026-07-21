@@ -1,12 +1,19 @@
 import hashlib
 import json
+import os
 from pathlib import Path
 
+import requests
 from fastapi import HTTPException
 
 BASE_DIR = Path(__file__).parent
 SOURCE_REGISTRY_PATH = BASE_DIR / "source_registry.json"
 DOSSIER_SUMMARY_PATH = BASE_DIR / "data" / "dossiers" / "dossier-status-summary-latest.json"
+
+AZURE_SEARCH_ENDPOINT = os.environ.get("AZURE_SEARCH_ENDPOINT", "").rstrip("/")
+AZURE_SEARCH_API_KEY = os.environ.get("AZURE_SEARCH_API_KEY", "")
+AZURE_SEARCH_INDEX = os.environ.get("AZURE_SEARCH_INDEX", "atlas-enterprise-intel-kb-v1")
+AZURE_SEARCH_API_VERSION = "2024-07-01"
 
 
 def _sha256_text(value: str) -> str:
@@ -24,6 +31,56 @@ def _load_dossier_summary() -> dict:
     if not DOSSIER_SUMMARY_PATH.exists():
         return {"items": []}
     return json.loads(DOSSIER_SUMMARY_PATH.read_text())
+
+
+def _azure_search_configured() -> bool:
+    return bool(AZURE_SEARCH_ENDPOINT and AZURE_SEARCH_API_KEY)
+
+
+def _doc_to_event(doc: dict) -> dict:
+    content = doc.get("content") or ""
+    return {
+        "eventId": f"azure-search::{AZURE_SEARCH_INDEX}::{doc.get('id')}",
+        "entityId": (doc.get("entityRefs") or ["unknown"])[0].split(":")[-1],
+        "title": doc.get("title") or "Untitled",
+        "sourceId": doc.get("sourceId", ""),
+        "sourceUrl": doc.get("sourceUrl", ""),
+        "observedAt": doc.get("observedAt"),
+        "publishedAt": doc.get("publishedAt"),
+        "contentHash": f"sha256:{doc['contentHash']}" if doc.get("contentHash") else None,
+        "content": content[:900],
+        "entityRefs": doc.get("entityRefs") or [],
+        "changeType": doc.get("changeType", "snapshot"),
+        "materiality": doc.get("materiality", "medium"),
+        "confidence": doc.get("confidence", 0.5),
+        "evidenceRefs": doc.get("evidenceRefs") or [],
+        "processingStatus": doc.get("processingStatus", "fetched"),
+        "status": None,
+        "deepDiligenceState": None,
+        "origin": "azure-search-live",
+    }
+
+
+def _fetch_azure_search_events() -> list[dict]:
+    """Live events from the Azure AI Search KB. Returns [] if unconfigured or unreachable --
+    the workspace falls back to staged local dossier evidence rather than erroring the UI out."""
+    if not _azure_search_configured():
+        return []
+
+    url = f"{AZURE_SEARCH_ENDPOINT}/indexes/{AZURE_SEARCH_INDEX}/docs"
+    try:
+        response = requests.get(
+            url,
+            params={"api-version": AZURE_SEARCH_API_VERSION, "search": "*", "$filter": "domain eq 'atlas'", "$top": 50},
+            headers={"api-key": AZURE_SEARCH_API_KEY},
+            timeout=10,
+        )
+        response.raise_for_status()
+    except requests.RequestException:
+        return []
+
+    docs = response.json().get("value", [])
+    return [_doc_to_event(doc) for doc in docs]
 
 
 def _build_events() -> list[dict]:
@@ -64,8 +121,14 @@ def _build_events() -> list[dict]:
                 "processingStatus": "staged_local_only",
                 "status": item.get("status"),
                 "deepDiligenceState": item.get("deepDiligenceState"),
+                "origin": "staged-local",
             }
         )
+
+    live_events = _fetch_azure_search_events()
+    known_hashes = {event["contentHash"] for event in events if event.get("contentHash")}
+    events.extend(event for event in live_events if event.get("contentHash") not in known_hashes)
+    events.sort(key=lambda event: event.get("observedAt") or "", reverse=True)
 
     return events
 
@@ -77,15 +140,23 @@ def get_intelligence_status() -> dict:
     events = _build_events()
     last_successful = max((event.get("observedAt") for event in events if event.get("observedAt")), default=None)
     if events:
+        live_connected = _azure_search_configured()
+        connected_feeds = ["real-estate-dossier-snapshots"]
+        if live_connected:
+            connected_feeds.append(f"azure-search:{AZURE_SEARCH_INDEX}")
         return {
             "status": "hybrid",
-            "mode": "seeded-workspace-plus-staged-intelligence",
+            "mode": "live-kb-plus-staged-intelligence" if live_connected else "seeded-workspace-plus-staged-intelligence",
             "enabledSourceDefinitions": enabled,
-            "connectedFeeds": ["real-estate-dossier-snapshots"],
+            "connectedFeeds": connected_feeds,
             "lastSuccessfulIngestionAt": last_successful,
             "eventCount": len(events),
             "note": (
-                "Source registry and provenance contract are present. Real evidence-backed staged "
+                "Live events are read from the Azure AI Search enterprise intelligence KB, merged with "
+                "staged local dossier evidence. Connector workers populate the KB on a cron cadence outside "
+                "this service."
+                if live_connected
+                else "Source registry and provenance contract are present. Real evidence-backed staged "
                 "dossier events are available locally; connector workers, cloud KB upload, and daily "
                 "automated refresh run outside this service."
             ),
@@ -117,6 +188,14 @@ def get_intelligence_evidence(event_id: str) -> dict:
     for event in _build_events():
         if event["eventId"] != event_id:
             continue
+        if event.get("origin") == "azure-search-live" or not event.get("evidenceRefs"):
+            return {
+                "event": event,
+                "evidence": {
+                    "path": event.get("sourceUrl", ""),
+                    "content": event.get("content", ""),
+                },
+            }
         evidence_path = BASE_DIR / event["evidenceRefs"][0]
         return {
             "event": event,

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth import get_current_user
+from connect import EmailRequest, EmailResponse, WhatsAppRequest, WhatsAppResponse, get_connect_status, send_email, send_whatsapp
 from gia import ChatRequest, ChatResponse, ask_gia
 from intelligence import get_intelligence_evidence, get_intelligence_events, get_intelligence_status, get_source_registry
 
@@ -142,6 +143,21 @@ def intelligence_evidence(event_id: str):
 @api.post('/api/gia/chat', response_model=ChatResponse)
 def gia_chat(request: ChatRequest):
     return ask_gia(request)
+
+
+@api.get('/api/connect/status')
+def connect_status():
+    return get_connect_status()
+
+
+@api.post('/api/connect/email/send', response_model=EmailResponse)
+def connect_send_email(request: EmailRequest):
+    return send_email(request)
+
+
+@api.post('/api/connect/whatsapp/send', response_model=WhatsAppResponse)
+def connect_send_whatsapp(request: WhatsAppRequest):
+    return send_whatsapp(request)
 
 
 app.include_router(api)
