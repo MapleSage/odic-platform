@@ -188,13 +188,13 @@ const DEFAULT_WORKSPACE: WorkspaceData = {
     ],
   },
   reports: {
-    title: 'Meridian Health Systems Intelligence Report',
+    title: 'Q3 Regional Health Systems Risk Report',
     sections: [
-      { id: 'exec', label: 'Executive Summary', body: 'Meridian Health Systems is in a watch-but-engage posture: risk concentration has increased, but two commercial pathways remain active with credible internal sponsors.' },
-      { id: 'evidence', label: 'Evidence', body: 'Evidence sources include compliance filings, CRM activities, email/call summaries, relationship graph changes, and Atlas AI-generated synthesis.' },
-      { id: 'relationships', label: 'Relationships', body: 'The strongest influence nodes remain Finance, Technology, and Compliance. Northgate Supply and Vantage Behavioral Health are the highest-value linked organizations in the current workspace.' },
+      { id: 'exec', label: 'Executive Summary', body: 'Three regional health systems, including Meridian Health Systems, show elevated vendor-contract and compliance risk this quarter, offset by a strong facilities-expansion pipeline. Atlas AI recommends prioritizing outreach to CFO/CIO contacts ahead of Q4 renewal cycles.' },
+      { id: 'evidence', label: 'Evidence', body: 'Findings are drawn from 14 filings, 6 news signals, and 22 relationship changes ingested over the last 30 days across the tracked organization set.' },
+      { id: 'relationships', label: 'Relationships', body: 'Vendor and board-level relationship shifts correlate with two of the three flagged risks - see graph view for full traversal.' },
       { id: 'viz', label: 'Visualizations', body: 'Counterparty concentration remains highest around vendor renewals, funding exposure, and healthcare regulator oversight.' },
-      { id: 'timeline', label: 'Timeline', body: 'Recent movement includes a compliance filing, a vendor lapse, and an active RFP pathway now moving toward proposal.' },
+      { id: 'timeline', label: 'Timeline', body: 'Key events are sequenced in the Organization Workspace timeline tab for each entity referenced in this report.' },
       { id: 'sources', label: 'Sources', body: 'Primary sources: filings, CRM, call notes, vendor agreement docs, and AI-assisted indexing of internal and public intelligence artifacts.' },
       { id: 'ai', label: 'AI Analysis', body: 'Atlas AI indicates the Northgate lapse is not just a legal hygiene issue but a churn-risk signal that affects parallel opportunity timing.' },
       { id: 'recs', label: 'Recommendations', body: '1) Resolve Northgate renewal risk. 2) Intensify EHR RFP pursuit. 3) Add staffing vacancy and filing cadence to the watchlist.' },
@@ -371,6 +371,10 @@ function App() {
   const [activeView, setActiveView] = useState<ViewId>('organization');
   const [activeOrgTab, setActiveOrgTab] = useState<OrgTabId>('overview');
   const [giaOpen, setGiaOpen] = useState(true);
+  const [giaInput, setGiaInput] = useState('');
+  const [giaMessages, setGiaMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
+  const [giaLoading, setGiaLoading] = useState(false);
+  const [giaError, setGiaError] = useState<string | null>(null);
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
   const [workspace, setWorkspace] = useState<WorkspaceData>(DEFAULT_WORKSPACE);
   const [exposureFullScreen, setExposureFullScreen] = useState(false);
@@ -412,6 +416,43 @@ function App() {
   const filteredActivity = useMemo(() => {
     return workspace.organization.activity.filter((item) => activityFilter === 'all' || item.ch === activityFilter);
   }, [activityFilter, workspace.organization.activity]);
+
+  const askGia = async (message: string) => {
+    if (!message.trim() || giaLoading) return;
+    setGiaMessages((prev) => [...prev, { role: 'user', content: message }]);
+    setGiaInput('');
+    setGiaLoading(true);
+    setGiaError(null);
+    try {
+      const org = workspace.organization;
+      const context = [
+        `Organization: ${org.name} (${org.meta.industry}, ${org.meta.hq}, ${org.meta.employees} employees, risk level: ${org.meta.riskLevel})`,
+        `Open risks: ${org.risks.map((r) => `[${r.severity}] ${r.title} -- ${r.detail}`).join('; ')}`,
+        `Opportunities: ${org.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
+        `Key people: ${org.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
+      ].join('\n');
+
+      const token = await getAccessToken();
+      const response = await fetch(`${API_BASE}/api/gia/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ message, context }),
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.detail ?? `HTTP ${response.status}`);
+      }
+      const data = (await response.json()) as { reply: string };
+      setGiaMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
+    } catch (error) {
+      setGiaError(error instanceof Error ? error.message : 'Atlas AI request failed');
+    } finally {
+      setGiaLoading(false);
+    }
+  };
 
   if (isLoading) {
     return <div className="signin-screen"><div className="signin-card">Loading Atlas...</div></div>;
@@ -469,7 +510,9 @@ function App() {
       <header className="topbar">
         <div className="workspace-switcher">
           <button className="workspace-pill" onClick={() => setOrgSwitcherOpen((v) => !v)}>
-            Workspace: {activeOrg.name} {orgSwitcherOpen ? '▴' : '▾'}
+            <span className="workspace-pill-label">WORKSPACE</span>
+            <span className="workspace-pill-name">{activeOrg.name}</span>
+            <span className="workspace-pill-chevron">{orgSwitcherOpen ? '▴' : '▾'}</span>
           </button>
           {orgSwitcherOpen && (
             <div className="workspace-dropdown">
@@ -488,7 +531,7 @@ function App() {
             </div>
           )}
         </div>
-        <div className="global-search">Search organizations, people, documents, risks, or ask Atlas...</div>
+        <div className="global-search">Search policies, organizations, people, or ask Atlas...</div>
         <button className="gia-toggle" onClick={() => setGiaOpen((v) => !v)}>Ask Atlas</button>
         <button className="avatar" title={`Sign out (${user?.username ?? ''})`} onClick={() => logout()}>{userInitials}</button>
       </header>
@@ -556,18 +599,42 @@ function App() {
       </aside>
 
       <aside className={`gia-panel ${giaOpen ? 'open' : ''}`}>
-        <div className="gia-search">Ask Atlas anything about this workspace...</div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            askGia(giaInput);
+          }}
+        >
+          <input
+            className="gia-search gia-search-input"
+            placeholder="Ask Atlas anything about this workspace..."
+            value={giaInput}
+            onChange={(e) => setGiaInput(e.target.value)}
+            disabled={giaLoading}
+          />
+        </form>
         <div className="gia-actions">
           {workspace.giaQuickActions.map((action) => (
-            <button key={action} className="gia-action-pill">{action}</button>
+            <button key={action} className="gia-action-pill" onClick={() => askGia(action)} disabled={giaLoading}>{action}</button>
           ))}
         </div>
+
+        {giaMessages.length > 0 && (
+          <div className="gia-message-list">
+            {giaMessages.map((msg, i) => (
+              <div key={i} className={`gia-message ${msg.role}`}>{msg.content}</div>
+            ))}
+            {giaLoading && <div className="gia-message assistant gia-message-loading">Thinking...</div>}
+          </div>
+        )}
+        {giaError && <div className="gia-error">{giaError}</div>}
+
         <div className="gia-card-list">
           {workspace.giaCards.map((card) => (
             <div key={card.title} className="gia-card">
               <div className="gia-card-title">{card.title}</div>
               <div className="gia-card-body">{card.body}</div>
-              <button className="gia-card-action">{card.action}</button>
+              <button className="gia-card-action" onClick={() => askGia(`${card.action}: ${card.title} -- ${card.body}`)} disabled={giaLoading}>{card.action}</button>
             </div>
           ))}
         </div>
@@ -786,17 +853,15 @@ function ActivityTab({
 }) {
   return (
     <div className="stack-col">
-      <Card title="Channel Sync Status">
-        <div className="sync-chip-row">
-          {syncStatuses.map((status) => (
-            <div key={status.channel} className="sync-chip">
-              <span className="status-dot" style={{ background: status.color }} />
-              <span>{status.channel}</span>
-              <span className="sync-label">{status.status}</span>
-            </div>
-          ))}
-        </div>
-      </Card>
+      <div className="sync-chip-row">
+        {syncStatuses.map((status) => (
+          <div key={status.channel} className="sync-chip">
+            <span className="status-dot" style={{ background: status.color }} />
+            <span>{status.channel}</span>
+            <span className="sync-label">{status.status}</span>
+          </div>
+        ))}
+      </div>
 
       <div className="filter-row">
         {(['all', 'email', 'call', 'social', 'filing', 'crm'] as ActivityFilter[]).map((filter) => (
@@ -806,7 +871,7 @@ function ActivityTab({
         ))}
       </div>
 
-      <Card title="Activity Feed">
+      <div className="content-card">
         <div className="list-stack">
           {filteredActivity.map((item) => {
             const meta = ACTIVITY_META[item.ch];
@@ -822,7 +887,7 @@ function ActivityTab({
             );
           })}
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
@@ -856,9 +921,9 @@ function SearchWorkspace({ search }: { search: SearchViewData }) {
         </div>
       </Card>
 
-      <Card title="Preview">
+      <Card title={search.results[0]?.name ?? 'No result selected'}>
         <div className="preview-copy">
-          {search.results[0]?.name ?? 'No result selected'} surfaces as the highest-signal entity in the current result set based on linked risk activity, filings, and executive engagement.
+          Healthcare Delivery health system operating 8,200 employees across Columbus, OH. Selected from search results for quick preview without leaving the workspace.
         </div>
       </Card>
     </div>

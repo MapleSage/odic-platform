@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth import get_current_user
+from gia import ChatRequest, ChatResponse, ask_gia
 
 app = FastAPI(title="ODIC Orchestration")
 
@@ -115,6 +116,11 @@ def workspace_reports():
 @api.get('/api/workspace/graph')
 def workspace_graph():
     return WORKSPACE_DATA["graph"]
+
+
+@api.post('/api/gia/chat', response_model=ChatResponse)
+def gia_chat(request: ChatRequest):
+    return ask_gia(request)
 
 
 app.include_router(api)
