@@ -200,7 +200,30 @@ export const SPV_DEFS: SpvDef[] = [
         heading: 'FUNDING / ESCROW',
         rows: [
           { label: 'STRUCTURE', value: 'HRERA proceedings say Riverday entered via a development agreement on a revenue-sharing model (clause 3.1-3.4, Schedule-II).' },
-          { label: 'MISSING', value: 'Current project lender, escrow/RERA account bank, charge/security trustee filings not yet identified.' },
+          { label: 'BUYER-DEPOSIT BANK', value: 'Kotak Mahindra Bank, Corporate Sewa Park, Gurugram -- surfaced publicly on the refreshed HRERA preview (2026-07-21).' },
+          { label: 'MISSING', value: 'Current project lender and charge/security trustee filings still not identified.' },
+        ],
+      },
+      {
+        heading: 'PROJECT ECONOMICS & TIMELINE (refreshed 2026-07-21)',
+        rows: [
+          { label: 'ESTIMATED PROJECT COST', value: '₹340,765.96 lakhs (~₹3,408 crore)' },
+          { label: 'PROJECT LAND AREA', value: '6.97635 acres (within 11.66875 acres total licensed area)' },
+          { label: 'CONSTRUCTION START (LIKELY)', value: '01.10.2024' },
+          { label: 'COMPLETION (LIKELY)', value: '31.05.2032' },
+        ],
+      },
+      {
+        heading: 'STATUTORY APPROVALS STATUS (refreshed 2026-07-21)',
+        rows: [
+          { label: 'LICENSE APPROVAL', value: '18.07.2024' },
+          { label: 'LOI', value: '13.03.2024' },
+          { label: 'AAI NOC', value: '14.03.2023' },
+          { label: 'ELECTRICITY ASSURANCE', value: '23.07.2024' },
+          { label: 'FOREST NOC', value: '01.05.2024' },
+          { label: 'SEWERAGE ASSURANCE', value: '05.07.2024' },
+          { label: 'STORM WATER CONNECTION', value: '05.07.2024' },
+          { label: 'WATER SUPPLY CONNECTION', value: '05.07.2024' },
         ],
       },
       {
@@ -210,6 +233,13 @@ export const SPV_DEFS: SpvDef[] = [
           { label: 'REGULATORY', value: 'Suo motu proceeding against erstwhile promoter; environment clearance not obviously closed; public-notice and compliance conditions recorded.' },
           { label: 'LEGAL', value: 'SARFAESI-linked land transfer chain means title and transfer assumptions must be document-backed before any clean-title conclusion.' },
           { label: 'COMMERCIAL', value: 'Five-phase structure means commercial incentives may differ by phase and inventory timing.' },
+        ],
+      },
+      {
+        heading: 'STATUS -- 2026-07-21 REFRESH',
+        rows: [
+          { label: 'PUBLIC-SOURCE DOSSIER', value: 'Completed public-source dossier snapshot -- primary public-source fact pattern is sufficiently assembled.' },
+          { label: 'DEEP-DILIGENCE GAPS', value: 'Deed/sale-certificate/licence PDF chain, environment-clearance closure, contractor/consultant/lender stack, and buyer-complaint history remain open.' },
         ],
       },
     ],
@@ -295,8 +325,9 @@ export const SPV_DEFS: SpvDef[] = [
     address: '12A Floor, Tower-2, M3M IFC, Sector-66, Gurugram, Haryana',
     directors: 'Rajeev Kumar Agrawal; Sujeet Ranjan Tiwari',
     commonDirectors: 'Bharat Vigmal',
-    status: 'Partial diligence',
-    notes: 'Primary-source bridge from a Smartworld-branded project to an explicit M3M legal entity as licensee.',
+    status: 'Completed public-source dossier (refreshed 2026-07-21) -- deep-diligence gaps remain',
+    notes:
+      'Strongest confirmed Smartworld <-> M3M bridge: official Smartworld page and the refreshed HRERA preview both name M3M India Infrastructures Pvt Ltd as licensee alongside Svabhumi Realtors as applicant/promoter, under licence 168 of 2025 over a 139.79375-acre licensed context. Address overlap alone is not treated as proof of control.',
   },
 ];
 

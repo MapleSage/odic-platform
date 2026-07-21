@@ -24,6 +24,34 @@ type ReportSection = { id: string; label: string; body: string };
 type SyncStatus = { channel: string; status: string; color: string };
 type ActivityItem = { ch: Exclude<ActivityFilter, 'all'>; title: string; snippet: string; time: string };
 type GiaCard = { title: string; body: string; action: string };
+type IntelligenceStatus = {
+  status: string;
+  mode: string;
+  connectedFeeds: string[];
+  lastSuccessfulIngestionAt: string | null;
+  eventCount: number;
+  note: string;
+  enabledSourceDefinitions: string[];
+};
+type IntelligenceEvent = {
+  eventId: string;
+  entityId: string;
+  title: string;
+  sourceId: string;
+  sourceUrl: string;
+  observedAt: string | null;
+  publishedAt: string | null;
+  contentHash: string;
+  content: string;
+  entityRefs: string[];
+  changeType: string;
+  materiality: string;
+  confidence: number;
+  evidenceRefs: string[];
+  processingStatus: string;
+  status?: string;
+  deepDiligenceState?: string;
+};
 type GraphStat = { label: string; value: string; color: string };
 type GraphNode = { code: string; name: string; meta: string; metric: string; color: string };
 type GraphEdge = { label: string; code: string; label2: string; color: string; chartTop: string; chartReports: string[]; bars: number[] };
@@ -251,6 +279,23 @@ const ACTIVITY_META: Record<Exclude<ActivityFilter, 'all'>, { code: string; badg
 
 const API_BASE = (((import.meta as ImportMeta & { env?: Record<string, string> }).env?.VITE_API_BASE_URL) ?? '').replace(/\/$/, '');
 
+function formatRelativeTime(value: string | null | undefined): string {
+  if (!value) return 'n/a';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'n/a';
+
+  const diffMs = Date.now() - date.getTime();
+  const diffMinutes = Math.round(Math.abs(diffMs) / 60000);
+  if (diffMinutes < 1) return 'just now';
+  if (diffMinutes < 60) return diffMs >= 0 ? `${diffMinutes}m ago` : `in ${diffMinutes}m`;
+
+  const diffHours = Math.round(diffMinutes / 60);
+  if (diffHours < 24) return diffMs >= 0 ? `${diffHours}h ago` : `in ${diffHours}h`;
+
+  const diffDays = Math.round(diffHours / 24);
+  return diffMs >= 0 ? `${diffDays}d ago` : `in ${diffDays}d`;
+}
+
 function mergeWorkspaceData(base: WorkspaceData, api: ApiWorkspaceData): WorkspaceData {
   const organization = api.organization ?? {};
   const search = api.search ?? {};
@@ -378,6 +423,8 @@ function App() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
   const [workspace, setWorkspace] = useState<WorkspaceData>(DEFAULT_WORKSPACE);
   const [exposureFullScreen, setExposureFullScreen] = useState(false);
+  const [intelligenceStatus, setIntelligenceStatus] = useState<IntelligenceStatus | null>(null);
+  const [intelligenceEvents, setIntelligenceEvents] = useState<IntelligenceEvent[]>([]);
   const [activeOrgId, setActiveOrgId] = useState(ORGANIZATIONS[0].id);
   const [orgSwitcherOpen, setOrgSwitcherOpen] = useState(false);
   const activeOrg = ORGANIZATIONS.find((o) => o.id === activeOrgId) ?? ORGANIZATIONS[0];
@@ -398,7 +445,26 @@ function App() {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const json = (await response.json()) as ApiWorkspaceData;
         const merged = mergeWorkspaceData(DEFAULT_WORKSPACE, json);
+
+        const authHeaders = token ? { Authorization: `Bearer ${token}` } : undefined;
+        const [statusResult, eventsResult] = await Promise.allSettled([
+          fetch(`${API_BASE}/api/intelligence/status`, { signal: controller.signal, headers: authHeaders }),
+          fetch(`${API_BASE}/api/intelligence/events`, { signal: controller.signal, headers: authHeaders }),
+        ]);
+
+        let nextIntelligenceStatus: IntelligenceStatus | null = null;
+        let nextIntelligenceEvents: IntelligenceEvent[] = [];
+        if (statusResult.status === 'fulfilled' && statusResult.value.ok) {
+          nextIntelligenceStatus = (await statusResult.value.json()) as IntelligenceStatus;
+        }
+        if (eventsResult.status === 'fulfilled' && eventsResult.value.ok) {
+          const eventsJson = (await eventsResult.value.json()) as { events?: IntelligenceEvent[] };
+          nextIntelligenceEvents = Array.isArray(eventsJson.events) ? eventsJson.events : [];
+        }
+
         setWorkspace(merged);
+        setIntelligenceStatus(nextIntelligenceStatus);
+        setIntelligenceEvents(nextIntelligenceEvents);
         setDataState('live');
         setApiError(null);
       } catch (error) {
@@ -570,6 +636,8 @@ function App() {
               activityFilter={activityFilter}
               setActivityFilter={setActivityFilter}
               filteredActivity={filteredActivity}
+              intelligenceStatus={intelligenceStatus}
+              intelligenceEvents={intelligenceEvents}
             />
           ) : (
             <NoOrgDataState orgName={activeOrg.name} suggestion="Switch to the Graph tab for this organization's Exposure Network intelligence." />
@@ -650,6 +718,8 @@ function OrganizationWorkspace({
   activityFilter,
   setActivityFilter,
   filteredActivity,
+  intelligenceStatus,
+  intelligenceEvents,
 }: {
   organization: OrganizationViewData;
   activeOrgTab: OrgTabId;
@@ -657,6 +727,8 @@ function OrganizationWorkspace({
   activityFilter: ActivityFilter;
   setActivityFilter: (filter: ActivityFilter) => void;
   filteredActivity: ActivityItem[];
+  intelligenceStatus: IntelligenceStatus | null;
+  intelligenceEvents: IntelligenceEvent[];
 }) {
   return (
     <section className="workspace-stack">
@@ -679,6 +751,8 @@ function OrganizationWorkspace({
           activityFilter={activityFilter}
           setActivityFilter={setActivityFilter}
           filteredActivity={filteredActivity}
+          intelligenceStatus={intelligenceStatus}
+          intelligenceEvents={intelligenceEvents}
         />
       )}
     </section>
@@ -845,11 +919,15 @@ function ActivityTab({
   activityFilter,
   setActivityFilter,
   filteredActivity,
+  intelligenceStatus,
+  intelligenceEvents,
 }: {
   syncStatuses: SyncStatus[];
   activityFilter: ActivityFilter;
   setActivityFilter: (filter: ActivityFilter) => void;
   filteredActivity: ActivityItem[];
+  intelligenceStatus: IntelligenceStatus | null;
+  intelligenceEvents: IntelligenceEvent[];
 }) {
   return (
     <div className="stack-col">
@@ -862,6 +940,56 @@ function ActivityTab({
           </div>
         ))}
       </div>
+
+      {intelligenceStatus && (
+        <Card title="Evidence-backed Intelligence" subtitle={intelligenceStatus.mode}>
+          <div className="sync-chip-row">
+            <div className="sync-chip">
+              <span className="status-dot" style={{ background: intelligenceStatus.status === 'hybrid' ? '#5FA86B' : '#F7C948' }} />
+              <span>KB state</span>
+              <span className="sync-label">{intelligenceStatus.status.toUpperCase()}</span>
+            </div>
+            <div className="sync-chip">
+              <span className="status-dot" style={{ background: '#3D9CA2' }} />
+              <span>Feeds</span>
+              <span className="sync-label">{intelligenceStatus.connectedFeeds.length}</span>
+            </div>
+            <div className="sync-chip">
+              <span className="status-dot" style={{ background: '#F7761F' }} />
+              <span>Events</span>
+              <span className="sync-label">{intelligenceStatus.eventCount}</span>
+            </div>
+            <div className="sync-chip">
+              <span className="status-dot" style={{ background: '#8A8FAE' }} />
+              <span>Last sync</span>
+              <span className="sync-label">{formatRelativeTime(intelligenceStatus.lastSuccessfulIngestionAt)}</span>
+            </div>
+          </div>
+          <div className="preview-copy" style={{ marginTop: 12 }}>{intelligenceStatus.note}</div>
+          <div className="list-stack" style={{ marginTop: 14 }}>
+            {intelligenceEvents.length > 0 ? (
+              intelligenceEvents.map((event) => {
+                const evidenceLabel = event.evidenceRefs[0]?.split('/').slice(-1)[0] ?? 'evidence';
+                return (
+                  <div key={event.eventId} className="activity-row">
+                    <span className="activity-chip" style={{ background: '#f3ecfb', color: '#6B3FA0' }}>KB</span>
+                    <div className="activity-copy">
+                      <div className="row-title">{event.title}</div>
+                      <div className="row-sub">{event.content}</div>
+                      <div className="row-sub">
+                        {event.entityRefs.join(' · ')} · {event.status ?? event.processingStatus} · {evidenceLabel}
+                      </div>
+                    </div>
+                    <div className="row-meta">{formatRelativeTime(event.observedAt)}</div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="row-sub">No evidence-backed events are available yet.</div>
+            )}
+          </div>
+        </Card>
+      )}
 
       <div className="filter-row">
         {(['all', 'email', 'call', 'social', 'filing', 'crm'] as ActivityFilter[]).map((filter) => (

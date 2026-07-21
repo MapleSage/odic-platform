@@ -1,0 +1,22 @@
+{
+  "generatedAtUtc": "2026-07-21T08:05:25.992575+00:00",
+  "date": "2026-07-21",
+  "items": [
+    {
+      "key": "smartworld-sky-arc",
+      "label": "Smartworld Sky Arc",
+      "status": "completed_public_source_dossier",
+      "deepDiligenceState": "open_gaps_remain",
+      "path": "data/dossiers/smartworld-sky-arc-public-dossier-latest.md",
+      "latestPath": "data/dossiers/smartworld-sky-arc-public-dossier-latest.md"
+    },
+    {
+      "key": "m3m-ecosystem",
+      "label": "M3M ecosystem",
+      "status": "completed_public_source_dossier",
+      "deepDiligenceState": "open_gaps_remain",
+      "path": "data/dossiers/m3m-ecosystem-public-dossier-latest.md",
+      "latestPath": "data/dossiers/m3m-ecosystem-public-dossier-latest.md"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from auth import get_current_user
 from gia import ChatRequest, ChatResponse, ask_gia
+from intelligence import get_intelligence_evidence, get_intelligence_events, get_intelligence_status, get_source_registry
 
 app = FastAPI(title="ODIC Orchestration")
 
@@ -116,6 +117,26 @@ def workspace_reports():
 @api.get('/api/workspace/graph')
 def workspace_graph():
     return WORKSPACE_DATA["graph"]
+
+
+@api.get('/api/intelligence/sources')
+def intelligence_sources():
+    return get_source_registry()
+
+
+@api.get('/api/intelligence/status')
+def intelligence_status():
+    return get_intelligence_status()
+
+
+@api.get('/api/intelligence/events')
+def intelligence_events(entityId: str | None = None):
+    return get_intelligence_events(entityId)
+
+
+@api.get('/api/intelligence/evidence/{event_id}')
+def intelligence_evidence(event_id: str):
+    return get_intelligence_evidence(event_id)
 
 
 @api.post('/api/gia/chat', response_model=ChatResponse)

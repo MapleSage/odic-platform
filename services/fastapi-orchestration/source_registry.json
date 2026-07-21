@@ -1,0 +1,73 @@
+{
+  "version": "0.1.0",
+  "sources": [
+    {
+      "id": "official-company-site",
+      "category": "official",
+      "name": "Official company websites",
+      "access": "public-http",
+      "cadence": "daily",
+      "priority": "high",
+      "provenanceRequired": true,
+      "enabled": true
+    },
+    {
+      "id": "company-newsroom-rss",
+      "category": "news",
+      "name": "Company newsroom RSS/Atom feeds",
+      "access": "rss",
+      "cadence": "hourly",
+      "priority": "high",
+      "provenanceRequired": true,
+      "enabled": true
+    },
+    {
+      "id": "regulatory-public-filings",
+      "category": "filings",
+      "name": "Public regulatory and government filings",
+      "access": "official-api-or-public-http",
+      "cadence": "daily",
+      "priority": "high",
+      "provenanceRequired": true,
+      "enabled": true
+    },
+    {
+      "id": "public-company-announcements",
+      "category": "announcements",
+      "name": "Investor, procurement, and public announcement feeds",
+      "access": "rss-or-public-http",
+      "cadence": "hourly",
+      "priority": "medium",
+      "provenanceRequired": true,
+      "enabled": true
+    },
+    {
+      "id": "approved-social-feeds",
+      "category": "social",
+      "name": "Approved social APIs and permitted public feeds",
+      "access": "official-api-or-permitted-feed",
+      "cadence": "hourly",
+      "priority": "medium",
+      "provenanceRequired": true,
+      "termsReviewRequired": true,
+      "enabled": false
+    }
+  ],
+  "eventContract": {
+    "requiredFields": [
+      "eventId",
+      "sourceId",
+      "sourceUrl",
+      "observedAt",
+      "publishedAt",
+      "contentHash",
+      "entityRefs",
+      "changeType",
+      "materiality",
+      "confidence",
+      "evidenceRefs"
+    ],
+    "changeTypes": ["new", "updated", "removed", "recovered"],
+    "materialityLevels": ["informational", "watch", "material", "critical"]
+  }
+}
