@@ -803,22 +803,26 @@ function OrganizationWorkspace({
 }
 
 function OverviewTab({ organization }: { organization: OrganizationViewData }) {
+  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   return (
     <div className="two-col-grid overview-grid">
       <div className="stack-col">
         <Card title="Key People">
           <div className="list-stack">
             {organization.people.map((person) => (
-              <div key={person.name} className="info-row">
+              <button key={person.name} className="info-row info-row-clickable" onClick={() => setSelectedPerson(person)}>
                 <div>
                   <div className="row-title">{person.name}</div>
                   <div className="row-sub">{person.title} · {person.dept}</div>
                 </div>
                 <div className="row-meta">{person.lastActivity}</div>
-              </div>
+              </button>
             ))}
           </div>
         </Card>
+        {selectedPerson && (
+          <PersonDetailModal person={selectedPerson} organization={organization} onClose={() => setSelectedPerson(null)} />
+        )}
 
         <Card title="Recent Activity">
           <div className="list-stack">
@@ -858,6 +862,93 @@ function OverviewTab({ organization }: { organization: OrganizationViewData }) {
             ))}
           </div>
         </Card>
+      </div>
+    </div>
+  );
+}
+
+function PersonDetailModal({
+  person,
+  organization,
+  onClose,
+}: {
+  person: Person;
+  organization: OrganizationViewData;
+  onClose: () => void;
+}) {
+  const mentions = organization.activity.filter(
+    (item) => item.title.includes(person.name) || item.snippet.includes(person.name)
+  );
+  const relatedRisks = organization.risks.filter(
+    (risk) => risk.title.includes(person.name) || risk.detail.includes(person.name)
+  );
+  const relatedOpportunities = organization.opportunities.filter((opp) => opp.title.includes(person.name));
+
+  return (
+    <div className="detail-modal-backdrop" onClick={onClose}>
+      <div className="detail-modal" onClick={(event) => event.stopPropagation()}>
+        <button className="detail-modal-close" onClick={onClose} aria-label="Close">×</button>
+        <div className="detail-modal-header">
+          <div className="detail-modal-title">{person.name}</div>
+          <div className="detail-modal-subtitle">{person.title} · {person.dept}</div>
+          <div className="row-meta">Last activity: {person.lastActivity}</div>
+        </div>
+        <div className="detail-modal-body">
+          <div className="detail-modal-section">
+            <SectionLabel>ACTIVITY MENTIONS ({mentions.length})</SectionLabel>
+            <div className="list-stack" style={{ marginTop: 8 }}>
+              {mentions.length > 0 ? (
+                mentions.map((item) => {
+                  const meta = ACTIVITY_META[item.ch];
+                  return (
+                    <div key={`${item.ch}-${item.title}-${item.time}`} className="activity-row">
+                      <span className="activity-chip" style={{ background: meta.badgeBg, color: meta.badgeColor }}>{meta.code}</span>
+                      <div className="activity-copy">
+                        <div className="row-title">{item.title}</div>
+                        <div className="row-sub">{item.snippet}</div>
+                      </div>
+                      <div className="row-meta">{item.time}</div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="row-sub">No activity feed mentions found for this person yet.</div>
+              )}
+            </div>
+          </div>
+
+          {relatedRisks.length > 0 && (
+            <div className="detail-modal-section">
+              <SectionLabel>RELATED RISKS</SectionLabel>
+              <div className="list-stack" style={{ marginTop: 8 }}>
+                {relatedRisks.map((risk) => (
+                  <div key={risk.title} className="risk-item">
+                    <span className="severity-chip" style={{ color: risk.color, background: risk.dimColor }}>{risk.severity}</span>
+                    <div className="row-title">{risk.title}</div>
+                    <div className="row-sub">{risk.detail}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {relatedOpportunities.length > 0 && (
+            <div className="detail-modal-section">
+              <SectionLabel>RELATED OPPORTUNITIES</SectionLabel>
+              <div className="list-stack" style={{ marginTop: 8 }}>
+                {relatedOpportunities.map((opp) => (
+                  <div key={opp.title} className="info-row">
+                    <div>
+                      <div className="row-title">{opp.title}</div>
+                      <div className="row-sub">{opp.stage}</div>
+                    </div>
+                    <div className="row-metric">{opp.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
