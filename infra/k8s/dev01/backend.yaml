@@ -53,6 +53,46 @@ spec:
                 secretKeyRef:
                   name: atlas-search
                   key: index
+            - name: AZURE_SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: smtp-host
+            - name: AZURE_SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: smtp-port
+            - name: AZURE_SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: smtp-user
+            - name: AZURE_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: smtp-password
+            - name: AZURE_SMTP_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: smtp-from
+            - name: INFOBIP_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: infobip-base-url
+            - name: INFOBIP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: infobip-api-key
+            - name: INFOBIP_WHATSAPP_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: atlas-comms
+                  key: infobip-whatsapp-sender
           ports:
             - name: http
               containerPort: 8000
