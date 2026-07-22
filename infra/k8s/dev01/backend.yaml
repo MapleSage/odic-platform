@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: atlas-backend
-          image: sageinfranewdev01.azurecr.io/odic/backend:v8
+          image: sageinfranewdev01.azurecr.io/odic/backend:v9
           env:
             - name: ENTRA_TENANT_ID
               value: "e9394f90-446d-41dd-8c8c-98ac08c5f090"
