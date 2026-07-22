@@ -1,0 +1,128 @@
+{
+  "organization": {
+    "name": "Meridian Health Systems",
+    "meta": {
+      "industry": "Healthcare Delivery",
+      "hq": "Columbus, OH",
+      "employees": "8,200",
+      "riskLevel": "ELEVATED RISK"
+    },
+    "stats": [
+      {"label": "OPEN RISKS", "value": "3", "sub": "1 critical"},
+      {"label": "OPPORTUNITIES", "value": "2", "sub": "$4.2M pipeline"},
+      {"label": "ACTIVE PROJECTS", "value": "5", "sub": "2 at risk"},
+      {"label": "LAST FILING", "value": "6d ago", "sub": "compliance"}
+    ],
+    "people": [
+      {"name": "Dana Ferris", "title": "CFO", "dept": "Finance", "lastActivity": "2d ago"},
+      {"name": "Owen Mackey", "title": "CIO", "dept": "Technology", "lastActivity": "5d ago"},
+      {"name": "Priya Shah", "title": "VP Facilities", "dept": "Operations", "lastActivity": "1w ago"},
+      {"name": "Leon Ward", "title": "Compliance Director", "dept": "Legal", "lastActivity": "3d ago"}
+    ],
+    "risks": [
+      {"severity": "CRITICAL", "title": "Vendor contract renewal overdue", "detail": "Master services agreement lapsed 12 days ago"},
+      {"severity": "HIGH", "title": "Compliance audit flagged", "detail": "State audit cited two documentation gaps"},
+      {"severity": "MEDIUM", "title": "Staffing vacancy in Facilities", "detail": "VP Facilities role open 45+ days"}
+    ],
+    "opportunities": [
+      {"title": "EHR Modernization RFP", "stage": "Qualification", "value": "$2.8M"},
+      {"title": "Facilities Expansion - East Campus", "stage": "Proposal", "value": "$1.4M"}
+    ],
+    "recentActivity": [
+      {"time": "09:14", "text": "Atlas AI flagged vendor contract renewal overdue"},
+      {"time": "Mon", "text": "New compliance filing detected"},
+      {"time": "Fri", "text": "Meeting logged with Dana Ferris (CFO)"},
+      {"time": "Wed", "text": "Relationship change: new board member added"}
+    ],
+    "timeline": [
+      {"date": "Jul 16", "label": "Compliance filing submitted", "detail": "State health authority - routine filing", "dotColor": "#3D9CA2"},
+      {"date": "Jul 12", "label": "Vendor contract lapsed", "detail": "MSA with Northgate Supply not renewed", "dotColor": "#c44b40"},
+      {"date": "Jul 8", "label": "New board member added", "detail": "Relationship graph updated automatically", "dotColor": "#60b072"},
+      {"date": "Jun 30", "label": "RFP published", "detail": "EHR modernization opportunity opened", "dotColor": "#60b072"},
+      {"date": "Jun 22", "label": "Facilities VP departure", "detail": "Staffing vacancy risk opened", "dotColor": "#d4a017"}
+    ],
+    "relationships": [
+      {"from": "Meridian Health Systems", "type": "contracts with", "to": "Northgate Supply Co."},
+      {"from": "Dana Ferris", "type": "reports to", "to": "CEO - Meridian Health Systems"},
+      {"from": "Meridian Health Systems", "type": "shares board member with", "to": "Vantage Behavioral Health"},
+      {"from": "Meridian Health Systems", "type": "filed with", "to": "Ohio Dept. of Health"},
+      {"from": "Owen Mackey", "type": "sponsors", "to": "EHR Modernization RFP"}
+    ],
+    "documents": [
+      {"name": "2026 Compliance Filing.pdf", "type": "Filing", "tag": "Compliance", "date": "Jul 16"},
+      {"name": "Vendor Master Agreement - Northgate.docx", "type": "Contract", "tag": "Risk", "date": "Jul 12"},
+      {"name": "Board Minutes - Q2.pdf", "type": "Minutes", "tag": "Governance", "date": "Jun 28"},
+      {"name": "EHR Modernization RFP.pdf", "type": "RFP", "tag": "Opportunity", "date": "Jun 30"},
+      {"name": "Facilities Expansion Brief.pptx", "type": "Brief", "tag": "Opportunity", "date": "Jun 18"}
+    ],
+    "insights": [
+      {"title": "Renewal risk rising", "body": "Vendor contract lapse plus a compliance flag increases churn risk on the Northgate relationship this quarter.", "action": "Draft outreach"},
+      {"title": "RFP alignment", "body": "EHR Modernization RFP scope matches two prior wins in this vertical - high propensity to convert.", "action": "View similar deals"},
+      {"title": "Staffing signal", "body": "The Facilities VP vacancy correlates with delayed expansion timelines in comparable organizations.", "action": "Flag for review"},
+      {"title": "Filing pattern", "body": "Filing cadence is 20% slower than peer organizations, worth monitoring through quarter close.", "action": "Add to watchlist"}
+    ],
+    "syncStatuses": [
+      {"channel": "Email", "status": "Live", "color": "#5FA86B"},
+      {"channel": "Calls", "status": "Live", "color": "#5FA86B"},
+      {"channel": "Social", "status": "Delayed 12m", "color": "#F7C948"},
+      {"channel": "Filings", "status": "Live", "color": "#5FA86B"},
+      {"channel": "CRM", "status": "Live", "color": "#5FA86B"}
+    ],
+    "activity": [
+      {"ch": "email", "title": "Dana Ferris replied on Northgate renewal", "snippet": "We can get legal on a call Thursday to review the lapsed MSA terms.", "time": "12m ago"},
+      {"ch": "call", "title": "24-min call logged with Owen Mackey (CIO)", "snippet": "Discussed EHR Modernization RFP timeline and vendor shortlist.", "time": "1h ago"},
+      {"ch": "social", "title": "LinkedIn: VP Facilities role reposted", "snippet": "Meridian Health Systems facilities leadership opening gaining engagement.", "time": "2h ago"},
+      {"ch": "filing", "title": "New compliance filing detected", "snippet": "State health authority filing indexed and linked to Documents tab.", "time": "6h ago"},
+      {"ch": "crm", "title": "Opportunity stage changed", "snippet": "EHR Modernization RFP moved from Qualification to Proposal.", "time": "Yesterday"},
+      {"ch": "email", "title": "Compliance team requested escrow statement", "snippet": "Leon Ward asked for an updated 70% escrow account statement.", "time": "Yesterday"},
+      {"ch": "call", "title": "Missed call from Leon Ward (Compliance Director)", "snippet": "No voicemail left - flagged for callback.", "time": "2d ago"},
+      {"ch": "social", "title": "Regional business journal mention", "snippet": "Press coverage of facilities expansion plans picked up by Atlas AI monitoring.", "time": "3d ago"}
+    ]
+  },
+  "search": {
+    "summary": "1,781 results across all intelligence objects",
+    "facets": [
+      {"label": "Organizations", "count": 128},
+      {"label": "People", "count": 412},
+      {"label": "Documents", "count": 1204},
+      {"label": "Risks", "count": 37}
+    ],
+    "results": [
+      {"code": "ORG", "name": "Meridian Health Systems", "sub": "Healthcare Delivery - Columbus, OH", "tag": "Elevated Risk"},
+      {"code": "PPL", "name": "Dana Ferris", "sub": "CFO - Meridian Health Systems", "tag": "Person"},
+      {"code": "DOC", "name": "2026 Compliance Filing.pdf", "sub": "Filing - Meridian Health Systems", "tag": "Jul 16"},
+      {"code": "ORG", "name": "Northstar Regional Medical", "sub": "Healthcare Delivery - Toledo, OH", "tag": "Watchlist"},
+      {"code": "RSK", "name": "Vendor contract renewal overdue", "sub": "Risk - Meridian Health Systems", "tag": "Critical"},
+      {"code": "PPL", "name": "Owen Mackey", "sub": "CIO - Meridian Health Systems", "tag": "Person"}
+    ]
+  },
+  "reports": {
+    "title": "Q3 Regional Health Systems Risk Report",
+    "sections": [
+      {"id": "exec", "label": "Executive Summary", "body": "Meridian Health Systems is in a watch-but-engage posture: risk concentration has increased, but two commercial pathways remain active with credible internal sponsors."},
+      {"id": "evidence", "label": "Evidence", "body": "Evidence sources include compliance filings, CRM activities, email/call summaries, relationship graph changes, and GIA-generated synthesis."},
+      {"id": "relationships", "label": "Relationships", "body": "Five relationship edges are tracked for Meridian Health Systems, including the Northgate Supply Co. vendor contract and a shared board seat with Vantage Behavioral Health. See the Relationships tab for the full graph."},
+      {"id": "visualizations", "label": "Visualizations", "body": "A standing risk-trend chart for this report is not yet built. Live risk and relationship visualizations are available today in the Graph tab."},
+      {"id": "timeline", "label": "Timeline", "body": "Five timeline events are sequenced for Meridian Health Systems, from the Jul 16 compliance filing back through the Jun 22 Facilities VP departure. See the Timeline tab for the full sequence."},
+      {"id": "sources", "label": "Sources", "body": "Findings draw from the configured source registry (official company sites, newsroom RSS, regulatory filings, public announcements) plus staged dossier evidence surfaced in the Activity Feed's Evidence-backed Intelligence panel."},
+      {"id": "ai-analysis", "label": "AI Analysis", "body": "Ask Atlas in the chat panel for organization-specific synthesis on demand. This report does not yet auto-generate a standing AI analysis section."},
+      {"id": "recommendations", "label": "Recommendations", "body": "Resolve Northgate renewal risk, intensify EHR RFP pursuit, and add filing cadence to the watchlist."}
+    ]
+  },
+  "graph": {
+    "score": 71,
+    "vendors": [
+      {"name": "Northgate Supply Co.", "type": "vendor", "metric": "$4.1M/yr"},
+      {"name": "Apex EHR Systems", "type": "supplier", "metric": "$2.8M/yr"}
+    ],
+    "counterparties": [
+      {"name": "Heartland Health Capital Partners", "type": "investor", "metric": "18%"},
+      {"name": "Ohio Dept. of Health", "type": "regulator", "metric": "n/a"}
+    ],
+    "edges": [
+      {"label": "contracts with", "target": "Northgate Supply Co.", "class": "ORG"},
+      {"label": "shares board", "target": "Vantage Behavioral Health", "class": "ORG"},
+      {"label": "filed with", "target": "Ohio Dept. of Health", "class": "GOV"}
+    ]
+  }
+}

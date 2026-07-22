@@ -92,7 +92,7 @@ type WorkspaceData = {
 };
 
 type ApiWorkspaceData = Partial<{
-  organization: Partial<Omit<OrganizationViewData, 'recentActivity' | 'timeline' | 'relationships' | 'documents' | 'insights' | 'syncStatuses' | 'activity'>>;
+  organization: Partial<OrganizationViewData>;
   search: Partial<SearchViewData>;
   reports: Partial<ReportsViewData>;
   graph: Partial<{
@@ -340,6 +340,27 @@ function mergeWorkspaceData(base: WorkspaceData, api: ApiWorkspaceData): Workspa
       opportunities: Array.isArray(organization.opportunities) && organization.opportunities.length > 0
         ? organization.opportunities.map((opp, index) => ({ ...base.organization.opportunities[index % base.organization.opportunities.length], ...opp }))
         : base.organization.opportunities,
+      recentActivity: Array.isArray(organization.recentActivity) && organization.recentActivity.length > 0
+        ? organization.recentActivity
+        : base.organization.recentActivity,
+      timeline: Array.isArray(organization.timeline) && organization.timeline.length > 0
+        ? organization.timeline
+        : base.organization.timeline,
+      relationships: Array.isArray(organization.relationships) && organization.relationships.length > 0
+        ? organization.relationships
+        : base.organization.relationships,
+      documents: Array.isArray(organization.documents) && organization.documents.length > 0
+        ? organization.documents
+        : base.organization.documents,
+      insights: Array.isArray(organization.insights) && organization.insights.length > 0
+        ? organization.insights
+        : base.organization.insights,
+      syncStatuses: Array.isArray(organization.syncStatuses) && organization.syncStatuses.length > 0
+        ? organization.syncStatuses
+        : base.organization.syncStatuses,
+      activity: Array.isArray(organization.activity) && organization.activity.length > 0
+        ? organization.activity
+        : base.organization.activity,
     },
     search: {
       ...base.search,
@@ -435,11 +456,37 @@ function App() {
   const [intelligenceStatus, setIntelligenceStatus] = useState<IntelligenceStatus | null>(null);
   const [intelligenceEvents, setIntelligenceEvents] = useState<IntelligenceEvent[]>([]);
   const [connectStatus, setConnectStatus] = useState<ConnectStatus | null>(null);
+  const [organizations, setOrganizations] = useState<OrgProfile[]>(ORGANIZATIONS);
   const [activeOrgId, setActiveOrgId] = useState(ORGANIZATIONS[0].id);
   const [orgSwitcherOpen, setOrgSwitcherOpen] = useState(false);
-  const activeOrg = ORGANIZATIONS.find((o) => o.id === activeOrgId) ?? ORGANIZATIONS[0];
+  const activeOrg = organizations.find((o) => o.id === activeOrgId) ?? organizations[0];
   const [dataState, setDataState] = useState<'seed' | 'live'>('seed');
   const [apiError, setApiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const controller = new AbortController();
+
+    async function loadOrganizations() {
+      try {
+        const token = await getAccessToken();
+        const response = await fetch(`${API_BASE}/api/organizations`, {
+          signal: controller.signal,
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        });
+        if (!response.ok) return;
+        const json = (await response.json()) as { organizations?: OrgProfile[] };
+        if (Array.isArray(json.organizations) && json.organizations.length > 0) {
+          setOrganizations(json.organizations);
+        }
+      } catch {
+        // Registry fetch failed -- keep the seeded fallback list.
+      }
+    }
+
+    loadOrganizations();
+    return () => controller.abort();
+  }, [isAuthenticated, getAccessToken]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -448,7 +495,7 @@ function App() {
     async function loadWorkspace() {
       try {
         const token = await getAccessToken();
-        const response = await fetch(`${API_BASE}/api/workspace`, {
+        const response = await fetch(`${API_BASE}/api/workspace?org=${encodeURIComponent(activeOrgId)}`, {
           signal: controller.signal,
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         });
@@ -493,7 +540,7 @@ function App() {
 
     loadWorkspace();
     return () => controller.abort();
-  }, [isAuthenticated, getAccessToken]);
+  }, [isAuthenticated, getAccessToken, activeOrgId]);
 
   const filteredActivity = useMemo(() => {
     return workspace.organization.activity.filter((item) => activityFilter === 'all' || item.ch === activityFilter);
@@ -605,7 +652,7 @@ function App() {
           </button>
           {orgSwitcherOpen && (
             <div className="workspace-dropdown">
-              {ORGANIZATIONS.map((org) => (
+              {organizations.map((org) => (
                 <button
                   key={org.id}
                   className={`workspace-option ${org.id === activeOrgId ? 'active' : ''}`}

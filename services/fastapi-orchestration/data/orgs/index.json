@@ -1,0 +1,14 @@
+{
+  "organizations": [
+    {
+      "id": "meridian",
+      "name": "Meridian Health Systems",
+      "packs": ["workspace-data", "gia", "connect"]
+    },
+    {
+      "id": "smartworld",
+      "name": "Smartworld Developers",
+      "packs": ["exposure-network", "gia"]
+    }
+  ]
+}
