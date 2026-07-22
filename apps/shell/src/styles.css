@@ -40,6 +40,10 @@ button {
   transition: grid-template-columns 200ms ease;
 }
 
+.app-shell.gia-open {
+  grid-template-columns: 212px minmax(0, 1fr) 56px 380px;
+}
+
 .sidebar,
 .topbar {
   background: #0d2b3d;
@@ -630,22 +634,6 @@ button {
   border-color: #f7761f;
 }
 
-.canvas-branch.left {
-  left: 10%;
-  top: 44%;
-}
-
-.canvas-branch.right {
-  right: 10%;
-  top: 44%;
-}
-
-.canvas-branch.lower {
-  left: 50%;
-  bottom: 12%;
-  transform: translateX(-50%);
-}
-
 .canvas-lines {
   position: absolute;
   inset: 0;
@@ -656,6 +644,14 @@ button {
 .canvas-lines line {
   stroke: #8aa5b7;
   stroke-width: 1.5;
+}
+
+.canvas-overflow-note {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font-size: 11px;
+  color: #667686;
 }
 
 .relationship-row {
@@ -1215,12 +1211,8 @@ button {
 }
 
 @media (max-width: 1440px) {
-  .app-shell {
+  .app-shell.gia-open {
     grid-template-columns: 212px minmax(0, 1fr) 56px 320px;
-  }
-
-  .gia-panel {
-    width: 320px;
   }
 
   .gia-panel.open {
@@ -1253,12 +1245,15 @@ button {
     grid-column: 1 / -1;
     grid-row: 3;
     width: 100%;
+    height: 0;
     border-left: 0;
-    border-top: 1px solid #dce4ea;
+    border-top: 0;
   }
 
   .gia-panel.open {
     width: 100%;
+    height: auto;
+    border-top: 1px solid #dce4ea;
   }
 
   .stats-grid,

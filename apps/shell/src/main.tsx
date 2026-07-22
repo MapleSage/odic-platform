@@ -562,8 +562,10 @@ function App() {
     return <ExposureNetwork fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />;
   }
 
+  const giaVisible = activeOrg.packs.includes('gia') && giaOpen;
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${giaVisible ? 'gia-open' : ''}`}>
       <aside className="sidebar">
         <div className="sidebar-brand">
           <div className="brand-mark"><img src="/favicon.svg" alt="SageSure" /></div>
@@ -665,23 +667,32 @@ function App() {
               activityFilter={activityFilter}
               setActivityFilter={setActivityFilter}
               filteredActivity={filteredActivity}
-              intelligenceStatus={intelligenceStatus}
-              intelligenceEvents={intelligenceEvents}
             />
+          ) : activeOrg.packs.includes('exposure-network') ? (
+            <ExposureNetworkSummary orgName={activeOrg.name} onOpenGraph={() => setActiveView('graph')} />
           ) : (
-            <NoOrgDataState orgName={activeOrg.name} suggestion="Switch to the Graph tab for this organization's Exposure Network intelligence." />
+            <NoOrgDataState orgName={activeOrg.name} />
           )
         )}
         {activeView === 'search' && (
-          activeOrg.packs.includes('workspace-data') ? <SearchWorkspace search={workspace.search} /> : <NoOrgDataState orgName={activeOrg.name} />
+          activeOrg.packs.includes('workspace-data') ? (
+            <SearchWorkspace search={workspace.search} />
+          ) : (
+            <NoOrgDataState orgName={activeOrg.name} suggestion="Search isn't built for Exposure Network workspaces yet -- see the Organization tab for tracked projects and the Graph tab for full diligence." />
+          )
         )}
         {activeView === 'reports' && (
-          activeOrg.packs.includes('workspace-data') ? <ReportsWorkspace reports={workspace.reports} /> : <NoOrgDataState orgName={activeOrg.name} />
+          activeOrg.packs.includes('workspace-data') ? (
+            <ReportsWorkspace reports={workspace.reports} />
+          ) : (
+            <NoOrgDataState orgName={activeOrg.name} suggestion="Standing reports aren't built for Exposure Network workspaces yet -- see the Organization tab for tracked projects and the Graph tab for full diligence." />
+          )
         )}
         {activeView === 'graph' && (
           activeOrg.packs.includes('exposure-network') ? (
             <div className="graph-workspace-embed">
               <ExposureNetwork fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
+              <IntelligenceCard status={intelligenceStatus} events={intelligenceEvents} />
             </div>
           ) : (
             <NoOrgDataState orgName={activeOrg.name} suggestion="No Exposure Network has been built for this organization yet." />
@@ -704,7 +715,7 @@ function App() {
         <button className="utility-button">⌘</button>
       </aside>
 
-      <aside className={`gia-panel ${activeOrg.packs.includes('gia') && giaOpen ? 'open' : ''}`}>
+      <aside className={`gia-panel ${giaVisible ? 'open' : ''}`}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -756,8 +767,6 @@ function OrganizationWorkspace({
   activityFilter,
   setActivityFilter,
   filteredActivity,
-  intelligenceStatus,
-  intelligenceEvents,
 }: {
   organization: OrganizationViewData;
   activeOrgTab: OrgTabId;
@@ -765,8 +774,6 @@ function OrganizationWorkspace({
   activityFilter: ActivityFilter;
   setActivityFilter: (filter: ActivityFilter) => void;
   filteredActivity: ActivityItem[];
-  intelligenceStatus: IntelligenceStatus | null;
-  intelligenceEvents: IntelligenceEvent[];
 }) {
   return (
     <section className="workspace-stack">
@@ -780,7 +787,7 @@ function OrganizationWorkspace({
 
       {activeOrgTab === 'overview' && <OverviewTab organization={organization} />}
       {activeOrgTab === 'timeline' && <TimelineTab timeline={organization.timeline} />}
-      {activeOrgTab === 'relationships' && <RelationshipsTab relationships={organization.relationships} />}
+      {activeOrgTab === 'relationships' && <RelationshipsTab relationships={organization.relationships} organizationName={organization.name} />}
       {activeOrgTab === 'documents' && <DocumentsTab documents={organization.documents} />}
       {activeOrgTab === 'insights' && <InsightsTab insights={organization.insights} />}
       {activeOrgTab === 'activity' && (
@@ -789,8 +796,6 @@ function OrganizationWorkspace({
           activityFilter={activityFilter}
           setActivityFilter={setActivityFilter}
           filteredActivity={filteredActivity}
-          intelligenceStatus={intelligenceStatus}
-          intelligenceEvents={intelligenceEvents}
         />
       )}
     </section>
@@ -866,7 +871,7 @@ function TimelineTab({ timeline }: { timeline: TimelineEvent[] }) {
           <div key={`${event.date}-${event.label}`} className="timeline-row">
             <div className="timeline-date">{event.date}</div>
             <div className="timeline-dot" style={{ background: event.dotColor }} />
-            <div>
+            <div className="activity-copy">
               <div className="row-title">{event.label}</div>
               <div className="row-sub">{event.detail}</div>
             </div>
@@ -877,20 +882,29 @@ function TimelineTab({ timeline }: { timeline: TimelineEvent[] }) {
   );
 }
 
-function RelationshipsTab({ relationships }: { relationships: Relationship[] }) {
+function RelationshipsTab({ relationships, organizationName }: { relationships: Relationship[]; organizationName: string }) {
+  const uniqueTargets = Array.from(new Set(relationships.map((edge) => edge.to)));
+  const MAX_CANVAS_NODES = 6;
+  const shown = uniqueTargets.slice(0, MAX_CANVAS_NODES);
+  const overflow = uniqueTargets.length - shown.length;
+  const nodeX = (index: number) => (shown.length > 1 ? 10 + index * (80 / (shown.length - 1)) : 50);
+
   return (
     <div className="two-col-grid">
       <Card title="Graph Canvas">
         <div className="relationship-canvas">
-          <div className="canvas-node core">Meridian Health Systems</div>
-          <div className="canvas-branch left">Northgate Supply</div>
-          <div className="canvas-branch right">Vantage Behavioral</div>
-          <div className="canvas-branch lower">Ohio Dept. of Health</div>
+          <div className="canvas-node core">{organizationName}</div>
+          {shown.map((target, index) => (
+            <div key={target} className="canvas-branch" style={{ left: `${nodeX(index)}%`, top: '58%', transform: 'translateX(-50%)' }}>
+              {target}
+            </div>
+          ))}
           <svg className="canvas-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <line x1="50" y1="24" x2="20" y2="48" />
-            <line x1="50" y1="24" x2="80" y2="48" />
-            <line x1="50" y1="24" x2="50" y2="77" />
+            {shown.map((target, index) => (
+              <line key={target} x1="50" y1="24" x2={nodeX(index)} y2="55" />
+            ))}
           </svg>
+          {overflow > 0 && <div className="canvas-overflow-note">+{overflow} more in Connections</div>}
         </div>
       </Card>
       <Card title="Connections">
@@ -957,15 +971,11 @@ function ActivityTab({
   activityFilter,
   setActivityFilter,
   filteredActivity,
-  intelligenceStatus,
-  intelligenceEvents,
 }: {
   syncStatuses: SyncStatus[];
   activityFilter: ActivityFilter;
   setActivityFilter: (filter: ActivityFilter) => void;
   filteredActivity: ActivityItem[];
-  intelligenceStatus: IntelligenceStatus | null;
-  intelligenceEvents: IntelligenceEvent[];
 }) {
   return (
     <div className="stack-col">
@@ -978,56 +988,6 @@ function ActivityTab({
           </div>
         ))}
       </div>
-
-      {intelligenceStatus && (
-        <Card title="Evidence-backed Intelligence" subtitle={intelligenceStatus.mode}>
-          <div className="sync-chip-row">
-            <div className="sync-chip">
-              <span className="status-dot" style={{ background: intelligenceStatus.status === 'hybrid' ? '#5FA86B' : '#F7C948' }} />
-              <span>KB state</span>
-              <span className="sync-label">{intelligenceStatus.status.toUpperCase()}</span>
-            </div>
-            <div className="sync-chip">
-              <span className="status-dot" style={{ background: '#3D9CA2' }} />
-              <span>Feeds</span>
-              <span className="sync-label">{intelligenceStatus.connectedFeeds.length}</span>
-            </div>
-            <div className="sync-chip">
-              <span className="status-dot" style={{ background: '#F7761F' }} />
-              <span>Events</span>
-              <span className="sync-label">{intelligenceStatus.eventCount}</span>
-            </div>
-            <div className="sync-chip">
-              <span className="status-dot" style={{ background: '#8A8FAE' }} />
-              <span>Last sync</span>
-              <span className="sync-label">{formatRelativeTime(intelligenceStatus.lastSuccessfulIngestionAt)}</span>
-            </div>
-          </div>
-          <div className="preview-copy" style={{ marginTop: 12 }}>{intelligenceStatus.note}</div>
-          <div className="list-stack" style={{ marginTop: 14 }}>
-            {intelligenceEvents.length > 0 ? (
-              intelligenceEvents.map((event) => {
-                const evidenceLabel = event.evidenceRefs[0]?.split('/').slice(-1)[0] ?? 'evidence';
-                return (
-                  <div key={event.eventId} className="activity-row">
-                    <span className="activity-chip" style={{ background: '#f3ecfb', color: '#6B3FA0' }}>KB</span>
-                    <div className="activity-copy">
-                      <div className="row-title">{event.title}</div>
-                      <div className="row-sub">{event.content}</div>
-                      <div className="row-sub">
-                        {event.entityRefs.join(' · ')} · {event.status ?? event.processingStatus} · {evidenceLabel}
-                      </div>
-                    </div>
-                    <div className="row-meta">{formatRelativeTime(event.observedAt)}</div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="row-sub">No evidence-backed events are available yet.</div>
-            )}
-          </div>
-        </Card>
-      )}
 
       <div className="filter-row">
         {(['all', 'email', 'call', 'social', 'filing', 'crm'] as ActivityFilter[]).map((filter) => (
@@ -1055,6 +1015,59 @@ function ActivityTab({
         </div>
       </div>
     </div>
+  );
+}
+
+function IntelligenceCard({ status, events }: { status: IntelligenceStatus | null; events: IntelligenceEvent[] }) {
+  if (!status) return null;
+  return (
+    <Card title="Evidence-backed Intelligence" subtitle={status.mode}>
+      <div className="sync-chip-row">
+        <div className="sync-chip">
+          <span className="status-dot" style={{ background: status.status === 'hybrid' ? '#5FA86B' : '#F7C948' }} />
+          <span>KB state</span>
+          <span className="sync-label">{status.status.toUpperCase()}</span>
+        </div>
+        <div className="sync-chip">
+          <span className="status-dot" style={{ background: '#3D9CA2' }} />
+          <span>Feeds</span>
+          <span className="sync-label">{status.connectedFeeds.length}</span>
+        </div>
+        <div className="sync-chip">
+          <span className="status-dot" style={{ background: '#F7761F' }} />
+          <span>Events</span>
+          <span className="sync-label">{status.eventCount}</span>
+        </div>
+        <div className="sync-chip">
+          <span className="status-dot" style={{ background: '#8A8FAE' }} />
+          <span>Last sync</span>
+          <span className="sync-label">{formatRelativeTime(status.lastSuccessfulIngestionAt)}</span>
+        </div>
+      </div>
+      <div className="preview-copy" style={{ marginTop: 12 }}>{status.note}</div>
+      <div className="list-stack" style={{ marginTop: 14 }}>
+        {events.length > 0 ? (
+          events.map((event) => {
+            const evidenceLabel = event.evidenceRefs[0]?.split('/').slice(-1)[0] ?? 'evidence';
+            return (
+              <div key={event.eventId} className="activity-row">
+                <span className="activity-chip" style={{ background: '#f3ecfb', color: '#6B3FA0' }}>KB</span>
+                <div className="activity-copy">
+                  <div className="row-title">{event.title}</div>
+                  <div className="row-sub">{event.content}</div>
+                  <div className="row-sub">
+                    {event.entityRefs.join(' · ')} · {event.status ?? event.processingStatus} · {evidenceLabel}
+                  </div>
+                </div>
+                <div className="row-meta">{formatRelativeTime(event.observedAt)}</div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="row-sub">No evidence-backed events are available yet.</div>
+        )}
+      </div>
+    </Card>
   );
 }
 
@@ -1256,6 +1269,40 @@ function NoOrgDataState({ orgName, suggestion }: { orgName: string; suggestion?:
     <div className="no-org-data">
       <div className="no-org-data-title">No workspace data for {orgName}</div>
       {suggestion && <div className="no-org-data-sub">{suggestion}</div>}
+    </div>
+  );
+}
+
+function ExposureNetworkSummary({ orgName, onOpenGraph }: { orgName: string; onOpenGraph: () => void }) {
+  return (
+    <div className="two-col-grid">
+      <Card title={`${orgName} -- Tracked Projects & SPVs`} subtitle="Exposure Network due-diligence data">
+        <div className="list-stack">
+          {SPV_DEFS.map((spv) => (
+            <div key={spv.id} className="info-row">
+              <div className="activity-copy">
+                <div className="row-title">{spv.project}</div>
+                <div className="row-sub">{spv.spv}</div>
+              </div>
+              <div className="row-meta">{spv.status}</div>
+            </div>
+          ))}
+        </div>
+        <button className="ghost-button" style={{ marginTop: 14 }} onClick={onOpenGraph}>Open full Exposure Network</button>
+      </Card>
+      <Card title="Promoter & Family Office Network" subtitle="Pending verification -- see Graph tab for evidence grading">
+        <div className="list-stack">
+          {PROMOTER_NETWORK.map((lead) => (
+            <div key={lead.name} className="info-row">
+              <div className="activity-copy">
+                <div className="row-title">{lead.name}</div>
+                <div className="row-sub">{lead.role}</div>
+                <div className="row-sub">{lead.note}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   );
 }
