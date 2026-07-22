@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AuthProvider, useAuth } from '@odic/auth';
 import { ExposureNetwork } from './exposureNetwork/ExposureNetwork';
+import { PROMOTER_NETWORK, SPV_DEFS } from './exposureNetwork/data';
 import './styles.css';
 
 type ViewId = 'organization' | 'search' | 'reports' | 'graph' | 'connect';
@@ -505,13 +506,18 @@ function App() {
     setGiaLoading(true);
     setGiaError(null);
     try {
-      const org = workspace.organization;
-      const context = [
-        `Organization: ${org.name} (${org.meta.industry}, ${org.meta.hq}, ${org.meta.employees} employees, risk level: ${org.meta.riskLevel})`,
-        `Open risks: ${org.risks.map((r) => `[${r.severity}] ${r.title} -- ${r.detail}`).join('; ')}`,
-        `Opportunities: ${org.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
-        `Key people: ${org.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
-      ].join('\n');
+      const context = activeOrg.packs.includes('workspace-data')
+        ? [
+            `Organization: ${workspace.organization.name} (${workspace.organization.meta.industry}, ${workspace.organization.meta.hq}, ${workspace.organization.meta.employees} employees, risk level: ${workspace.organization.meta.riskLevel})`,
+            `Open risks: ${workspace.organization.risks.map((r) => `[${r.severity}] ${r.title} -- ${r.detail}`).join('; ')}`,
+            `Opportunities: ${workspace.organization.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
+            `Key people: ${workspace.organization.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
+          ].join('\n')
+        : [
+            `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, not a CRM-style org record.`,
+            `Tracked projects/SPVs: ${SPV_DEFS.map((s) => `${s.project} (${s.spv}) -- ${s.status}`).join('; ')}`,
+            `Promoter & family office network (pending verification -- do not overstate confidence): ${PROMOTER_NETWORK.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; ')}`,
+          ].join('\n');
 
       const token = await getAccessToken();
       const response = await fetch(`${API_BASE}/api/gia/chat`, {
@@ -582,7 +588,7 @@ function App() {
 
         <SectionLabel>RECENT</SectionLabel>
         <div className="sidebar-group recent-list">
-          {workspace.recentItems.map((item) => (
+          {(activeOrg.packs.includes('workspace-data') ? workspace.recentItems : []).map((item) => (
             <button key={item} className="recent-item">{item}</button>
           ))}
         </div>
@@ -622,27 +628,33 @@ function App() {
       <main className="main-content">
         <div className="page-head">
           <div>
-            <div className="page-title">{workspace.organization.name}</div>
-            <div className="page-meta">{pageMeta.industry} · {pageMeta.hq} · {pageMeta.employees} employees</div>
+            <div className="page-title">{activeOrg.packs.includes('workspace-data') ? workspace.organization.name : activeOrg.name}</div>
+            {activeOrg.packs.includes('workspace-data') ? (
+              <div className="page-meta">{pageMeta.industry} · {pageMeta.hq} · {pageMeta.employees} employees</div>
+            ) : (
+              <div className="page-meta">{activeOrg.packs.includes('exposure-network') ? 'Exposure Network Intelligence' : 'No workspace data configured'}</div>
+            )}
           </div>
           <div className="page-actions">
             <span className={`data-pill ${dataState}`}>{dataState === 'live' ? 'LIVE API' : 'SEED DATA'}</span>
             {apiError ? <span className="api-error-pill">API fallback: {apiError}</span> : null}
-            <span className="risk-pill">{pageMeta.riskLevel}</span>
+            {activeOrg.packs.includes('workspace-data') && <span className="risk-pill">{pageMeta.riskLevel}</span>}
             <button className="ghost-button">Generate Report</button>
             <button className="primary-button">Open Workspace</button>
           </div>
         </div>
 
-        <section className="stats-grid">
-          {workspace.organization.stats.map((card) => (
-            <div key={card.label} className="stat-card" style={{ borderTopColor: card.accent }}>
-              <div className="stat-label">{card.label}</div>
-              <div className="stat-value">{card.value}</div>
-              <div className="stat-sub" style={{ color: card.subColor }}>{card.sub}</div>
-            </div>
-          ))}
-        </section>
+        {activeOrg.packs.includes('workspace-data') && (
+          <section className="stats-grid">
+            {workspace.organization.stats.map((card) => (
+              <div key={card.label} className="stat-card" style={{ borderTopColor: card.accent }}>
+                <div className="stat-label">{card.label}</div>
+                <div className="stat-value">{card.value}</div>
+                <div className="stat-sub" style={{ color: card.subColor }}>{card.sub}</div>
+              </div>
+            ))}
+          </section>
+        )}
 
         {activeView === 'organization' && (
           activeOrg.packs.includes('workspace-data') ? (
@@ -724,7 +736,7 @@ function App() {
         {giaError && <div className="gia-error">{giaError}</div>}
 
         <div className="gia-card-list">
-          {workspace.giaCards.map((card) => (
+          {(activeOrg.packs.includes('workspace-data') ? workspace.giaCards : []).map((card) => (
             <div key={card.title} className="gia-card">
               <div className="gia-card-title">{card.title}</div>
               <div className="gia-card-body">{card.body}</div>
