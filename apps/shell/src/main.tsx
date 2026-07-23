@@ -111,10 +111,15 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'connect', label: 'Connect', code: 'CNCT' },
 ];
 
-type OrgProfile = { id: string; name: string; packs: Pack[] };
+type OrgProfile = { id: string; name: string; packs: Pack[]; intelligenceEntityIds?: string[] };
 const ORGANIZATIONS: OrgProfile[] = [
   { id: 'meridian', name: 'Meridian Health Systems', packs: ['workspace-data', 'gia', 'connect'] },
-  { id: 'smartworld', name: 'Smartworld Developers', packs: ['exposure-network', 'gia'] },
+  {
+    id: 'smartworld',
+    name: 'Smartworld Developers',
+    packs: ['exposure-network', 'gia'],
+    intelligenceEntityIds: ['smartworld-sky-arc', 'm3m-ecosystem', 'smartworld developers', 'smartworld-developers', 'm3m'],
+  },
 ];
 
 const ORG_TABS: { id: OrgTabId; label: string }[] = [
@@ -504,9 +509,14 @@ function App() {
         const merged = mergeWorkspaceData(DEFAULT_WORKSPACE, json);
 
         const authHeaders = token ? { Authorization: `Bearer ${token}` } : undefined;
+        const orgForIntel = organizations.find((o) => o.id === activeOrgId);
+        const entityScope = orgForIntel?.intelligenceEntityIds?.join(',');
+        const eventsUrl = entityScope
+          ? `${API_BASE}/api/intelligence/events?entityId=${encodeURIComponent(entityScope)}`
+          : null;
         const [statusResult, eventsResult, connectResult] = await Promise.allSettled([
           fetch(`${API_BASE}/api/intelligence/status`, { signal: controller.signal, headers: authHeaders }),
-          fetch(`${API_BASE}/api/intelligence/events`, { signal: controller.signal, headers: authHeaders }),
+          eventsUrl ? fetch(eventsUrl, { signal: controller.signal, headers: authHeaders }) : Promise.resolve(null),
           fetch(`${API_BASE}/api/connect/status`, { signal: controller.signal, headers: authHeaders }),
         ]);
 
@@ -516,7 +526,7 @@ function App() {
         if (statusResult.status === 'fulfilled' && statusResult.value.ok) {
           nextIntelligenceStatus = (await statusResult.value.json()) as IntelligenceStatus;
         }
-        if (eventsResult.status === 'fulfilled' && eventsResult.value.ok) {
+        if (eventsResult.status === 'fulfilled' && eventsResult.value?.ok) {
           const eventsJson = (await eventsResult.value.json()) as { events?: IntelligenceEvent[] };
           nextIntelligenceEvents = Array.isArray(eventsJson.events) ? eventsJson.events : [];
         }

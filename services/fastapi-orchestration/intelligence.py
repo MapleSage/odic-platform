@@ -175,11 +175,12 @@ def get_intelligence_status() -> dict:
 def get_intelligence_events(entity_id: str | None = None) -> dict:
     events = _build_events()
     if entity_id:
-        needle = entity_id.strip().lower()
+        needles = {v.strip().lower() for v in entity_id.split(",") if v.strip()}
         events = [
             event
             for event in events
-            if event.get("entityId", "").lower() == needle or needle in {ref.lower() for ref in event.get("entityRefs", [])}
+            if event.get("entityId", "").lower() in needles
+            or needles & {ref.lower() for ref in event.get("entityRefs", [])}
         ]
     return {"count": len(events), "events": events}
 
