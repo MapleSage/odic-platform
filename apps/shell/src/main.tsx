@@ -737,7 +737,7 @@ function App() {
             <NoOrgDataState orgName={activeOrg.name} />
           )
         )}
-        {activeView === 'search' && <SearchWorkspace getAccessToken={getAccessToken} />}
+        {activeView === 'search' && <SearchWorkspace getAccessToken={getAccessToken} activeOrgId={activeOrgId} activeOrgName={activeOrg.name} />}
         {activeView === 'reports' && (
           activeOrg.packs.includes('workspace-data') ? (
             <ReportsWorkspace reports={workspace.reports} />
@@ -1222,9 +1222,18 @@ function IntelligenceCard({ status, events }: { status: IntelligenceStatus | nul
 type LiveSearchResult = SearchResult & { org: string };
 type LiveSearchResponse = { query: string; org: string | null; results: LiveSearchResult[]; facets: SearchFacet[]; total: number; source: string; degraded?: boolean; warning?: string };
 
-function SearchWorkspace({ getAccessToken }: { getAccessToken: () => Promise<string | null> }) {
+function SearchWorkspace({
+  getAccessToken,
+  activeOrgId,
+  activeOrgName,
+}: {
+  getAccessToken: () => Promise<string | null>;
+  activeOrgId: string;
+  activeOrgName: string;
+}) {
   const [query, setQuery] = useState('');
   const [activeFacet, setActiveFacet] = useState<string | null>(null);
+  const [searchAllOrgs, setSearchAllOrgs] = useState(false);
   const [response, setResponse] = useState<LiveSearchResponse | null>(null);
   const [selected, setSelected] = useState<LiveSearchResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -1240,6 +1249,7 @@ function SearchWorkspace({ getAccessToken }: { getAccessToken: () => Promise<str
         const params = new URLSearchParams();
         if (query) params.set('q', query);
         if (activeFacet) params.set('facet', activeFacet);
+        if (!searchAllOrgs) params.set('org', activeOrgId);
         const res = await fetch(`${API_BASE}/api/search?${params.toString()}`, {
           signal: controller.signal,
           headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -1258,7 +1268,7 @@ function SearchWorkspace({ getAccessToken }: { getAccessToken: () => Promise<str
       clearTimeout(timer);
       controller.abort();
     };
-  }, [query, activeFacet, getAccessToken]);
+  }, [query, activeFacet, searchAllOrgs, activeOrgId, getAccessToken]);
 
   return (
     <div className="search-layout">
@@ -1279,7 +1289,11 @@ function SearchWorkspace({ getAccessToken }: { getAccessToken: () => Promise<str
 
       <Card
         title="Search Results"
-        subtitle={loading ? 'Searching...' : `${response?.total ?? 0} results across all organizations${response?.degraded ? ' (Azure Search unavailable, showing local results)' : ''}`}
+        subtitle={
+          loading
+            ? 'Searching...'
+            : `${response?.total ?? 0} results in ${searchAllOrgs ? 'all organizations' : activeOrgName}${response?.degraded ? ' (Azure Search unavailable, showing local results)' : ''}`
+        }
       >
         <input
           className="gia-search-input"
@@ -1288,6 +1302,10 @@ function SearchWorkspace({ getAccessToken }: { getAccessToken: () => Promise<str
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
+        <label className="search-scope-toggle">
+          <input type="checkbox" checked={searchAllOrgs} onChange={(event) => setSearchAllOrgs(event.target.checked)} />
+          Search all organizations
+        </label>
         {error ? <div className="gia-error">{error}</div> : null}
         <div className="list-stack">
           {(response?.results ?? []).map((result) => (
