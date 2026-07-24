@@ -731,13 +731,7 @@ function App() {
             <NoOrgDataState orgName={activeOrg.name} />
           )
         )}
-        {activeView === 'search' && (
-          activeOrg.packs.includes('workspace-data') ? (
-            <SearchWorkspace search={workspace.search} />
-          ) : (
-            <NoOrgDataState orgName={activeOrg.name} suggestion="Search isn't built for Exposure Network workspaces yet -- see the Organization tab for tracked projects and the Graph tab for full diligence." />
-          )
-        )}
+        {activeView === 'search' && <SearchWorkspace getAccessToken={getAccessToken} />}
         {activeView === 'reports' && (
           activeOrg.packs.includes('workspace-data') ? (
             <ReportsWorkspace reports={workspace.reports} />
@@ -1219,38 +1213,98 @@ function IntelligenceCard({ status, events }: { status: IntelligenceStatus | nul
   );
 }
 
-function SearchWorkspace({ search }: { search: SearchViewData }) {
+type LiveSearchResult = SearchResult & { org: string };
+type LiveSearchResponse = { query: string; org: string | null; results: LiveSearchResult[]; facets: SearchFacet[]; total: number; source: string; degraded?: boolean; warning?: string };
+
+function SearchWorkspace({ getAccessToken }: { getAccessToken: () => Promise<string | null> }) {
+  const [query, setQuery] = useState('');
+  const [activeFacet, setActiveFacet] = useState<string | null>(null);
+  const [response, setResponse] = useState<LiveSearchResponse | null>(null);
+  const [selected, setSelected] = useState<LiveSearchResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = await getAccessToken();
+        const params = new URLSearchParams();
+        if (query) params.set('q', query);
+        if (activeFacet) params.set('facet', activeFacet);
+        const res = await fetch(`${API_BASE}/api/search?${params.toString()}`, {
+          signal: controller.signal,
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: LiveSearchResponse = await res.json();
+        setResponse(data);
+        setSelected((current) => (current && data.results.some((r) => r.name === current.name) ? current : data.results[0] ?? null));
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 200);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, activeFacet, getAccessToken]);
+
   return (
     <div className="search-layout">
-      <Card title="Filters">
+      <Card title="Filters" subtitle={response?.source === 'azure-ai-search' ? 'Azure AI Search' : 'Local org registry'}>
         <div className="list-stack">
-          {search.facets.map((facet) => (
-            <div key={facet.label} className="info-row">
+          {(response?.facets ?? []).map((facet) => (
+            <button
+              key={facet.label}
+              className={`info-row facet-button ${activeFacet && facet.label.toUpperCase().startsWith(activeFacet) ? 'active' : ''}`}
+              onClick={() => setActiveFacet((current) => (current === facet.label ? null : facet.label))}
+            >
               <div className="row-title">{facet.label}</div>
               <div className="row-metric">{facet.count}</div>
-            </div>
+            </button>
           ))}
         </div>
       </Card>
 
-      <Card title="Search Results" subtitle={search.summary}>
+      <Card
+        title="Search Results"
+        subtitle={loading ? 'Searching...' : `${response?.total ?? 0} results across all organizations${response?.degraded ? ' (Azure Search unavailable, showing local results)' : ''}`}
+      >
+        <input
+          className="gia-search-input"
+          type="text"
+          placeholder="Search organizations, people, risks, documents, opportunities..."
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+        {error ? <div className="gia-error">{error}</div> : null}
         <div className="list-stack">
-          {search.results.map((result) => (
-            <div key={`${result.code}-${result.name}`} className="search-result">
+          {(response?.results ?? []).map((result) => (
+            <button
+              key={`${result.org}-${result.code}-${result.name}`}
+              className={`search-result ${selected?.name === result.name ? 'active' : ''}`}
+              onClick={() => setSelected(result)}
+            >
               <span className="search-code">{result.code}</span>
               <div className="activity-copy">
                 <div className="row-title">{result.name}</div>
                 <div className="row-sub">{result.sub}</div>
               </div>
-              <span className="result-tag" style={{ background: result.badgeBg, color: result.badgeColor }}>{result.tag}</span>
-            </div>
+              <span className="result-tag">{result.tag}</span>
+            </button>
           ))}
+          {!loading && response && response.results.length === 0 ? <div className="row-sub">No results.</div> : null}
         </div>
       </Card>
 
-      <Card title={search.results[0]?.name ?? 'No result selected'}>
+      <Card title={selected?.name ?? 'No result selected'}>
         <div className="preview-copy">
-          Healthcare Delivery health system operating 8,200 employees across Columbus, OH. Selected from search results for quick preview without leaving the workspace.
+          {selected ? `${selected.sub} -- ${selected.tag}` : 'Select a result to preview it here.'}
         </div>
       </Card>
     </div>

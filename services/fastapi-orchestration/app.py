@@ -2,10 +2,12 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth import get_current_user
+from azure_search import configured as azure_search_configured, search as azure_search_query
 from connect import EmailRequest, EmailResponse, WhatsAppRequest, WhatsAppResponse, get_connect_status, send_email, send_whatsapp
 from gia import ChatRequest, ChatResponse, ask_gia
 from intelligence import get_intelligence_evidence, get_intelligence_events, get_intelligence_status, get_source_registry
 from orgs import get_organizations, get_workspace_data
+from search import local_search
 
 app = FastAPI(title="ODIC Orchestration")
 
@@ -40,8 +42,27 @@ def workspace_organization(org: str = "meridian"):
     return get_workspace_data(org)["organization"]
 
 
+@api.get('/api/search')
+def search(q: str = "", org: str | None = None, facet: str | None = None):
+    """Search across every registered org. Azure AI Search is used when
+    configured (ATLAS_AZURE_SEARCH_ENDPOINT/INDEX + AZURE_SEARCH_API_KEY);
+    otherwise -- and if a configured live request fails -- falls back to a
+    deterministic local search over the file-backed org registry."""
+    if azure_search_configured():
+        try:
+            return azure_search_query(query=q, org=org, facet=facet)
+        except RuntimeError as exc:
+            result = local_search(query=q, org_id=org, facet=facet)
+            result['degraded'] = True
+            result['warning'] = str(exc)
+            return result
+    return local_search(query=q, org_id=org, facet=facet)
+
+
 @api.get('/api/workspace/search')
-def workspace_search(org: str = "meridian"):
+def workspace_search(org: str = "meridian", q: str = "", facet: str | None = None):
+    if q or facet:
+        return search(q=q, org=org, facet=facet)
     return get_workspace_data(org)["search"]
 
 

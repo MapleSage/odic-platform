@@ -823,6 +823,34 @@ button {
   padding: 6px 0;
 }
 
+button.search-result,
+button.facet-button {
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+button.search-result:hover,
+button.facet-button:hover {
+  background: #f4f8fb;
+}
+
+button.search-result.active,
+button.facet-button.active {
+  background: #e7f4f5;
+}
+
+button.facet-button {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px;
+  margin: -6px -8px 0;
+}
+
 .activity-copy {
   flex: 1;
   min-width: 0;
