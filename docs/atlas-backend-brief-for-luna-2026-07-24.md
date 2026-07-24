@@ -10,11 +10,19 @@ Parvind's read, prompted by noticing HubSpot's own Sales Workspace/Agent: HubSpo
 
 Practically: the two items the 07-23 doc ranked lowest (P3 hierarchy, P5 contact-level harvesting) are the ones that differentiate Atlas. They should not sit behind search and org-completeness in sequence — run them in parallel once P0/P1 below are addressed, not strictly after P2.
 
-## P0 — New: bring more real orgs online (was implicit, now explicit)
+## P0 — CORRECTED, this is the actual core: generalize the Exposure Network graph so every org gets one, not just Smartworld
 
-Only `meridian.json` is a fully populated org data file. `smartworld.json` still does not exist (confirmed today — `services/fastapi-orchestration/data/orgs/` has only `index.json` + `meridian.json`). Every other registered org shows empty states outside its Exposure Network tab.
+**This supersedes the P0 originally written above (bring more real orgs online) — that's now folded in as a sub-requirement of this one, because they're the same gap.** Parvind confirmed 2026-07-24: the bipartite drillable graph (left flank = suppliers/vendors/licensees, right flank = capital/buyers, center = platform + project/SPV entities, full drill-down into sub-entities, interlocking-directorate panel) is the actual core differentiator — "our Bloomberg Terminal style with ticker and other data." Not the flat People list, not HubSpot-style contact records — this graph, for every customer.
 
-Ask: for every current HubSpot customer/org that should be visible in Atlas, produce a `data/orgs/<id>.json` matching the `meridian.json` schema. This is the literal blocker for "add all current HubSpot customers" — right now there is no ingestion path from HubSpot into Atlas's org registry at all; each org file today is hand-authored, not synced.
+**What's actually there today, verified by reading the files directly:** `apps/shell/src/exposureNetwork/data.ts` (432 lines) and `ExposureNetwork.tsx` (472 lines). This is real, well-built, evidence-graded work — `SPV_DEFS` has six actual Smartworld project SPVs with CINs, RERA registration numbers, director names, land-title/SARFAESI chains; `LEFT_DEFS`/`RIGHT_DEFS` are the supplier and buyer flanks with A-D confidence grades and source IDs; `INTERLOCKS` maps shared directors across SPVs; drill-down goes card → modal → sub-entity chart → breadcrumb stack back out. Genuinely good.
+
+**The problem:** every one of those data structures is hardcoded as literal TypeScript, specific to Smartworld Developers Pvt Ltd by name. There is no schema, no per-org JSON, no backend endpoint — nothing generic underneath. Open this tab for Meridian or any other org and there's nothing to render, because the component isn't parameterized to point at different data; it *is* the data. This exactly matches the "Exposure network backend" item already flagged in `docs/backend/backend-roadmap-next.md` (#2: "concrete relationship graph with sourced edges, confidence grades, drill-down modals, full-chart expansion, interlocking directorate panel") — that roadmap doc had this right; this brief previously under-ranked it.
+
+**The ask:** define a generic per-org exposure-graph schema — platform node, project/SPV/entity nodes, left-flank supplier/vendor/licensee edges, right-flank capital/buyer edges, confidence grade (A-D) + source ID per edge, sub-entity children for drill-down, interlocking-directorate list — and produce a `data/orgs/<id>/exposure-network.json` (or equivalent) per customer, so the same renderer that currently only works for Smartworld can render any org. This absorbs the original "bring more real orgs online" ask (`data/orgs/<id>.json` for org/search/reports/graph) as part of the same schema-generalization work, not a separate task.
+
+**UPDATE 2026-07-24, later same day — frontend half of this is now DONE, commit `40d089f` on `main`.** The schema described above already exists in code: `apps/shell/src/exposureNetwork/schema.ts` defines `ExposureNetworkData` (and its constituent types — `SpvDef`, `FlankDef`, `ExtraDef`, `EntityDef`, etc.) almost exactly as specified two paragraphs up. Smartworld's data has been repackaged (unchanged content) into `apps/shell/src/exposureNetwork/orgs/smartworld.ts` as the first `ExposureNetworkData` object, loaded via `apps/shell/src/exposureNetwork/registry.ts`'s `getExposureNetworkData(orgId)`. `ExposureNetwork.tsx` now takes an `orgId` prop and renders whatever the registry returns, with an explicit empty state for orgs with no file yet — it no longer has Smartworld baked in. Typechecked clean (`tsc --noEmit`, exit 0), Smartworld still renders identically.
+
+**What's actually still needed from Luna, narrowed:** `registry.ts` is a static in-code map right now (`{ smartworld: smartworldExposureNetwork }`), explicitly marked `TODO(Luna, backend)` in both `registry.ts` and `orgs/smartworld.ts`. The real ask is now concrete and testable against real code, not hypothetical: a `GET /api/orgs/:id/exposure-network` (or equivalent) endpoint returning JSON matching the `ExposureNetworkData` shape in `schema.ts` — read that file directly, it's the contract. Once it exists, swapping `registry.ts`'s lookup for a `fetch()` is a small, contained frontend change (loading/error state added to the component), not a redesign.
 
 ## P1 — Real search (unchanged from 07-23, still fully open)
 
@@ -28,15 +36,24 @@ GET /api/search?q=<query>&org=<org_id>&facet=<type>
 
 Result row shape the frontend expects: `{"code": "ORG|PPL|DOC|RSK", "name": "string", "sub": "string", "tag": "string"}`; facets as `{"label": "string", "count": number}`. Open to a richer shape if that's more natural on your end — just needs to be specified back so the frontend contract can change with it.
 
-## P2 (elevated from P3) — Hierarchical org-chart + contact-level depth, together
+## P1.5 (elevated from P3/P5) — Hierarchical org-chart + contact-level depth, together, for EVERY org
 
 Merging the old P3 and P5 into one workstream since they're the actual differentiator and should ship together, not staggered.
 
-**Org chart:** People tab today is a flat list — verified live: a person record is exactly `{name, title, dept, lastActivity}`, four fields, nothing else. Per the original Kiro requirements doc §3.2, need `reports_to` / `direct_reports` / `level` per person so the frontend can render a real hierarchy instead of a flat list. Claude Code already shipped the frontend affordance for this (clickable Key People rows opening a drill-down modal, commit `90c7d71`) — but it's a UI pattern sitting on top of the same four flat fields. There's currently nothing underneath it to drill into beyond activity-feed text mentions.
+**This is a data-architecture requirement, not a UI-parity request. Not trying to rip off HubSpot.** The ask is that "person" stops being a row and becomes a real record — for every org in the registry, not just Meridian, and not as a one-off demo polish.
 
-**Contact-level harvesting:** per Kiro spec §3.1 — direct dials, email, LinkedIn. None of this exists for any org yet. This was ranked lowest in the 07-23 doc; per the re-rank above, treat it as equal priority to the org chart, not an afterthought.
+**What's broken today, precisely:** a person is exactly this object, verified live against `meridian.json`:
+```json
+{"name": "Dana Ferris", "title": "CFO", "dept": "Finance", "lastActivity": "2d ago"}
+```
+Four fields. Nothing else. Click a person in the Key People list and there is nowhere to go — no activity history specific to them, no phone/email/LinkedIn, no deals/documents/risks tied to that person, no reporting line. Claude Code already shipped a frontend drill-down modal for this (commit `90c7d71`), but it opens onto the same four flat fields — a UI affordance with nothing behind it.
 
-**Reference pattern (from HubSpot screenshots Parvind shared 2026-07-24):** the concrete UI target for "detail that goes multiple levels deep" is HubSpot's own contact record — three-panel layout: left panel is identity + quick actions (Note/Email/Call/Task/Meeting), center panel is tabbed activity history (All activities/Notes/Emails/Calls/Tasks/Meetings) with full threaded email bodies inline, right panel is stacked collapsible association cards (Companies/Lead stage tracker/Deals/Quotes), each with its own count and +Add. Atlas's Meridian workspace already has the shell of this (six tabs, graph canvas) — the gap is exactly what's listed above: no per-person activity thread, no association depth beyond the four flat fields, and nothing behind it for any org but Meridian.
+**What "drillable" means, concretely, per person, per org:**
+- `reports_to` / `direct_reports` / `level` (Kiro §3.2) — a real hierarchy, not a flat list
+- direct dial, email, LinkedIn (Kiro §3.1)
+- every document/risk/deal/activity-feed entry that names or involves that specific person, queryable, not just mentioned in prose
+
+**Reference point (from HubSpot screenshots Parvind shared 2026-07-24) — for illustrating the shape, not for copying:** HubSpot's own contact record shows what a real per-person record looks like once it exists — identity panel, tabbed activity history (All activities/Notes/Emails/Calls/Tasks/Meetings) with full email threads inline, and stacked association cards (Companies/Deals/Quotes) each with a live count. That's one example of "depth," included only so there's no ambiguity about what "flat 4-field person" vs. "drillable record" means in practice. The actual deliverable is Atlas's own data model, populated for every org — Meridian, Smartworld, and everything added under P0 — not a HubSpot clone.
 
 ## P3 (was P4) — Smartworld/M3M cron delivery bug
 
