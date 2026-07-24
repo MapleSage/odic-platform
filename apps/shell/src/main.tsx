@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AuthProvider, useAuth } from '@odic/auth';
 import { ExposureNetwork } from './exposureNetwork/ExposureNetwork';
-import { PROMOTER_NETWORK, SPV_DEFS } from './exposureNetwork/data';
+import { getExposureNetworkData } from './exposureNetwork/registry';
 import './styles.css';
 
 type ViewId = 'organization' | 'search' | 'reports' | 'graph' | 'connect';
@@ -570,11 +570,17 @@ function App() {
             `Opportunities: ${workspace.organization.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
             `Key people: ${workspace.organization.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
           ].join('\n')
-        : [
-            `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, not a CRM-style org record.`,
-            `Tracked projects/SPVs: ${SPV_DEFS.map((s) => `${s.project} (${s.spv}) -- ${s.status}`).join('; ')}`,
-            `Promoter & family office network (pending verification -- do not overstate confidence): ${PROMOTER_NETWORK.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; ')}`,
-          ].join('\n');
+        : (() => {
+            const exposureData = getExposureNetworkData(activeOrg.id);
+            if (!exposureData) {
+              return `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, but no data file exists for it yet.`;
+            }
+            return [
+              `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, not a CRM-style org record.`,
+              `Tracked projects/SPVs: ${exposureData.spvDefs.map((s) => `${s.project} (${s.spv}) -- ${s.status}`).join('; ')}`,
+              `Promoter & family office network (pending verification -- do not overstate confidence): ${exposureData.promoterNetwork.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; ')}`,
+            ].join('\n');
+          })();
 
       const token = await getAccessToken();
       const response = await fetch(`${API_BASE}/api/gia/chat`, {
@@ -616,7 +622,7 @@ function App() {
   const pageMeta = workspace.organization.meta;
 
   if (exposureFullScreen) {
-    return <ExposureNetwork fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />;
+    return <ExposureNetwork orgId={activeOrg.id} fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />;
   }
 
   const giaVisible = activeOrg.packs.includes('gia') && giaOpen;
@@ -726,7 +732,7 @@ function App() {
               filteredActivity={filteredActivity}
             />
           ) : activeOrg.packs.includes('exposure-network') ? (
-            <ExposureNetworkSummary orgName={activeOrg.name} onOpenGraph={() => setActiveView('graph')} />
+            <ExposureNetworkSummary orgId={activeOrg.id} orgName={activeOrg.name} onOpenGraph={() => setActiveView('graph')} />
           ) : (
             <NoOrgDataState orgName={activeOrg.name} />
           )
@@ -742,7 +748,7 @@ function App() {
         {activeView === 'graph' && (
           activeOrg.packs.includes('exposure-network') ? (
             <div className="graph-workspace-embed">
-              <ExposureNetwork fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
+              <ExposureNetwork orgId={activeOrg.id} fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
               <IntelligenceCard status={intelligenceStatus} events={intelligenceEvents} />
             </div>
           ) : (
@@ -1475,12 +1481,16 @@ function NoOrgDataState({ orgName, suggestion }: { orgName: string; suggestion?:
   );
 }
 
-function ExposureNetworkSummary({ orgName, onOpenGraph }: { orgName: string; onOpenGraph: () => void }) {
+function ExposureNetworkSummary({ orgId, orgName, onOpenGraph }: { orgId: string; orgName: string; onOpenGraph: () => void }) {
+  const exposureData = getExposureNetworkData(orgId);
+  if (!exposureData) {
+    return <NoOrgDataState orgName={orgName} suggestion="No Exposure Network has been built for this organization yet." />;
+  }
   return (
     <div className="two-col-grid">
       <Card title={`${orgName} -- Tracked Projects & SPVs`} subtitle="Exposure Network due-diligence data">
         <div className="list-stack">
-          {SPV_DEFS.map((spv) => (
+          {exposureData.spvDefs.map((spv) => (
             <div key={spv.id} className="info-row">
               <div className="activity-copy">
                 <div className="row-title">{spv.project}</div>
@@ -1494,7 +1504,7 @@ function ExposureNetworkSummary({ orgName, onOpenGraph }: { orgName: string; onO
       </Card>
       <Card title="Promoter & Family Office Network" subtitle="Pending verification -- see Graph tab for evidence grading">
         <div className="list-stack">
-          {PROMOTER_NETWORK.map((lead) => (
+          {exposureData.promoterNetwork.map((lead) => (
             <div key={lead.name} className="info-row">
               <div className="activity-copy">
                 <div className="row-title">{lead.name}</div>

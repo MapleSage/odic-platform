@@ -6,18 +6,11 @@ import {
   CARD_W,
   CARD_H,
   ROW_Y,
-  ENTITY_REGISTRY,
-  SPV_DEFS,
-  LEFT_DEFS,
-  RIGHT_DEFS,
-  LEFT_EXTRAS,
-  RIGHT_EXTRAS,
-  INTERLOCKS,
-  PLATFORM_MODAL,
-  PROMOTER_NETWORK,
   type Grade,
   type FlankDef,
-} from './data';
+  type EntityDef,
+} from './schema';
+import { getExposureNetworkData } from './registry';
 
 type InspectorContent = { title: string; subtitle: string; rows: { label: string; value: string }[] };
 type ModalChild = { id?: string; name: string; role: string; onClick: () => void };
@@ -35,15 +28,69 @@ const DEFAULT_INSPECTOR: InspectorContent = {
   rows: [],
 };
 
-export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScreen }: {
+export function ExposureNetwork({
+  orgId,
+  fullScreen,
+  onOpenFullScreen,
+  onCloseFullScreen,
+}: {
+  orgId: string;
   fullScreen: boolean;
   onOpenFullScreen: () => void;
   onCloseFullScreen: () => void;
 }) {
+  const data = getExposureNetworkData(orgId);
+
   const [selected, setSelected] = useState<InspectorContent>(DEFAULT_INSPECTOR);
   const [modal, setModal] = useState<ModalContent | null>(null);
   const [drillStack, setDrillStack] = useState<ModalContent[]>([]);
   const [chartView, setChartView] = useState<string | null>(null);
+
+  // Empty state per the original design handoff's own recommendation
+  // (design_handoff_odic_intelligence_platform/README.md, "Loading/empty states"):
+  // "an explicit 'No relationships evidenced yet' empty state for the Exposure Network
+  // when an org has no mapped edges." This is what renders for every org until a real
+  // data file (or, eventually, a backend response) exists for it.
+  if (!data) {
+    return (
+      <div
+        style={{
+          minHeight: fullScreen ? '100vh' : '100%',
+          background: '#050810',
+          color: 'oklch(94% 0.01 240)',
+          fontFamily: "'IBM Plex Mono', monospace",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+          padding: 40,
+          textAlign: 'center',
+          borderRadius: fullScreen ? 0 : 18,
+        }}
+      >
+        <div style={{ fontSize: 15, fontWeight: 700, color: '#F7761F' }}>No relationships evidenced yet</div>
+        <div style={{ fontSize: 12.5, color: '#7FA8BD', maxWidth: 420, fontFamily: "'IBM Plex Sans', sans-serif" }}>
+          This organization does not have an Exposure Network data file yet. Nothing is fabricated in its place --
+          add a per-org data file (see <code>exposureNetwork/orgs/</code>) once real sourced relationships exist.
+        </div>
+      </div>
+    );
+  }
+
+  const {
+    orgName,
+    ticker,
+    platformModal,
+    spvDefs: SPV_DEFS,
+    leftDefs: LEFT_DEFS,
+    rightDefs: RIGHT_DEFS,
+    leftExtras: LEFT_EXTRAS,
+    rightExtras: RIGHT_EXTRAS,
+    interlocks: INTERLOCKS,
+    promoterNetwork: PROMOTER_NETWORK,
+    entityRegistry: ENTITY_REGISTRY,
+  } = data;
 
   const spvCards = useMemo(
     () =>
@@ -51,7 +98,7 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
         const y = ROW_Y[s.row];
         return { ...s, x: 640, y, midY: y + CARD_H / 2 };
       }),
-    [],
+    [SPV_DEFS],
   );
   const byId = useMemo(() => Object.fromEntries(spvCards.map((s) => [s.id, s])), [spvCards]);
 
@@ -82,7 +129,7 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
   const closeChart = () => setChartView(null);
 
   const openEntity = (id: string) => {
-    const e = ENTITY_REGISTRY[id];
+    const e: EntityDef | undefined = ENTITY_REGISTRY[id];
     if (!e) return;
     const childList: ModalChild[] = e.children.map((c) => ({ ...c, onClick: () => openEntity(c.id) }));
     pushDrill({ ...e, childList, openChartClick: () => openChart(id) });
@@ -91,7 +138,7 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
   function makeFlankCard(def: FlankDef, index: number, x: number, side: 'left' | 'right') {
     const y = ROW_Y[index];
     const midY = y + CARD_H / 2;
-    const targetLabel = def.target === 'ALL' ? 'All 6 project SPVs' : byId[def.target]?.project ?? def.target;
+    const targetLabel = def.target === 'ALL' ? `All ${SPV_DEFS.length} project SPVs` : byId[def.target]?.project ?? def.target;
     return {
       ...def,
       x,
@@ -129,8 +176,8 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
     };
   }
 
-  const leftCards = useMemo(() => LEFT_DEFS.map((d, i) => makeFlankCard(d, i, 70, 'left')), [byId]);
-  const rightCards = useMemo(() => RIGHT_DEFS.map((d, i) => makeFlankCard(d, i, 1085, 'right')), [byId]);
+  const leftCards = useMemo(() => LEFT_DEFS.map((d, i) => makeFlankCard(d, i, 70, 'left')), [LEFT_DEFS, byId]);
+  const rightCards = useMemo(() => RIGHT_DEFS.map((d, i) => makeFlankCard(d, i, 1085, 'right')), [RIGHT_DEFS, byId]);
 
   const fanLines = useMemo(() => {
     type Line = { x1: number; y1: number; x2: number; y2: number; color: string; width: number; dash: string; opacity: number; onClick: () => void };
@@ -233,7 +280,7 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
             </button>
           ) : null}
           <div style={{ fontSize: 17, fontWeight: 700, color: '#F7761F' }}>
-            SWD IN <span style={{ color: '#7FA8BD', fontWeight: 400, fontSize: 14 }}>Equity</span>
+            {ticker} <span style={{ color: '#7FA8BD', fontWeight: 400, fontSize: 14 }}>Equity</span>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -248,7 +295,7 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
 
       <div style={{ background: '#0D1420', borderBottom: '1px solid #1E2E40', padding: '10px 24px', display: 'flex', gap: 36, flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ fontSize: 12, color: '#3D9CA2' }}>
-          Viewing: <span style={{ color: 'oklch(94% 0.01 240)' }}>Smartworld Developers Pvt. Ltd.</span>
+          Viewing: <span style={{ color: 'oklch(94% 0.01 240)' }}>{orgName}</span>
         </div>
         <div style={{ fontSize: 12, color: '#7FA8BD' }}>Every line = one sourced relationship. Every box = one entity with its own record.</div>
         <div style={{ display: 'flex', gap: 12, marginLeft: 'auto' }}>
@@ -291,10 +338,10 @@ export function ExposureNetwork({ fullScreen, onOpenFullScreen, onCloseFullScree
           ))}
 
           <div
-            onClick={() => openModal(PLATFORM_MODAL)}
+            onClick={() => openModal(platformModal)}
             style={{ position: 'absolute', left: 640, top: 56, width: 320, height: 64, background: '#1a1408', border: '2px solid #F7761F', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 2, cursor: 'pointer' }}
           >
-            <div style={{ fontSize: 13.5, fontWeight: 700, color: '#F7761F' }}>SMARTWORLD DEVELOPERS</div>
+            <div style={{ fontSize: 13.5, fontWeight: 700, color: '#F7761F' }}>{orgName.toUpperCase()}</div>
             <div style={{ fontSize: 10.5, color: '#c99a6b', marginTop: 3 }}>Corporate Platform Node</div>
           </div>
 
