@@ -36,3 +36,13 @@ def get_workspace_data(org_id: str) -> dict:
         # Registered (e.g. an Exposure-Network-only org) but no workspace-data JSON yet.
         return EMPTY_WORKSPACE
     return json.loads(org_path.read_text())
+
+
+def get_source_mapping(org_id: str, source: str) -> dict:
+    """Explicit external-ID mapping for one connector (e.g. source='hubspot' ->
+    {'companyId': ...}). Never resolved by matching org name -- absent/null means
+    unmapped, not "try the name."""
+    for org in get_organizations():
+        if org["id"] == org_id:
+            return org.get("sources", {}).get(source, {})
+    raise HTTPException(status_code=404, detail=f"Unknown organization: {org_id}")

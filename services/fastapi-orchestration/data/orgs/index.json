@@ -3,13 +3,23 @@
     {
       "id": "meridian",
       "name": "Meridian Health Systems",
-      "packs": ["workspace-data", "gia", "connect"]
+      "packs": ["workspace-data", "gia", "connect"],
+      "sources": {
+        "hubspot": {"companyId": null},
+        "neo4j": {"nodeId": null},
+        "azureSearch": {"entityId": null}
+      }
     },
     {
       "id": "smartworld",
       "name": "Smartworld Developers",
       "packs": ["exposure-network", "gia"],
-      "intelligenceEntityIds": ["smartworld-sky-arc", "m3m-ecosystem", "smartworld developers", "smartworld-developers", "m3m"]
+      "intelligenceEntityIds": ["smartworld-sky-arc", "m3m-ecosystem", "smartworld developers", "smartworld-developers", "m3m"],
+      "sources": {
+        "hubspot": {"companyId": null},
+        "neo4j": {"nodeId": null},
+        "azureSearch": {"entityId": "organization:smartworld-developers"}
+      }
     }
   ]
 }

@@ -1,13 +1,16 @@
+import os
+
 from fastapi import APIRouter, Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth import get_current_user
 from azure_search import configured as azure_search_configured, search as azure_search_query
 from connect import EmailRequest, EmailResponse, WhatsAppRequest, WhatsAppResponse, get_connect_status, send_email, send_whatsapp
+from connectors import ConnectorResponse, now_iso, unavailable, unmapped
 from exposure_network import get_exposure_network_data
 from gia import ChatRequest, ChatResponse, ask_gia
 from intelligence import get_intelligence_evidence, get_intelligence_events, get_intelligence_status, get_source_registry
-from orgs import get_organizations, get_workspace_data
+from orgs import get_organizations, get_source_mapping, get_workspace_data
 from search import local_search
 
 app = FastAPI(title="ODIC Orchestration")
@@ -83,6 +86,42 @@ def org_exposure_network(org_id: str):
     if data is None:
         raise HTTPException(status_code=404, detail=f"No Exposure Network data file for organization '{org_id}'")
     return data
+
+
+def _hubspot_source_status(org_id: str) -> ConnectorResponse:
+    company_id = get_source_mapping(org_id, "hubspot").get("companyId")
+    if not company_id:
+        return unmapped("hubspot-crm", "hubspot")
+    if not os.getenv("HUBSPOT_ACCESS_TOKEN"):
+        return unavailable("hubspot-crm", "hubspot", company_id, "HUBSPOT_ACCESS_TOKEN not configured in this environment")
+    return unavailable("hubspot-crm", "hubspot", company_id, "HubSpot connector not yet implemented (Phase 3)")
+
+
+def _neo4j_source_status(org_id: str) -> ConnectorResponse:
+    node_id = get_source_mapping(org_id, "neo4j").get("nodeId")
+    if not node_id:
+        return unmapped("neo4j-graph", "neo4j")
+    return unavailable("neo4j-graph", "neo4j", node_id, "Neo4j connector not yet provisioned (Phase 2)")
+
+
+def _azure_search_source_status(org_id: str) -> ConnectorResponse:
+    entity_id = get_source_mapping(org_id, "azureSearch").get("entityId")
+    if not entity_id:
+        return unmapped("azure-ai-search", "azure-search")
+    if not azure_search_configured():
+        return unavailable("azure-ai-search", "azure-search", entity_id, "Azure AI Search credentials not configured in this environment")
+    return ConnectorResponse(sourceId="azure-ai-search", authority="azure-search", status="live", externalId=entity_id, fetchedAt=now_iso())
+
+
+@api.get('/api/organizations/{org_id}/sources', response_model=dict[str, ConnectorResponse])
+def organization_sources(org_id: str):
+    """Per-connector status for one org -- resolved by explicit ID mapping only,
+    never by matching org name. 404s (unknown org) propagate from get_source_mapping."""
+    return {
+        "hubspot": _hubspot_source_status(org_id),
+        "neo4j": _neo4j_source_status(org_id),
+        "azureSearch": _azure_search_source_status(org_id),
+    }
 
 
 @api.get('/api/intelligence/sources')
