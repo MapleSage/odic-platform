@@ -1,24 +1,39 @@
 // Exposure Network data loader.
 //
-// TODO(Luna, backend): this is currently a static in-memory map of per-org data files.
-// Per docs/atlas-backend-brief-for-luna-2026-07-24.md (P0), this should become a fetch
-// against a real intelligence-object API, e.g. `GET /api/orgs/:id/exposure-network`,
-// returning the same ExposureNetworkData shape. Swapping the body of
-// getExposureNetworkData for a fetch call (with loading/error states in the component)
-// is the only change needed on the frontend side once that endpoint exists -- the
-// renderer and schema do not change.
+// Backed by GET /api/orgs/:id/exposure-network (services/fastapi-orchestration/exposure_network.py),
+// which returns the same ExposureNetworkData shape defined in schema.ts. 404 means the org has no
+// data file yet -- callers should treat `undefined` as "no relationships evidenced yet", not an error.
 
 import type { ExposureNetworkData } from './schema';
-import { smartworldExposureNetwork } from './orgs/smartworld';
 
-const EXPOSURE_NETWORK_REGISTRY: Record<string, ExposureNetworkData> = {
-  smartworld: smartworldExposureNetwork,
-};
+const API_BASE = (((import.meta as ImportMeta & { env?: Record<string, string> }).env?.VITE_API_BASE_URL) ?? '').replace(/\/$/, '');
 
-export function getExposureNetworkData(orgId: string): ExposureNetworkData | undefined {
-  return EXPOSURE_NETWORK_REGISTRY[orgId];
+const cache = new Map<string, Promise<ExposureNetworkData | undefined>>();
+
+export function getExposureNetworkData(
+  orgId: string,
+  getAccessToken: () => Promise<string | null>,
+): Promise<ExposureNetworkData | undefined> {
+  const cached = cache.get(orgId);
+  if (cached) return cached;
+
+  const promise = fetchExposureNetworkData(orgId, getAccessToken).catch((error) => {
+    cache.delete(orgId);
+    throw error;
+  });
+  cache.set(orgId, promise);
+  return promise;
 }
 
-export function listExposureNetworkOrgIds(): string[] {
-  return Object.keys(EXPOSURE_NETWORK_REGISTRY);
+async function fetchExposureNetworkData(
+  orgId: string,
+  getAccessToken: () => Promise<string | null>,
+): Promise<ExposureNetworkData | undefined> {
+  const token = await getAccessToken();
+  const response = await fetch(`${API_BASE}/api/orgs/${encodeURIComponent(orgId)}/exposure-network`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (response.status === 404) return undefined;
+  if (!response.ok) throw new Error(`Exposure Network fetch failed: HTTP ${response.status}`);
+  return response.json();
 }

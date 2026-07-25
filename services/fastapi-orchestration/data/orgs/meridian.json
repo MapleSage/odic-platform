@@ -14,10 +14,10 @@
       {"label": "LAST FILING", "value": "6d ago", "sub": "compliance"}
     ],
     "people": [
-      {"name": "Dana Ferris", "title": "CFO", "dept": "Finance", "lastActivity": "2d ago"},
-      {"name": "Owen Mackey", "title": "CIO", "dept": "Technology", "lastActivity": "5d ago"},
-      {"name": "Priya Shah", "title": "VP Facilities", "dept": "Operations", "lastActivity": "1w ago"},
-      {"name": "Leon Ward", "title": "Compliance Director", "dept": "Legal", "lastActivity": "3d ago"}
+      {"name": "Dana Ferris", "title": "CFO", "dept": "Finance", "lastActivity": "2d ago", "level": 1, "reportsTo": null, "directReports": ["Leon Ward"], "email": "dana.ferris@meridianhealthsystems.example", "directDial": "+1-614-555-0142", "linkedinUrl": null},
+      {"name": "Owen Mackey", "title": "CIO", "dept": "Technology", "lastActivity": "5d ago", "level": 1, "reportsTo": null, "directReports": [], "email": "owen.mackey@meridianhealthsystems.example", "directDial": "+1-614-555-0158", "linkedinUrl": null},
+      {"name": "Priya Shah", "title": "VP Facilities", "dept": "Operations", "lastActivity": "1w ago", "level": 1, "reportsTo": null, "directReports": [], "email": "priya.shah@meridianhealthsystems.example", "directDial": "+1-614-555-0173", "linkedinUrl": null},
+      {"name": "Leon Ward", "title": "Compliance Director", "dept": "Legal", "lastActivity": "3d ago", "level": 2, "reportsTo": "Dana Ferris", "directReports": [], "email": "leon.ward@meridianhealthsystems.example", "directDial": "+1-614-555-0186", "linkedinUrl": null}
     ],
     "risks": [
       {"severity": "CRITICAL", "title": "Vendor contract renewal overdue", "detail": "Master services agreement lapsed 12 days ago"},

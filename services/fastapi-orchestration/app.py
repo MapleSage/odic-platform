@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth import get_current_user
 from azure_search import configured as azure_search_configured, search as azure_search_query
 from connect import EmailRequest, EmailResponse, WhatsAppRequest, WhatsAppResponse, get_connect_status, send_email, send_whatsapp
+from exposure_network import get_exposure_network_data
 from gia import ChatRequest, ChatResponse, ask_gia
 from intelligence import get_intelligence_evidence, get_intelligence_events, get_intelligence_status, get_source_registry
 from orgs import get_organizations, get_workspace_data
@@ -74,6 +75,14 @@ def workspace_reports(org: str = "meridian"):
 @api.get('/api/workspace/graph')
 def workspace_graph(org: str = "meridian"):
     return get_workspace_data(org)["graph"]
+
+
+@api.get('/api/orgs/{org_id}/exposure-network')
+def org_exposure_network(org_id: str):
+    data = get_exposure_network_data(org_id)
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"No Exposure Network data file for organization '{org_id}'")
+    return data
 
 
 @api.get('/api/intelligence/sources')

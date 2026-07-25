@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   GRADE_COLOR,
   GRADE_LABEL,
@@ -9,8 +9,24 @@ import {
   type Grade,
   type FlankDef,
   type EntityDef,
+  type ExposureNetworkData,
 } from './schema';
 import { getExposureNetworkData } from './registry';
+
+const EMPTY_DATA: ExposureNetworkData = {
+  orgId: '',
+  orgName: '',
+  ticker: '',
+  platformModal: { title: '', subtitle: '', sections: [] },
+  spvDefs: [],
+  leftDefs: [],
+  rightDefs: [],
+  leftExtras: [],
+  rightExtras: [],
+  interlocks: [],
+  promoterNetwork: [],
+  entityRegistry: {},
+};
 
 type InspectorContent = { title: string; subtitle: string; rows: { label: string; value: string }[] };
 type ModalChild = { id?: string; name: string; role: string; onClick: () => void };
@@ -33,51 +49,47 @@ export function ExposureNetwork({
   fullScreen,
   onOpenFullScreen,
   onCloseFullScreen,
+  getAccessToken,
 }: {
   orgId: string;
   fullScreen: boolean;
   onOpenFullScreen: () => void;
   onCloseFullScreen: () => void;
+  getAccessToken: () => Promise<string | null>;
 }) {
-  const data = getExposureNetworkData(orgId);
+  const [data, setData] = useState<ExposureNetworkData | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setLoadError(null);
+    getExposureNetworkData(orgId, getAccessToken)
+      .then((result) => {
+        if (!cancelled) setData(result);
+      })
+      .catch((error) => {
+        if (!cancelled) setLoadError(error instanceof Error ? error.message : 'Failed to load Exposure Network data');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [orgId, getAccessToken]);
 
   const [selected, setSelected] = useState<InspectorContent>(DEFAULT_INSPECTOR);
   const [modal, setModal] = useState<ModalContent | null>(null);
   const [drillStack, setDrillStack] = useState<ModalContent[]>([]);
   const [chartView, setChartView] = useState<string | null>(null);
 
-  // Empty state per the original design handoff's own recommendation
-  // (design_handoff_odic_intelligence_platform/README.md, "Loading/empty states"):
-  // "an explicit 'No relationships evidenced yet' empty state for the Exposure Network
-  // when an org has no mapped edges." This is what renders for every org until a real
-  // data file (or, eventually, a backend response) exists for it.
-  if (!data) {
-    return (
-      <div
-        style={{
-          minHeight: fullScreen ? '100vh' : '100%',
-          background: '#050810',
-          color: 'oklch(94% 0.01 240)',
-          fontFamily: "'IBM Plex Mono', monospace",
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 10,
-          padding: 40,
-          textAlign: 'center',
-          borderRadius: fullScreen ? 0 : 18,
-        }}
-      >
-        <div style={{ fontSize: 15, fontWeight: 700, color: '#F7761F' }}>No relationships evidenced yet</div>
-        <div style={{ fontSize: 12.5, color: '#7FA8BD', maxWidth: 420, fontFamily: "'IBM Plex Sans', sans-serif" }}>
-          This organization does not have an Exposure Network data file yet. Nothing is fabricated in its place --
-          add a per-org data file (see <code>exposureNetwork/orgs/</code>) once real sourced relationships exist.
-        </div>
-      </div>
-    );
-  }
-
+  // Every useMemo below runs unconditionally against `data ?? EMPTY_DATA` -- React
+  // requires the same hooks in the same order on every render, and `data` starts
+  // `undefined` during the async load, so the loading/error/empty early returns must
+  // come AFTER all hooks, not before (this is the same Rules-of-Hooks shape as the
+  // React #310 crash fixed earlier for filteredActivity in main.tsx).
   const {
     orgName,
     ticker,
@@ -90,7 +102,7 @@ export function ExposureNetwork({
     interlocks: INTERLOCKS,
     promoterNetwork: PROMOTER_NETWORK,
     entityRegistry: ENTITY_REGISTRY,
-  } = data;
+  } = data ?? EMPTY_DATA;
 
   const spvCards = useMemo(
     () =>
@@ -269,6 +281,56 @@ export function ExposureNetwork({
   const containerStyle: React.CSSProperties = fullScreen
     ? { position: 'fixed', inset: 0, zIndex: 30, overflowY: 'auto', background: '#050810' }
     : { minHeight: '100%', background: '#050810', borderRadius: 18, overflow: 'hidden' };
+
+  const emptyStateStyle: React.CSSProperties = {
+    minHeight: fullScreen ? '100vh' : '100%',
+    background: '#050810',
+    color: 'oklch(94% 0.01 240)',
+    fontFamily: "'IBM Plex Mono', monospace",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    padding: 40,
+    textAlign: 'center',
+    borderRadius: fullScreen ? 0 : 18,
+  };
+
+  if (loading) {
+    return (
+      <div style={emptyStateStyle}>
+        <div style={{ fontSize: 15, fontWeight: 700, color: '#3D9CA2' }}>Loading Exposure Network...</div>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div style={emptyStateStyle}>
+        <div style={{ fontSize: 15, fontWeight: 700, color: '#B0424F' }}>Couldn't load Exposure Network data</div>
+        <div style={{ fontSize: 12.5, color: '#7FA8BD', maxWidth: 420, fontFamily: "'IBM Plex Sans', sans-serif" }}>{loadError}</div>
+      </div>
+    );
+  }
+
+  // Empty state per the original design handoff's own recommendation
+  // (design_handoff_odic_intelligence_platform/README.md, "Loading/empty states"):
+  // "an explicit 'No relationships evidenced yet' empty state for the Exposure Network
+  // when an org has no mapped edges." This is what renders for any org the backend has
+  // no data/exposure-network/<id>.json file for (a 404, not an error).
+  if (!data) {
+    return (
+      <div style={emptyStateStyle}>
+        <div style={{ fontSize: 15, fontWeight: 700, color: '#F7761F' }}>No relationships evidenced yet</div>
+        <div style={{ fontSize: 12.5, color: '#7FA8BD', maxWidth: 420, fontFamily: "'IBM Plex Sans', sans-serif" }}>
+          This organization does not have an Exposure Network data file yet. Nothing is fabricated in its place --
+          add <code>services/fastapi-orchestration/data/exposure-network/{orgId}.json</code> once real sourced
+          relationships exist.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ ...containerStyle, color: 'oklch(94% 0.01 240)', fontFamily: "'IBM Plex Mono', monospace" }}>

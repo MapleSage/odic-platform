@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { AuthProvider, useAuth } from '@odic/auth';
 import { ExposureNetwork } from './exposureNetwork/ExposureNetwork';
 import { getExposureNetworkData } from './exposureNetwork/registry';
+import type { ExposureNetworkData } from './exposureNetwork/schema';
 import './styles.css';
 
 type ViewId = 'organization' | 'search' | 'reports' | 'graph' | 'connect';
@@ -13,7 +14,18 @@ type GraphMode = 'ledger' | 'matrix';
 
 type NavItem = { id: ViewId; label: string; code: string };
 type StatCard = { label: string; value: string; sub: string; accent: string; subColor?: string };
-type Person = { name: string; title: string; dept: string; lastActivity: string };
+type Person = {
+  name: string;
+  title: string;
+  dept: string;
+  lastActivity: string;
+  level?: number;
+  reportsTo?: string | null;
+  directReports?: string[];
+  email?: string | null;
+  directDial?: string | null;
+  linkedinUrl?: string | null;
+};
 type Risk = { severity: string; title: string; detail: string; color: string; dimColor: string };
 type Opportunity = { title: string; stage: string; value: string };
 type TimelineEvent = { date: string; label: string; detail: string; dotColor: string };
@@ -563,24 +575,24 @@ function App() {
     setGiaLoading(true);
     setGiaError(null);
     try {
-      const context = activeOrg.packs.includes('workspace-data')
-        ? [
-            `Organization: ${workspace.organization.name} (${workspace.organization.meta.industry}, ${workspace.organization.meta.hq}, ${workspace.organization.meta.employees} employees, risk level: ${workspace.organization.meta.riskLevel})`,
-            `Open risks: ${workspace.organization.risks.map((r) => `[${r.severity}] ${r.title} -- ${r.detail}`).join('; ')}`,
-            `Opportunities: ${workspace.organization.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
-            `Key people: ${workspace.organization.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
-          ].join('\n')
-        : (() => {
-            const exposureData = getExposureNetworkData(activeOrg.id);
-            if (!exposureData) {
-              return `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, but no data file exists for it yet.`;
-            }
-            return [
+      let context: string;
+      if (activeOrg.packs.includes('workspace-data')) {
+        context = [
+          `Organization: ${workspace.organization.name} (${workspace.organization.meta.industry}, ${workspace.organization.meta.hq}, ${workspace.organization.meta.employees} employees, risk level: ${workspace.organization.meta.riskLevel})`,
+          `Open risks: ${workspace.organization.risks.map((r) => `[${r.severity}] ${r.title} -- ${r.detail}`).join('; ')}`,
+          `Opportunities: ${workspace.organization.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
+          `Key people: ${workspace.organization.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
+        ].join('\n');
+      } else {
+        const exposureData = await getExposureNetworkData(activeOrg.id, getAccessToken);
+        context = !exposureData
+          ? `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, but no data file exists for it yet.`
+          : [
               `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, not a CRM-style org record.`,
               `Tracked projects/SPVs: ${exposureData.spvDefs.map((s) => `${s.project} (${s.spv}) -- ${s.status}`).join('; ')}`,
               `Promoter & family office network (pending verification -- do not overstate confidence): ${exposureData.promoterNetwork.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; ')}`,
             ].join('\n');
-          })();
+      }
 
       const token = await getAccessToken();
       const response = await fetch(`${API_BASE}/api/gia/chat`, {
@@ -622,7 +634,7 @@ function App() {
   const pageMeta = workspace.organization.meta;
 
   if (exposureFullScreen) {
-    return <ExposureNetwork orgId={activeOrg.id} fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />;
+    return <ExposureNetwork orgId={activeOrg.id} fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />;
   }
 
   const giaVisible = activeOrg.packs.includes('gia') && giaOpen;
@@ -732,7 +744,7 @@ function App() {
               filteredActivity={filteredActivity}
             />
           ) : activeOrg.packs.includes('exposure-network') ? (
-            <ExposureNetworkSummary orgId={activeOrg.id} orgName={activeOrg.name} onOpenGraph={() => setActiveView('graph')} />
+            <ExposureNetworkSummary orgId={activeOrg.id} orgName={activeOrg.name} onOpenGraph={() => setActiveView('graph')} getAccessToken={getAccessToken} />
           ) : (
             <NoOrgDataState orgName={activeOrg.name} />
           )
@@ -748,7 +760,7 @@ function App() {
         {activeView === 'graph' && (
           activeOrg.packs.includes('exposure-network') ? (
             <div className="graph-workspace-embed">
-              <ExposureNetwork orgId={activeOrg.id} fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} />
+              <ExposureNetwork orgId={activeOrg.id} fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />
               <IntelligenceCard status={intelligenceStatus} events={intelligenceEvents} />
             </div>
           ) : (
@@ -878,7 +890,7 @@ function OverviewTab({ organization }: { organization: OrganizationViewData }) {
           </div>
         </Card>
         {selectedPerson && (
-          <PersonDetailModal person={selectedPerson} organization={organization} onClose={() => setSelectedPerson(null)} />
+          <PersonDetailModal person={selectedPerson} organization={organization} onClose={() => setSelectedPerson(null)} onSelectPerson={setSelectedPerson} />
         )}
 
         <Card title="Recent Activity">
@@ -928,10 +940,12 @@ function PersonDetailModal({
   person,
   organization,
   onClose,
+  onSelectPerson,
 }: {
   person: Person;
   organization: OrganizationViewData;
   onClose: () => void;
+  onSelectPerson: (person: Person) => void;
 }) {
   const mentions = organization.activity.filter(
     (item) => item.title.includes(person.name) || item.snippet.includes(person.name)
@@ -940,6 +954,12 @@ function PersonDetailModal({
     (risk) => risk.title.includes(person.name) || risk.detail.includes(person.name)
   );
   const relatedOpportunities = organization.opportunities.filter((opp) => opp.title.includes(person.name));
+  const manager = person.reportsTo ? organization.people.find((p) => p.name === person.reportsTo) : undefined;
+  const directReports = (person.directReports ?? [])
+    .map((name) => organization.people.find((p) => p.name === name))
+    .filter((p): p is Person => Boolean(p));
+  const hasContactInfo = Boolean(person.email || person.directDial || person.linkedinUrl);
+  const hasHierarchy = Boolean(manager || directReports.length > 0 || typeof person.level === 'number');
 
   return (
     <div className="detail-modal-backdrop" onClick={onClose}>
@@ -951,6 +971,52 @@ function PersonDetailModal({
           <div className="row-meta">Last activity: {person.lastActivity}</div>
         </div>
         <div className="detail-modal-body">
+          {hasContactInfo && (
+            <div className="detail-modal-section">
+              <SectionLabel>CONTACT</SectionLabel>
+              <div className="list-stack" style={{ marginTop: 8 }}>
+                <div className="info-row"><div className="row-title">Email</div><div className="row-sub">{person.email ?? 'Not on file'}</div></div>
+                <div className="info-row"><div className="row-title">Direct dial</div><div className="row-sub">{person.directDial ?? 'Not on file'}</div></div>
+                <div className="info-row"><div className="row-title">LinkedIn</div><div className="row-sub">{person.linkedinUrl ?? 'Not on file'}</div></div>
+              </div>
+            </div>
+          )}
+
+          {hasHierarchy && (
+            <div className="detail-modal-section">
+              <SectionLabel>REPORTING LINE{typeof person.level === 'number' ? ` -- LEVEL ${person.level}` : ''}</SectionLabel>
+              <div className="list-stack" style={{ marginTop: 8 }}>
+                <div className="info-row">
+                  <div className="row-title">Reports to</div>
+                  {manager ? (
+                    <button
+                      className="row-metric"
+                      onClick={() => onSelectPerson(manager)}
+                      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'underline', font: 'inherit', color: 'inherit' }}
+                    >
+                      {manager.name}
+                    </button>
+                  ) : (
+                    <div className="row-metric">{person.reportsTo ?? 'Not tracked'}</div>
+                  )}
+                </div>
+                {directReports.length > 0 && (
+                  <div>
+                    <div className="row-title" style={{ marginBottom: 6 }}>Direct reports ({directReports.length})</div>
+                    {directReports.map((report) => (
+                      <button key={report.name} className="info-row info-row-clickable" onClick={() => onSelectPerson(report)}>
+                        <div className="activity-copy">
+                          <div className="row-title">{report.name}</div>
+                          <div className="row-sub">{report.title} · {report.dept}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="detail-modal-section">
             <SectionLabel>ACTIVITY MENTIONS ({mentions.length})</SectionLabel>
             <div className="list-stack" style={{ marginTop: 8 }}>
@@ -1499,8 +1565,37 @@ function NoOrgDataState({ orgName, suggestion }: { orgName: string; suggestion?:
   );
 }
 
-function ExposureNetworkSummary({ orgId, orgName, onOpenGraph }: { orgId: string; orgName: string; onOpenGraph: () => void }) {
-  const exposureData = getExposureNetworkData(orgId);
+function ExposureNetworkSummary({
+  orgId,
+  orgName,
+  onOpenGraph,
+  getAccessToken,
+}: {
+  orgId: string;
+  orgName: string;
+  onOpenGraph: () => void;
+  getAccessToken: () => Promise<string | null>;
+}) {
+  const [exposureData, setExposureData] = useState<ExposureNetworkData | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    getExposureNetworkData(orgId, getAccessToken).then((result) => {
+      if (!cancelled) {
+        setExposureData(result);
+        setLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [orgId, getAccessToken]);
+
+  if (loading) {
+    return <NoOrgDataState orgName={orgName} suggestion="Loading Exposure Network data..." />;
+  }
   if (!exposureData) {
     return <NoOrgDataState orgName={orgName} suggestion="No Exposure Network has been built for this organization yet." />;
   }
