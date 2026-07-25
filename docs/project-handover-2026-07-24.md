@@ -1,5 +1,21 @@
 # ODIC/Atlas — Full Project Handover, 2026-07-24
 
+> ## ⚠️ STATUS UPDATE 2026-07-25 — most of this document is CLOSED. Read this block before the body.
+>
+> CC/Luna shipped `31c3ed6` and `e038abf` after this was written. Verified directly against the repo on 2026-07-25:
+>
+> - **P0 Exposure Network — CLOSED both halves.** `services/fastapi-orchestration/exposure_network.py` now serves `GET /api/orgs/:id/exposure-network` from `data/exposure-network/<org_id>.json`, returning the exact `ExposureNetworkData` shape from `schema.ts`, 404 when absent. `registry.ts` is a real cached `fetch` (no longer a static map); `ExposureNetwork.tsx` has loading/error states and a documented Rules-of-Hooks ordering fix. The `TODO(Luna, backend)` markers are resolved.
+> - **P1 Search org-scoping bug — CLOSED.** `main.tsx` now sends `if (!searchAllOrgs) params.set('org', activeOrgId)` — active-workspace scoping by default, all-orgs as an explicit opt-in toggle. This was the root cause of the Smartworld-workspace-showing-Meridian-results screenshot.
+> - **P1.5 person depth — CLOSED in data shape.** A person in `meridian.json` is no longer 4 flat fields; it now carries `level`, `reportsTo`, `directReports`, `email`, `directDial`, `linkedinUrl` alongside `name`/`title`/`dept`/`lastActivity`.
+>
+> **What is still genuinely open (verified 2026-07-25):**
+>
+> 1. **The two per-org data stores still diverge, and now do so visibly.** `data/orgs/` contains only `index.json` + `meridian.json`. `data/exposure-network/` contains only `smartworld.json`. **Zero overlap:** Meridian has workspace data but no exposure network; Smartworld has an exposure network but no workspace data. Both are keyed by the same org ids with no defined relationship and nothing enforcing agreement. Worth a deliberate decision on whether these converge before a third org is onboarded.
+> 2. **Still only two orgs total** across both stores — the "onboard a new org with zero component changes" claim remains architecturally true but untested in practice.
+> 3. **No browser verification** of any of the above. Everything here is code/data-level confirmation only.
+>
+> Everything below this block is the 2026-07-24 snapshot, retained for the reasoning and reference material (design-spec pointers, HubSpot screenshot findings, strategic rationale). Treat its P0/P1/P1.5 status lines as superseded by this block.
+
 **One consolidated reference for CC (frontend) and Luna (backend/data).** Supersedes reading five scattered docs to reconstruct the current picture — this is the whole picture. Detail docs still exist and are linked below where useful, but this file is the entry point.
 
 ## The strategic call (Parvind, 2026-07-24)
