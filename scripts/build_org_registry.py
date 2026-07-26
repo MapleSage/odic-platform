@@ -35,6 +35,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 HUBSPOT_SEARCH_URL = "https://api.hubapi.com/crm/v3/objects/companies/search"
+HUBSPOT_ACCOUNT_INFO_URL = "https://api.hubapi.com/account-info/v3/details"
 PROPERTIES = ["name", "domain", "country", "industry", "num_associated_contacts"]
 
 # Legal-form suffixes stripped when deriving a slug. Order matters: longest first.
@@ -91,6 +92,28 @@ def slugify(name: str, domain: str | None, taken: set[str]) -> str:
     return slug
 
 
+def fetch_portal_id(token: str) -> str:
+    """Every companyId in this registry is a HubSpot object ID, which is only
+    meaningful within the portal it was fetched from -- record IDs do not survive a
+    cross-portal import or a dev/prod portal switch. Stamping the source portal on
+    every mapping turns a silent "resolves to nothing, looks unmapped" failure into a
+    detectable "portal mismatch" one. Fail loudly rather than emit unqualified IDs."""
+    req = urllib.request.Request(
+        HUBSPOT_ACCOUNT_INFO_URL,
+        headers={"Authorization": f"Bearer {token}"},
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            body = json.load(resp)
+    except urllib.error.HTTPError as exc:
+        sys.exit(f"HubSpot account-info API error {exc.code}: {exc.read().decode()[:400]}")
+    portal_id = body.get("portalId")
+    if not portal_id:
+        sys.exit("HubSpot account-info response had no portalId -- refusing to emit unqualified companyId mappings")
+    return str(portal_id)
+
+
 def fetch_companies(token: str, industry: str | None) -> list[dict]:
     """Page through the HubSpot search API. Returns raw company records."""
     out: list[dict] = []
@@ -124,7 +147,7 @@ def fetch_companies(token: str, industry: str | None) -> list[dict]:
             return out
 
 
-def to_registry_entry(company: dict, taken: set[str], now: str) -> dict:
+def to_registry_entry(company: dict, taken: set[str], now: str, portal_id: str) -> dict:
     props = company.get("properties", {}) or {}
     name = (props.get("name") or "").strip()
     domain = (props.get("domain") or "").strip() or None
@@ -144,6 +167,7 @@ def to_registry_entry(company: dict, taken: set[str], now: str) -> dict:
         "sources": {
             "hubspot": {
                 "companyId": str(company.get("id")),
+                "portalId": portal_id,
                 "grade": "A",
                 "basis": "hubspot_object_id",
                 "resolvedAt": now,
@@ -180,11 +204,13 @@ def main() -> None:
     if not token:
         sys.exit("HUBSPOT_ACCESS_TOKEN is not set. Never hardcode the token.")
 
+    portal_id = fetch_portal_id(token)
+    print(f"portal: {portal_id}")
     companies = fetch_companies(token, None if args.all else args.industry)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     taken: set[str] = set()
-    entries = [to_registry_entry(c, taken, now) for c in companies]
+    entries = [to_registry_entry(c, taken, now, portal_id) for c in companies]
     entries.sort(key=lambda e: (-e["_meta"]["associatedContacts"], e["id"]))
 
     if args.out:
@@ -196,13 +222,14 @@ def main() -> None:
         with open(args.worklist, "w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["atlas_id", "name", "domain", "country",
-                        "registry_scheme", "hubspot_company_id",
+                        "registry_scheme", "hubspot_portal_id", "hubspot_company_id",
                         "associated_contacts", "registry_entity_id", "grade",
                         "basis", "resolved_by", "notes"])
             for e in entries:
                 m = e["_meta"]
                 w.writerow([e["id"], e["name"], m["domain"] or "", m["country"] or "",
                             e["sources"]["registry"]["scheme"] or "UNKNOWN",
+                            e["sources"]["hubspot"]["portalId"],
                             e["sources"]["hubspot"]["companyId"],
                             m["associatedContacts"], "", "", "", "", ""])
         print(f"wrote {len(entries)} worklist rows -> {args.worklist}")

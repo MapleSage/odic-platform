@@ -10,7 +10,8 @@
       ],
       "sources": {
         "hubspot": {
-          "companyId": null
+          "companyId": null,
+          "portalId": null
         },
         "neo4j": {
           "nodeId": null
@@ -36,7 +37,8 @@
       ],
       "sources": {
         "hubspot": {
-          "companyId": null
+          "companyId": null,
+          "portalId": null
         },
         "neo4j": {
           "nodeId": null
@@ -58,7 +60,8 @@
           "companyId": "55207832972",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -92,7 +95,8 @@
           "companyId": "55208443177",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -126,7 +130,8 @@
           "companyId": "55226530847",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -160,7 +165,8 @@
           "companyId": "55214764147",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -194,7 +200,8 @@
           "companyId": "33120315150",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -228,7 +235,8 @@
           "companyId": "31665565033",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -262,7 +270,8 @@
           "companyId": "31727490078",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -296,7 +305,8 @@
           "companyId": "31713031767",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -330,7 +340,8 @@
           "companyId": "31725635630",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -364,7 +375,8 @@
           "companyId": "31727952195",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -398,7 +410,8 @@
           "companyId": "31726097707",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -432,7 +445,8 @@
           "companyId": "31658404459",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -466,7 +480,8 @@
           "companyId": "31707473795",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -500,7 +515,8 @@
           "companyId": "33132261384",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -534,7 +550,8 @@
           "companyId": "31706391115",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -568,7 +585,8 @@
           "companyId": "55228137590",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -602,7 +620,8 @@
           "companyId": "31727644801",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -636,7 +655,8 @@
           "companyId": "31720421761",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -670,7 +690,8 @@
           "companyId": "31717070615",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -704,7 +725,8 @@
           "companyId": "33113764945",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -738,7 +760,8 @@
           "companyId": "31710672666",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -772,7 +795,8 @@
           "companyId": "31715210533",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -806,7 +830,8 @@
           "companyId": "31700177808",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -840,7 +865,8 @@
           "companyId": "55560376403",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -874,7 +900,8 @@
           "companyId": "31654466987",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -908,7 +935,8 @@
           "companyId": "31725941668",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -942,7 +970,8 @@
           "companyId": "31666793986",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -976,7 +1005,8 @@
           "companyId": "31701327476",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -1010,7 +1040,8 @@
           "companyId": "31715521860",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1044,7 +1075,8 @@
           "companyId": "31726097706",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1078,7 +1110,8 @@
           "companyId": "31730115371",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1112,7 +1145,8 @@
           "companyId": "31711137873",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1146,7 +1180,8 @@
           "companyId": "31710210172",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1180,7 +1215,8 @@
           "companyId": "33114384643",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1214,7 +1250,8 @@
           "companyId": "31716451604",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -1248,7 +1285,8 @@
           "companyId": "31722227006",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1282,7 +1320,8 @@
           "companyId": "31656391820",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -1316,7 +1355,8 @@
           "companyId": "31647456540",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -1350,7 +1390,8 @@
           "companyId": "33108873860",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1384,7 +1425,8 @@
           "companyId": "31705770406",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1418,7 +1460,8 @@
           "companyId": "31704312125",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1452,7 +1495,8 @@
           "companyId": "31729184814",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1486,7 +1530,8 @@
           "companyId": "31718872643",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1520,7 +1565,8 @@
           "companyId": "31721042491",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1554,7 +1600,8 @@
           "companyId": "33120933968",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1588,7 +1635,8 @@
           "companyId": "31731667073",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1622,7 +1670,8 @@
           "companyId": "31707782994",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1656,7 +1705,8 @@
           "companyId": "31718466681",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1690,7 +1740,8 @@
           "companyId": "31667936030",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -1724,7 +1775,8 @@
           "companyId": "31717225400",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -1758,7 +1810,8 @@
           "companyId": "31126323874",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ae-trade-licence",
@@ -1792,7 +1845,8 @@
           "companyId": "31722072650",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1826,7 +1880,8 @@
           "companyId": "31719648836",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1860,7 +1915,8 @@
           "companyId": "31725635629",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "in-mca-cin",
@@ -1894,7 +1950,8 @@
           "companyId": "31717380869",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1928,7 +1985,8 @@
           "companyId": "31662263472",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -1962,7 +2020,8 @@
           "companyId": "31718618929",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -1996,7 +2055,8 @@
           "companyId": "31658559258",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -2030,7 +2090,8 @@
           "companyId": "31708402817",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2064,7 +2125,8 @@
           "companyId": "31713961106",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2098,7 +2160,8 @@
           "companyId": "31718717596",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2132,7 +2195,8 @@
           "companyId": "31734670223",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -2166,7 +2230,8 @@
           "companyId": "31730424325",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -2200,7 +2265,8 @@
           "companyId": "31730424327",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2234,7 +2300,8 @@
           "companyId": "31721042492",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2268,7 +2335,8 @@
           "companyId": "31683001614",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -2302,7 +2370,8 @@
           "companyId": "31715521862",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2336,7 +2405,8 @@
           "companyId": "31717998148",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2370,7 +2440,8 @@
           "companyId": "33124462159",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2404,7 +2475,8 @@
           "companyId": "55207379480",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2438,7 +2510,8 @@
           "companyId": "31712379269",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2472,7 +2545,8 @@
           "companyId": "31707782993",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2506,7 +2580,8 @@
           "companyId": "31720266290",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2540,7 +2615,8 @@
           "companyId": "33126592513",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2574,7 +2650,8 @@
           "companyId": "55232764512",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2608,7 +2685,8 @@
           "companyId": "31721042494",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2642,7 +2720,8 @@
           "companyId": "33109459626",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2676,7 +2755,8 @@
           "companyId": "33106154297",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2710,7 +2790,8 @@
           "companyId": "31704777795",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2744,7 +2825,8 @@
           "companyId": "31210478717",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ae-trade-licence",
@@ -2778,7 +2860,8 @@
           "companyId": "31715676560",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2812,7 +2895,8 @@
           "companyId": "33104295978",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2846,7 +2930,8 @@
           "companyId": "31734510603",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "in-mca-cin",
@@ -2880,7 +2965,8 @@
           "companyId": "31728567990",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -2914,7 +3000,8 @@
           "companyId": "31734357151",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -2948,7 +3035,8 @@
           "companyId": "31729805581",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "in-mca-cin",
@@ -2982,7 +3070,8 @@
           "companyId": "31724708266",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3016,7 +3105,8 @@
           "companyId": "31716451602",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3050,7 +3140,8 @@
           "companyId": "31730424323",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3084,7 +3175,8 @@
           "companyId": "31709021860",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3118,7 +3210,8 @@
           "companyId": "31732903838",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3152,7 +3245,8 @@
           "companyId": "31724393730",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -3186,7 +3280,8 @@
           "companyId": "31723931221",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3220,7 +3315,8 @@
           "companyId": "31710519334",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3254,7 +3350,8 @@
           "companyId": "33124770702",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3288,7 +3385,8 @@
           "companyId": "31725789329",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -3322,7 +3420,8 @@
           "companyId": "31700177809",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3356,7 +3455,8 @@
           "companyId": "31730424328",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3390,7 +3490,8 @@
           "companyId": "31727180362",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3424,7 +3525,8 @@
           "companyId": "31706853490",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3458,7 +3560,8 @@
           "companyId": "31706080082",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3492,7 +3595,8 @@
           "companyId": "31725789332",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3526,7 +3630,8 @@
           "companyId": "31719648837",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3560,7 +3665,8 @@
           "companyId": "31729338804",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3594,7 +3700,8 @@
           "companyId": "31653230643",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ca-corp-number",
@@ -3628,7 +3735,8 @@
           "companyId": "31702918014",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3662,7 +3770,8 @@
           "companyId": "31710210174",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3696,7 +3805,8 @@
           "companyId": "31710210175",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "in-mca-cin",
@@ -3729,7 +3839,8 @@
           "companyId": "55213691250",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3762,7 +3873,8 @@
           "companyId": "55199784363",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3795,7 +3907,8 @@
           "companyId": "56313356178",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3828,7 +3941,8 @@
           "companyId": "54245695568",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -3861,7 +3975,8 @@
           "companyId": "55232007531",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3894,7 +4009,8 @@
           "companyId": "55210791521",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3927,7 +4043,8 @@
           "companyId": "55206443929",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3960,7 +4077,8 @@
           "companyId": "55223287362",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -3993,7 +4111,8 @@
           "companyId": "53587022715",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -4026,7 +4145,8 @@
           "companyId": "56311653976",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -4059,7 +4179,8 @@
           "companyId": "55209692544",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -4092,7 +4213,8 @@
           "companyId": "55785024275",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "ae-trade-licence",
@@ -4125,7 +4247,8 @@
           "companyId": "55235542588",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -4158,7 +4281,8 @@
           "companyId": "52499701909",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,
@@ -4191,7 +4315,8 @@
           "companyId": "55232465293",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": "us-doi-licence",
@@ -4224,7 +4349,8 @@
           "companyId": "53183672697",
           "grade": "A",
           "basis": "hubspot_object_id",
-          "resolvedAt": "2026-07-26T02:12:10+00:00"
+          "resolvedAt": "2026-07-26T02:12:10+00:00",
+          "portalId": "3475345"
         },
         "registry": {
           "scheme": null,

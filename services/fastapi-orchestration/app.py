@@ -89,9 +89,23 @@ def org_exposure_network(org_id: str):
 
 
 def _hubspot_source_status(org_id: str) -> ConnectorResponse:
-    company_id = get_source_mapping(org_id, "hubspot").get("companyId")
+    mapping = get_source_mapping(org_id, "hubspot")
+    company_id = mapping.get("companyId")
     if not company_id:
         return unmapped("hubspot-crm", "hubspot")
+
+    # companyId is a HubSpot object ID -- meaningless outside the portal it was
+    # resolved from. A portal switch (e.g. dev 51752298 vs the 3475345 this registry
+    # was built against) makes every companyId resolve to nothing, which looks
+    # identical to "genuinely unmapped" unless the portal itself is checked first.
+    configured_portal = os.getenv("HUBSPOT_PORTAL_ID")
+    mapped_portal = mapping.get("portalId")
+    if configured_portal and mapped_portal and configured_portal != mapped_portal:
+        return unavailable(
+            "hubspot-crm", "hubspot", company_id,
+            f"companyId was resolved against portal {mapped_portal}, but this environment is configured for portal {configured_portal} -- remap before trusting this ID",
+        )
+
     if not os.getenv("HUBSPOT_ACCESS_TOKEN"):
         return unavailable("hubspot-crm", "hubspot", company_id, "HUBSPOT_ACCESS_TOKEN not configured in this environment")
     return unavailable("hubspot-crm", "hubspot", company_id, "HubSpot connector not yet implemented (Phase 3)")
