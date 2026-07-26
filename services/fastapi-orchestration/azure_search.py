@@ -1,7 +1,13 @@
 """Minimal dependency-free Azure AI Search adapter for Atlas.
 
 Configured only when all three env vars are present:
-ATLAS_AZURE_SEARCH_ENDPOINT, ATLAS_AZURE_SEARCH_INDEX, AZURE_SEARCH_API_KEY.
+AZURE_SEARCH_ENDPOINT, AZURE_SEARCH_INDEX, AZURE_SEARCH_API_KEY (unprefixed -- matching
+the k8s secret `atlas-search` that's been deployed on atlas-backend since 2026-07-21,
+and the original requirements doc's own naming. An earlier version of this file invented
+an ATLAS_-prefixed scheme that never matched what was actually deployed, which meant
+Azure Search silently reported "unavailable" as if no credentials existed at all, even
+though the secret -- pointing at the correct service/index, sagecmo-search /
+atlas-enterprise-intel-kb-v1 -- was there the whole time. Corrected 2026-07-26.
 No network call is made without explicit configuration.
 
 Field mapping matches the actual deployed schema of atlas-enterprise-intel-kb-v1
@@ -25,7 +31,7 @@ from orgs import get_organizations
 
 
 def configured() -> bool:
-    return all(os.getenv(k) for k in ("ATLAS_AZURE_SEARCH_ENDPOINT", "ATLAS_AZURE_SEARCH_INDEX", "AZURE_SEARCH_API_KEY"))
+    return all(os.getenv(k) for k in ("AZURE_SEARCH_ENDPOINT", "AZURE_SEARCH_INDEX", "AZURE_SEARCH_API_KEY"))
 
 
 def _escape(value: str) -> str:
@@ -42,9 +48,9 @@ def _org_display_name(org_id: str) -> str:
 def search(query: str = "", org: str | None = None, facet: str | None = None) -> dict:
     if not configured():
         raise RuntimeError("Azure AI Search is not configured")
-    endpoint = os.environ["ATLAS_AZURE_SEARCH_ENDPOINT"].rstrip("/")
-    index = quote(os.environ["ATLAS_AZURE_SEARCH_INDEX"], safe="")
-    api_version = os.getenv("ATLAS_AZURE_SEARCH_API_VERSION", "2024-07-01")
+    endpoint = os.environ["AZURE_SEARCH_ENDPOINT"].rstrip("/")
+    index = quote(os.environ["AZURE_SEARCH_INDEX"], safe="")
+    api_version = os.getenv("AZURE_SEARCH_API_VERSION", "2024-07-01")
     payload = {
         "search": query or "*",
         "count": True,
@@ -91,5 +97,5 @@ def search(query: str = "", org: str | None = None, facet: str | None = None) ->
         "facets": facets,
         "total": data.get("@odata.count", len(results)),
         "source": "azure-ai-search",
-        "index": os.environ["ATLAS_AZURE_SEARCH_INDEX"],
+        "index": os.environ["AZURE_SEARCH_INDEX"],
     }
