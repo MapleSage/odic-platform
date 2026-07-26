@@ -1,12 +1,14 @@
-// DEPRECATED — this file used to hold hardcoded Smartworld-specific data directly.
+// RETAINED, INACTIVE -- do not delete (standing rule, 2026-07-26: absence of a current
+// caller is not evidence something is unwanted; nothing in this repo gets deleted on
+// that basis alone). This file used to hold hardcoded Smartworld-specific data directly.
 // It has been split into:
 //   ./schema.ts               -- generic types + theme constants (shared across orgs)
 //   ./orgs/smartworld.ts      -- Smartworld's own data, as an ExposureNetworkData object
 //   ./registry.ts             -- getExposureNetworkData(orgId) loader
 //
-// This re-export exists only for backward compatibility with any other call site that
-// still imports the old names directly. New code should import from schema.ts/registry.ts
-// instead. If nothing breaks when this file is deleted, delete it.
+// This re-export is unused by any current call site (grep-verified) but stays as a
+// backward-compatibility shim for the old names. New code should import from
+// schema.ts/registry.ts instead.
 
 export {
   GRADE_COLOR,

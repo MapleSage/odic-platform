@@ -1,17 +1,16 @@
 // Smartworld Developers -- Exposure Network data.
 //
-// This is the FIRST of what should be N per-org data files (one per customer with the
-// 'exposure-network' pack enabled), proving the generic ExposureNetwork renderer still
-// produces an identical result to the old hardcoded version once fed through the
-// ExposureNetworkData schema. Every literal value below is unchanged from the original
-// data.ts -- only the packaging changed (org-specific object instead of module-level
-// exports the component imported directly).
+// RETAINED, INACTIVE as of 2026-07-26 -- the frontend no longer reads this file directly.
+// ../registry.ts now fetches GET /api/orgs/:id/exposure-network, served from
+// services/fastapi-orchestration/data/exposure-network/smartworld.json (extracted
+// losslessly from this exact file's fillEntityRegistryDefaults() output -- see that
+// commit's message for how, and verify by re-running it if this file ever changes).
 //
-// TODO(Luna, backend): this should ultimately be served from a real intelligence-object
-// API (see docs/atlas-backend-brief-for-luna-2026-07-24.md, P0) rather than shipped as a
-// static frontend file. Keeping it as a typed static object for now so the renderer can
-// be proven generic immediately; swapping the registry lookup (../registry.ts) for a
-// fetch() is a contained, mechanical follow-up once that endpoint exists.
+// This file is the known-good, hand-authored baseline for the P2 normalizer regression
+// test: once a real Luna-evidence -> grade normalizer exists, its output over Smartworld's
+// evidence must diff against this file's data (via the backend JSON it produced), not the
+// other way around. Do not delete or treat as legacy -- it is the source of truth the
+// automated pipeline has to reproduce before onboarding a second org.
 
 import type { EntityChild, ExposureNetworkData } from '../schema';
 import { fillEntityRegistryDefaults } from '../schema';

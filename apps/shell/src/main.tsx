@@ -476,6 +476,7 @@ function App() {
   const [organizations, setOrganizations] = useState<OrgProfile[]>(ORGANIZATIONS);
   const [activeOrgId, setActiveOrgId] = useState(ORGANIZATIONS[0].id);
   const [orgSwitcherOpen, setOrgSwitcherOpen] = useState(false);
+  const [orgSwitcherFilter, setOrgSwitcherFilter] = useState('');
   const activeOrg = organizations.find((o) => o.id === activeOrgId) ?? organizations[0];
   const [dataState, setDataState] = useState<'seed' | 'live'>('seed');
   const [apiError, setApiError] = useState<string | null>(null);
@@ -576,14 +577,16 @@ function App() {
     setGiaError(null);
     try {
       let context: string;
-      if (activeOrg.packs.includes('workspace-data')) {
+      if (hasWorkspaceData) {
         context = [
           `Organization: ${workspace.organization.name} (${workspace.organization.meta.industry}, ${workspace.organization.meta.hq}, ${workspace.organization.meta.employees} employees, risk level: ${workspace.organization.meta.riskLevel})`,
           `Open risks: ${workspace.organization.risks.map((r) => `[${r.severity}] ${r.title} -- ${r.detail}`).join('; ')}`,
           `Opportunities: ${workspace.organization.opportunities.map((o) => `${o.title} (${o.stage}, ${o.value})`).join('; ')}`,
           `Key people: ${workspace.organization.people.map((p) => `${p.name} (${p.title}, ${p.dept})`).join('; ')}`,
         ].join('\n');
-      } else {
+      } else if (pendingWorkspaceData) {
+        context = `Organization: ${activeOrg.name} -- registered with a source mapping but not yet ingested into an Atlas workspace record. Say so plainly rather than guessing at details.`;
+      } else if (activeOrg.packs.includes('exposure-network')) {
         const exposureData = await getExposureNetworkData(activeOrg.id, getAccessToken);
         context = !exposureData
           ? `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, but no data file exists for it yet.`
@@ -592,6 +595,8 @@ function App() {
               `Tracked projects/SPVs: ${exposureData.spvDefs.map((s) => `${s.project} (${s.spv}) -- ${s.status}`).join('; ')}`,
               `Promoter & family office network (pending verification -- do not overstate confidence): ${exposureData.promoterNetwork.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; ')}`,
             ].join('\n');
+      } else {
+        context = `Organization: ${activeOrg.name} -- no workspace data configured for this org.`;
       }
 
       const token = await getAccessToken();
@@ -632,6 +637,15 @@ function App() {
     .toUpperCase();
 
   const pageMeta = workspace.organization.meta;
+  // A pack declares intent ("this org should have workspace data"), not presence -- a
+  // pack without a backing data/orgs/<id>.json file returns EMPTY_WORKSPACE (name: '').
+  // Treat those as "not yet ingested," never as "no workspace data configured" (which
+  // implies the org shouldn't have this surface at all -- it's the opposite claim).
+  const hasWorkspaceData = activeOrg.packs.includes('workspace-data') && workspace.organization.name !== '';
+  const pendingWorkspaceData = activeOrg.packs.includes('workspace-data') && !hasWorkspaceData;
+  const filteredOrganizations = orgSwitcherFilter.trim()
+    ? organizations.filter((org) => org.name.toLowerCase().includes(orgSwitcherFilter.trim().toLowerCase()))
+    : organizations;
 
   if (exposureFullScreen) {
     return <ExposureNetwork orgId={activeOrg.id} fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />;
@@ -665,7 +679,7 @@ function App() {
 
         <SectionLabel>RECENT</SectionLabel>
         <div className="sidebar-group recent-list">
-          {(activeOrg.packs.includes('workspace-data') ? workspace.recentItems : []).map((item) => (
+          {(hasWorkspaceData ? workspace.recentItems : []).map((item) => (
             <button key={item} className="recent-item">{item}</button>
           ))}
         </div>
@@ -680,18 +694,32 @@ function App() {
           </button>
           {orgSwitcherOpen && (
             <div className="workspace-dropdown">
-              {organizations.map((org) => (
-                <button
-                  key={org.id}
-                  className={`workspace-option ${org.id === activeOrgId ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveOrgId(org.id);
-                    setOrgSwitcherOpen(false);
-                  }}
-                >
-                  {org.name}
-                </button>
-              ))}
+              {organizations.length > 8 && (
+                <input
+                  className="workspace-dropdown-filter"
+                  type="text"
+                  placeholder={`Filter ${organizations.length} organizations...`}
+                  value={orgSwitcherFilter}
+                  onChange={(event) => setOrgSwitcherFilter(event.target.value)}
+                  autoFocus
+                />
+              )}
+              <div className="workspace-dropdown-list">
+                {filteredOrganizations.map((org) => (
+                  <button
+                    key={org.id}
+                    className={`workspace-option ${org.id === activeOrgId ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveOrgId(org.id);
+                      setOrgSwitcherOpen(false);
+                      setOrgSwitcherFilter('');
+                    }}
+                  >
+                    {org.name}
+                  </button>
+                ))}
+                {filteredOrganizations.length === 0 && <div className="workspace-dropdown-empty">No organizations match "{orgSwitcherFilter}"</div>}
+              </div>
             </div>
           )}
         </div>
@@ -705,23 +733,25 @@ function App() {
       <main className="main-content">
         <div className="page-head">
           <div>
-            <div className="page-title">{activeOrg.packs.includes('workspace-data') ? workspace.organization.name : activeOrg.name}</div>
-            {activeOrg.packs.includes('workspace-data') ? (
+            <div className="page-title">{hasWorkspaceData ? workspace.organization.name : activeOrg.name}</div>
+            {hasWorkspaceData ? (
               <div className="page-meta">{pageMeta.industry} · {pageMeta.hq} · {pageMeta.employees} employees</div>
             ) : (
-              <div className="page-meta">{activeOrg.packs.includes('exposure-network') ? 'Exposure Network Intelligence' : 'No workspace data configured'}</div>
+              <div className="page-meta">
+                {pendingWorkspaceData ? 'Not yet ingested' : activeOrg.packs.includes('exposure-network') ? 'Exposure Network Intelligence' : 'No workspace data configured'}
+              </div>
             )}
           </div>
           <div className="page-actions">
-            <span className={`data-pill ${dataState}`}>{dataState === 'live' ? 'LIVE API' : 'SEED DATA'}</span>
+            <span className={`data-pill ${pendingWorkspaceData ? 'pending' : dataState}`}>{pendingWorkspaceData ? 'PENDING' : dataState === 'live' ? 'LIVE API' : 'SEED DATA'}</span>
             {apiError ? <span className="api-error-pill">API fallback: {apiError}</span> : null}
-            {activeOrg.packs.includes('workspace-data') && <span className="risk-pill">{pageMeta.riskLevel}</span>}
+            {hasWorkspaceData && <span className="risk-pill">{pageMeta.riskLevel}</span>}
             <button className="ghost-button">Generate Report</button>
             <button className="primary-button">Open Workspace</button>
           </div>
         </div>
 
-        {activeOrg.packs.includes('workspace-data') && (
+        {hasWorkspaceData && (
           <section className="stats-grid">
             {workspace.organization.stats.map((card) => (
               <div key={card.label} className="stat-card" style={{ borderTopColor: card.accent }}>
@@ -734,7 +764,7 @@ function App() {
         )}
 
         {activeView === 'organization' && (
-          activeOrg.packs.includes('workspace-data') ? (
+          hasWorkspaceData ? (
             <OrganizationWorkspace
               organization={workspace.organization}
               activeOrgTab={activeOrgTab}
@@ -743,6 +773,8 @@ function App() {
               setActivityFilter={setActivityFilter}
               filteredActivity={filteredActivity}
             />
+          ) : pendingWorkspaceData ? (
+            <PendingIngestionState orgName={activeOrg.name} />
           ) : activeOrg.packs.includes('exposure-network') ? (
             <ExposureNetworkSummary orgId={activeOrg.id} orgName={activeOrg.name} onOpenGraph={() => setActiveView('graph')} getAccessToken={getAccessToken} />
           ) : (
@@ -751,8 +783,10 @@ function App() {
         )}
         {activeView === 'search' && <SearchWorkspace getAccessToken={getAccessToken} activeOrgId={activeOrgId} activeOrgName={activeOrg.name} />}
         {activeView === 'reports' && (
-          activeOrg.packs.includes('workspace-data') ? (
+          hasWorkspaceData ? (
             <ReportsWorkspace reports={workspace.reports} />
+          ) : pendingWorkspaceData ? (
+            <PendingIngestionState orgName={activeOrg.name} />
           ) : (
             <NoOrgDataState orgName={activeOrg.name} suggestion="Standing reports aren't built for Exposure Network workspaces yet -- see the Organization tab for tracked projects and the Graph tab for full diligence." />
           )
@@ -816,7 +850,7 @@ function App() {
         {giaError && <div className="gia-error">{giaError}</div>}
 
         <div className="gia-card-list">
-          {(activeOrg.packs.includes('workspace-data') ? workspace.giaCards : []).map((card) => (
+          {(hasWorkspaceData ? workspace.giaCards : []).map((card) => (
             <div key={card.title} className="gia-card">
               <div className="gia-card-title">{card.title}</div>
               <div className="gia-card-body">{card.body}</div>
@@ -1561,6 +1595,22 @@ function NoOrgDataState({ orgName, suggestion }: { orgName: string; suggestion?:
     <div className="no-org-data">
       <div className="no-org-data-title">No workspace data for {orgName}</div>
       {suggestion && <div className="no-org-data-sub">{suggestion}</div>}
+    </div>
+  );
+}
+
+// Distinct from NoOrgDataState: this org DOES declare the workspace-data pack -- the
+// surface belongs here and is expected to fill in, it's just not ingested yet. Never
+// collapse this into "no workspace data configured," which claims the opposite thing.
+function PendingIngestionState({ orgName }: { orgName: string }) {
+  return (
+    <div className="no-org-data">
+      <span className="data-pill pending" style={{ marginBottom: 10, display: 'inline-block' }}>PENDING</span>
+      <div className="no-org-data-title">Not yet ingested for {orgName}</div>
+      <div className="no-org-data-sub">
+        This organization is registered with a HubSpot mapping but has no Atlas workspace record yet.
+        It will populate once a source connector fetches it -- nothing is missing on purpose.
+      </div>
     </div>
   );
 }
