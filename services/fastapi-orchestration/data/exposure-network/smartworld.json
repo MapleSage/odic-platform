@@ -1265,5 +1265,37 @@
       ],
       "children": []
     }
-  }
+  },
+  "keyPersonnel": [
+    {
+      "id": "ashish-jerath",
+      "name": "Ashish Jerath",
+      "role": "President, Sales & Marketing -- Smartworld Developers",
+      "note": "Prior CSO at DLF, VP Sales at Emaar India; EVP at Tribeca Developers handling Trump Towers Delhi NCR/Kolkata before joining Smartworld."
+    },
+    {
+      "id": "hari-easwaran",
+      "name": "Hari Easwaran",
+      "role": "President, Information & Technology and Contracts & Procurement -- Smartworld Developers",
+      "note": "Common director/board presence across multiple Smartworld project SPVs; frequently quoted in trade press on Smartworld's digital-first positioning."
+    },
+    {
+      "id": "rajat-jain",
+      "name": "Rajat Jain",
+      "role": "Board member, Smartworld Developers (joined Jul 2022)",
+      "note": "Former Managing Director, Walt Disney India."
+    },
+    {
+      "id": "davinder-singh-malik",
+      "name": "Davinder Singh Malik",
+      "role": "Multi-SPV board member",
+      "note": "Confirmed board seats on Riverday Infrastructure (Sky Arc) and Etsy Realcon (The Edition); reported seat on Smartworld Heights not yet independently verified."
+    },
+    {
+      "id": "vijay-kumar-aggarwal",
+      "name": "Vijay Kumar Aggarwal",
+      "role": "Cross-entity director -- M3M India, Aawam Residency, Lavish Buildmart",
+      "note": "Name recurs across an M3M-adjacent apex entity and two SPVs in different states; only the Lavish Buildmart listing came with a DIN, so same-person identity across all three is not yet confirmed."
+    }
+  ]
 }

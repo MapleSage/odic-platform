@@ -587,7 +587,7 @@ export function ExposureNetwork({
           ))}
         </div>
 
-        {KEY_PERSONNEL.length > 0 && (
+        {(KEY_PERSONNEL ?? []).length > 0 && (
           <div style={{ marginTop: 20, background: '#0E1826', border: '1px solid #22364a', borderRadius: 8, padding: 16 }}>
             <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#7FA8BD', marginBottom: 4 }}>KEY PERSONNEL &amp; OPERATIONAL DIRECTORS</div>
             <div style={{ fontSize: 11, color: '#7FA8BD', marginBottom: 10, fontFamily: "'IBM Plex Sans', sans-serif" }}>
