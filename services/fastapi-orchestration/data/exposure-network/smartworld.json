@@ -15,7 +15,7 @@
           },
           {
             "label": "AUM CLAIM",
-            "value": "₹40,000 CR"
+            "value": "\u20b940,000 CR"
           },
           {
             "label": "DELIVERED",
@@ -134,7 +134,7 @@
           "rows": [
             {
               "label": "ESTIMATED PROJECT COST",
-              "value": "₹340,765.96 lakhs (~₹3,408 crore)"
+              "value": "\u20b9340,765.96 lakhs (~\u20b93,408 crore)"
             },
             {
               "label": "PROJECT LAND AREA",
@@ -345,6 +345,90 @@
       "commonDirectors": "Bharat Vigmal",
       "status": "Completed public-source dossier (refreshed 2026-07-21) -- deep-diligence gaps remain",
       "notes": "Strongest confirmed Smartworld <-> M3M bridge: official Smartworld page and the refreshed HRERA preview both name M3M India Infrastructures Pvt Ltd as licensee alongside Svabhumi Realtors as applicant/promoter, under licence 168 of 2025 over a 139.79375-acre licensed context. Address overlap alone is not treated as proof of control."
+    },
+    {
+      "id": "trumptowernoida",
+      "project": "Trump Tower Noida (M3M The Cullinan II)",
+      "spv": "Lavish Buildmart Pvt Ltd",
+      "row": 6,
+      "cin": "Not yet retrieved",
+      "rera": "UPRERAPRJ794824/10/2025",
+      "address": "Sector 94, Noida, Uttar Pradesh",
+      "directors": "Not yet retrieved",
+      "commonDirectors": "Not yet retrieved -- outside the Haryana M3M IFC/Urbana director cluster tracked for the other six SPVs; first UP-registered SPV in this portfolio",
+      "status": "Public-source dossier synthesized 2026-07-27 -- deep-diligence gaps remain (director set, CIN, funding/escrow, contractor stack not yet retrieved)",
+      "notes": "First Smartworld/M3M-ecosystem SPV registered outside Haryana. Routed through Uttar Pradesh's RERA/DTCP regime rather than Haryana's, and through a distinct promoter entity (Lavish Buildmart) outside the M3M IFC/Urbana director cluster. The Trump brand is a licensing arrangement only: per public disclosure, the licensor (Trump Organization) holds zero financial, equity, or construction risk, and M3M India holds sole financial responsibility for the project.",
+      "deepDiligence": [
+        {
+          "heading": "LAND & ACQUISITION",
+          "rows": [
+            {
+              "label": "PARCEL",
+              "value": "13 acres, Sector 94, Noida, Uttar Pradesh."
+            },
+            {
+              "label": "ACQUISITION COST",
+              "value": "Approx. Rs. 827.4 crore (public-source figure; not yet cross-verified against a primary filing or source ID)."
+            }
+          ]
+        },
+        {
+          "heading": "REGULATORY DISRUPTION -- MAY 2024 ALLOTMENT CANCELLATION",
+          "rows": [
+            {
+              "label": "EVENT",
+              "value": "Uttar Pradesh Government temporarily cancelled the land allotment in May 2024 over bidding and eligibility disputes."
+            },
+            {
+              "label": "EXPOSURE",
+              "value": "Approx. Rs. 1,500 crore of buyer capital reported at risk during the cancellation window."
+            },
+            {
+              "label": "OUTCOME",
+              "value": "M3M subsequently negotiated a restoration of the allotment; project proceeded to RERA registration (UPRERAPRJ794824/10/2025)."
+            },
+            {
+              "label": "STATUS",
+              "value": "Public-source account of the cancellation/restoration sequence -- underlying UP government order and restoration documentation not yet obtained."
+            }
+          ]
+        },
+        {
+          "heading": "BRAND STRUCTURE -- LICENSING, NOT LIABILITY",
+          "rows": [
+            {
+              "label": "STRUCTURE",
+              "value": "Trump Organization acts as brand licensor only. Per public disclosure, it holds zero financial, equity, or construction risk in the project."
+            },
+            {
+              "label": "FINANCIAL RESPONSIBILITY",
+              "value": "M3M India holds sole financial responsibility for construction and delivery."
+            }
+          ]
+        },
+        {
+          "heading": "STRATEGIC CONTEXT -- CROSS-STATE SPV ISOLATION (ANALYTICAL)",
+          "rows": [
+            {
+              "label": "HYPOTHESIS",
+              "value": "Locating this project in Uttar Pradesh, through an SPV (Lavish Buildmart) outside the Haryana M3M IFC/Urbana director/address cluster, may functionally wall off this project's cash flow from enforcement actions targeting the Haryana parent structure."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Analytical hypothesis -- consistent with the group's known Haryana SPV-isolation pattern, but no filing directly ties this project's cash flow to any Haryana enforcement matter."
+            }
+          ]
+        },
+        {
+          "heading": "OPEN GAPS",
+          "rows": [
+            {
+              "label": "MISSING",
+              "value": "Lavish Buildmart's CIN, director set, and registered address; UP RERA project filing detail beyond the registration number; funding/escrow bank; contractor and consultant stack; Trump Organization licensing agreement terms."
+            }
+          ]
+        }
+      ]
     }
   ],
   "leftDefs": [
@@ -487,9 +571,9 @@
     },
     {
       "name": "UHA London",
-      "role": "Architectural & façade design partner (One DXP)",
+      "role": "Architectural & fa\u00e7ade design partner (One DXP)",
       "grade": "C",
-      "note": "Official project façade designer disclosure for One DXP."
+      "note": "Official project fa\u00e7ade designer disclosure for One DXP."
     },
     {
       "name": "DTCP Haryana & Haryana RERA",

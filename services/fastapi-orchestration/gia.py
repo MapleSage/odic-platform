@@ -6,8 +6,7 @@ from pydantic import BaseModel
 
 AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "").rstrip("/")
 AZURE_OPENAI_API_KEY = os.environ.get("AZURE_OPENAI_API_KEY", "")
-AZURE_OPENAI_DEPLOYMENT = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "gpt-4o")
-AZURE_OPENAI_API_VERSION = "2024-08-01-preview"
+AZURE_OPENAI_DEPLOYMENT = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "gpt-4.1")
 
 SYSTEM_PROMPT = (
     "You are Atlas AI, the embedded intelligence assistant inside Atlas, an "
@@ -32,8 +31,11 @@ def ask_gia(request: ChatRequest) -> ChatResponse:
     if not AZURE_OPENAI_ENDPOINT or not AZURE_OPENAI_API_KEY:
         raise HTTPException(status_code=503, detail="Atlas AI is not configured in this environment")
 
-    url = f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/{AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version={AZURE_OPENAI_API_VERSION}"
+    # Azure OpenAI's unified v1 API surface -- OpenAI-SDK-compatible: model is named
+    # in the request body, not the URL path, and there's no api-version query param.
+    url = f"{AZURE_OPENAI_ENDPOINT}/chat/completions"
     payload = {
+        "model": AZURE_OPENAI_DEPLOYMENT,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"Workspace context:\n{request.context}\n\nQuestion: {request.message}"},
