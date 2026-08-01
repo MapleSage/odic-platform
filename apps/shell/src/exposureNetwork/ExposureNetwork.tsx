@@ -25,6 +25,7 @@ const EMPTY_DATA: ExposureNetworkData = {
   rightExtras: [],
   interlocks: [],
   promoterNetwork: [],
+  keyPersonnel: [],
   entityRegistry: {},
 };
 
@@ -101,6 +102,7 @@ export function ExposureNetwork({
     rightExtras: RIGHT_EXTRAS,
     interlocks: INTERLOCKS,
     promoterNetwork: PROMOTER_NETWORK,
+    keyPersonnel: KEY_PERSONNEL,
     entityRegistry: ENTITY_REGISTRY,
   } = data ?? EMPTY_DATA;
 
@@ -145,6 +147,17 @@ export function ExposureNetwork({
     if (!e) return;
     const childList: ModalChild[] = e.children.map((c) => ({ ...c, onClick: () => openEntity(c.id) }));
     pushDrill({ ...e, childList, openChartClick: () => openChart(id) });
+  };
+
+  // Shared by promoterNetwork and keyPersonnel: open the full drill-down when a lead's
+  // id resolves in entityRegistry (same pattern FlankDef cards use), else fall back to
+  // a simple inline modal built from the lead's own name/role/note.
+  const openLead = (p: { id?: string; name: string; role: string; note: string }) => {
+    if (p.id && ENTITY_REGISTRY[p.id]) {
+      openEntity(p.id);
+      return;
+    }
+    setSelected({ title: p.name, subtitle: p.role, rows: [{ label: 'STATUS', value: 'Pending verification' }, { label: 'NOTE', value: p.note }] });
   };
 
   function makeFlankCard(def: FlankDef, index: number, x: number, side: 'left' | 'right') {
@@ -278,9 +291,17 @@ export function ExposureNetwork({
   const breadcrumbsVisible = drillStack.length > 1;
   const chartEntity = chartView ? ENTITY_REGISTRY[chartView] : null;
 
+  // Non-fullscreen minHeight was '100%' -- a percentage height, which only resolves
+  // correctly when every ancestor up the chain has an explicit (non-auto) height. The
+  // Graph tab's embed container doesn't guarantee that, so this could silently collapse
+  // instead of sizing to the canvas below it. Same root-cause category as the
+  // vh-in-embed-boundary bug the original design handoff hit and fixed (see
+  // design_handoff_odic_intelligence_platform README, "reported matrix background bug"
+  // note) -- fixed here with a concrete pixel floor instead of a relative unit, since the
+  // canvas area itself is a fixed 1600x900 (see the overflowX:auto wrapper below).
   const containerStyle: React.CSSProperties = fullScreen
     ? { position: 'fixed', inset: 0, zIndex: 30, overflowY: 'auto', background: '#050810' }
-    : { minHeight: '100%', background: '#050810', borderRadius: 18, overflow: 'hidden' };
+    : { minHeight: 900, background: '#050810', borderRadius: 18, overflow: 'hidden' };
 
   const emptyStateStyle: React.CSSProperties = {
     minHeight: fullScreen ? '100vh' : '100%',
@@ -334,7 +355,7 @@ export function ExposureNetwork({
 
   return (
     <div style={{ ...containerStyle, color: 'oklch(94% 0.01 240)', fontFamily: "'IBM Plex Mono', monospace" }}>
-      <div style={{ background: '#0A0F1A', borderBottom: '1px solid #1E2E40', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+      <div style={{ background: '#0A0F1A', borderBottom: '1px solid #1E2E40', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', flexShrink: 0, overflowX: 'auto', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           {fullScreen ? (
             <button onClick={onCloseFullScreen} style={{ background: 'none', border: 0, font: 'inherit', fontSize: 11, color: '#7FA8BD', cursor: 'pointer' }}>
@@ -355,7 +376,7 @@ export function ExposureNetwork({
         </div>
       </div>
 
-      <div style={{ background: '#0D1420', borderBottom: '1px solid #1E2E40', padding: '10px 24px', display: 'flex', gap: 36, flexWrap: 'wrap', alignItems: 'center' }}>
+      <div style={{ background: '#0D1420', borderBottom: '1px solid #1E2E40', padding: '10px 24px', display: 'flex', gap: 36, flexWrap: 'nowrap', flexShrink: 0, overflowX: 'auto', alignItems: 'center' }}>
         <div style={{ fontSize: 12, color: '#3D9CA2' }}>
           Viewing: <span style={{ color: 'oklch(94% 0.01 240)' }}>{orgName}</span>
         </div>
@@ -557,7 +578,7 @@ export function ExposureNetwork({
           {PROMOTER_NETWORK.map((p) => (
             <button
               key={p.name}
-              onClick={() => setSelected({ title: p.name, subtitle: p.role, rows: [{ label: 'STATUS', value: 'Pending verification' }, { label: 'NOTE', value: p.note }] })}
+              onClick={() => openLead(p)}
               style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 0, borderTop: '1px solid #3a2f12', padding: '8px 0', fontSize: 12, lineHeight: 1.5, fontFamily: "'IBM Plex Sans', sans-serif", cursor: 'pointer', color: 'inherit' }}
             >
               <span style={{ fontWeight: 600 }}>{p.name}</span>
@@ -565,6 +586,25 @@ export function ExposureNetwork({
             </button>
           ))}
         </div>
+
+        {KEY_PERSONNEL.length > 0 && (
+          <div style={{ marginTop: 20, background: '#0E1826', border: '1px solid #22364a', borderRadius: 8, padding: 16 }}>
+            <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#7FA8BD', marginBottom: 4 }}>KEY PERSONNEL &amp; OPERATIONAL DIRECTORS</div>
+            <div style={{ fontSize: 11, color: '#7FA8BD', marginBottom: 10, fontFamily: "'IBM Plex Sans', sans-serif" }}>
+              Confirmed corporate officers and SPV-level board members -- a different evidentiary category from the ownership/family leads above.
+            </div>
+            {KEY_PERSONNEL.map((p) => (
+              <button
+                key={p.name}
+                onClick={() => openLead(p)}
+                style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 0, borderTop: '1px solid #22364a', padding: '8px 0', fontSize: 12, lineHeight: 1.5, fontFamily: "'IBM Plex Sans', sans-serif", cursor: 'pointer', color: 'inherit' }}
+              >
+                <span style={{ fontWeight: 600 }}>{p.name}</span>
+                <span style={{ color: '#7FA8BD' }}> -- {p.role}</span>
+              </button>
+            ))}
+          </div>
+        )}
 
         <div style={{ marginTop: 20, background: '#0E1826', border: '1px solid #22364a', borderRadius: 8, padding: 16 }}>
           <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#F7761F', marginBottom: 10 }}>INTERLOCKING DIRECTORATE &amp; COMMON CONTROL</div>

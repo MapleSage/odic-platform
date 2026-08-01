@@ -78,7 +78,9 @@ export type FlankDef = {
 
 export type ExtraDef = { name: string; role: string; grade: Grade; note: string };
 
-export type PromoterLead = { name: string; role: string; note: string };
+// id is optional: when present and it resolves in entityRegistry, clicking this lead
+// opens the full drill-down (same pattern FlankDef uses) instead of a simple inline modal.
+export type PromoterLead = { name: string; role: string; note: string; id?: string };
 
 export type PlatformModal = {
   title: string;
@@ -100,6 +102,11 @@ export type ExposureNetworkData = {
   rightExtras: ExtraDef[];
   interlocks: { name: string; bridges: string }[];
   promoterNetwork: PromoterLead[];
+  // Corporate officers/operational directors -- distinct from promoterNetwork's
+  // ownership/family leads. Same shape, different evidentiary category: these are
+  // confirmed role-holders (executives, SPV board members), not unconfirmed
+  // family/ownership hypotheses.
+  keyPersonnel: PromoterLead[];
   entityRegistry: Record<string, EntityDef>;
 };
 

@@ -360,5 +360,10 @@ export const smartworldExposureNetwork: ExposureNetworkData = {
       note: 'Public ESG/CSR leadership role (sustainability, rural livelihoods, women entrepreneurship, skilling). Governance disclosures reportedly identify her as Pankaj Bansal\'s sister -- pending documentary verification, not confirmed. Do not infer any Datamatics/Kanodia-family link from surname alone.',
     },
   ],
+  // Empty, not backfilled: this file is the frozen 2026-07-26 P2 regression baseline
+  // (see header) -- keyPersonnel is a field added afterward to the live schema/backend
+  // data, not to this snapshot, since backfilling it would defeat the file's purpose
+  // as a stable fixture.
+  keyPersonnel: [],
   entityRegistry,
 };

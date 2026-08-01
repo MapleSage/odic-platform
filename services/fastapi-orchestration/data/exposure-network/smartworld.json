@@ -1011,6 +1011,10 @@
               "value": "Registered at M3M IFC Tower-1, distinct from the Tower-2 address used by Riverday/Nourish/Etsy/Svabhumi."
             },
             {
+              "label": "AMIT RAJ -- BROADER DIRECTORSHIPS",
+              "value": "Reported as a director of M3M Golf Estate Pvt Ltd, Trump Buildwell Pvt Ltd, and other Propbuild/Realcon-named entities -- a wide footprint across M3M-adjacent SPVs, consistent with (not proof of) a professional nominee-director role rather than a one-off appointment."
+            },
+            {
               "label": "DIRECTOR BRIDGE",
               "value": "Naman Gupta, a past director of Smartworld Developers (the platform node) and current/past director of the Orchard/Gems cluster (Suposhaa Realcon, Adhikaansh Realtors), served as a director here until Jun 2022."
             },
@@ -1056,8 +1060,8 @@
               "value": "Naman Gupta, past director of Smartworld Developers and the Orchard/Gems cluster, served as a director here until Jul 2021."
             },
             {
-              "label": "POSSIBLE DIRECTOR BRIDGE (INTO TRUMP TOWER NOIDA)",
-              "value": "A 'Vijay Kumar Aggarwal' is also named as a current director of Lavish Buildmart Pvt Ltd (Trump Tower Noida SPV, DIN 05170472, appointed Sep 2019). Name match only -- no DIN given for this entity's Vijay Kumar Aggarwal, so same-person identity is not yet confirmed. If confirmed, this would be the first known current director bridge between the Haryana cluster and the Uttar Pradesh SPV."
+              "label": "M3M INDIA LINK",
+              "value": "Vijay Kumar Aggarwal is separately reported as a director of M3M India Pvt Ltd itself. See the dedicated vijay-kumar-aggarwal entry for the full cross-entity picture and its confirmation status -- a shared director is evidence of a link, not proof that Aawam Residency is a legal subsidiary of M3M India (that requires shareholding/holding-company data, which has not been retrieved)."
             },
             {
               "label": "GRADE",
@@ -1097,12 +1101,164 @@
               "value": "Civil engineering / construction, distinct from the M3M IFC-registered entities -- no shared address with the core SPV cluster."
             },
             {
+              "label": "SATPAL SINGH -- DIRECTOR",
+              "value": "DIN 07466618. Reported as associated with approximately 48 companies, including Indiabulls-linked entities (Indiabulls Infrabuild, Indiabulls Commercial Assets) and various \"Buildwell\"/\"Realty\" firms."
+            },
+            {
+              "label": "NOTE ON SCOPE",
+              "value": "A director appearing on many companies is a normal, legal pattern in Indian corporate structuring (professional/nominee directorships), not itself evidence of wrongdoing. A characterization of this individual as a \"known criminal\", \"fixer\", or \"enforcer\" was supplied alongside this data but is not recorded here: it cited no primary source (FIR, court record, or news report naming him in a criminal matter), and was framed conditionally by its own source (\"if he is a known criminal...\"). Recording an unsourced criminal characterization of a real, named individual does not meet this file's evidence bar and carries real defamation risk if wrong."
+            },
+            {
               "label": "ROLE",
               "value": "Conveyed a 3.1875-acre existing building with 08.11.2019 OC from the earlier Sky Arc land chain (see skyarc deepDiligence -> LAND OWNERSHIP CHAIN)."
             },
             {
               "label": "GRADE",
               "value": "[A] Primary source (MCA records) for CIN, address, and directors."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "ashish-jerath": {
+      "title": "Ashish Jerath",
+      "subtitle": "President, Sales & Marketing -- Smartworld Developers",
+      "sections": [
+        {
+          "heading": "BACKGROUND",
+          "rows": [
+            {
+              "label": "PRIOR ROLES",
+              "value": "Chief Sales Officer, DLF Limited; VP Sales, Emaar India."
+            },
+            {
+              "label": "TRIBECA / TRUMP LINK",
+              "value": "EVP at Tribeca Developers, where he handled the Trump Towers projects in Delhi NCR and Kolkata -- prior to joining Smartworld."
+            }
+          ]
+        },
+        {
+          "heading": "RELEVANCE",
+          "rows": [
+            {
+              "label": "NOTE",
+              "value": "His prior role directly handling Trump-branded projects at Tribeca predates and is separate from Smartworld/M3M's own Trump Tower Noida (Lavish Buildmart) SPV -- a real professional-background link to the Trump brand generally, not evidence of a corporate/financial link between Tribeca and Lavish Buildmart specifically."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] First-party/professional-profile disclosure (public role history). Not independently cross-checked against a primary filing."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "hari-easwaran": {
+      "title": "Hari Easwaran (Hari Easwaran Iyer)",
+      "subtitle": "President, Information & Technology and Contracts & Procurement -- Smartworld Developers",
+      "sections": [
+        {
+          "heading": "ROLE",
+          "rows": [
+            {
+              "label": "BOARD PRESENCE",
+              "value": "Named director/common-director across multiple Smartworld project SPVs (Nourish Developers/One DXP, Etsy Realcon/The Edition, and others -- see spvDefs)."
+            },
+            {
+              "label": "PUBLIC NARRATIVE",
+              "value": "Frequently quoted in trade press (e.g. The CEO Magazine) framing Smartworld as a digitally-first, transparent, millennial-focused developer."
+            }
+          ]
+        },
+        {
+          "heading": "NOTE",
+          "rows": [
+            {
+              "label": "GRADE",
+              "value": "[C] for the role and press-quote facts themselves. Any characterization of the public-narrative role as deliberately obscuring the SPV structure is [D] analytical interpretation, not a sourced claim, and is not asserted here as fact."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "rajat-jain": {
+      "title": "Rajat Jain",
+      "subtitle": "Board member, Smartworld Developers (joined Jul 2022)",
+      "sections": [
+        {
+          "heading": "BACKGROUND",
+          "rows": [
+            {
+              "label": "PRIOR ROLE",
+              "value": "Former Managing Director, Walt Disney India."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] Professional-profile disclosure. Not independently cross-checked against a primary filing."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "davinder-singh-malik": {
+      "title": "Davinder Singh Malik",
+      "subtitle": "Multi-SPV board member across the Smartworld project cluster",
+      "sections": [
+        {
+          "heading": "KNOWN BOARD SEATS",
+          "rows": [
+            {
+              "label": "CONFIRMED IN ATLAS",
+              "value": "Riverday Infrastructure Pvt Ltd (Sky Arc); Etsy Realcon Pvt Ltd (The Edition) -- see spvDefs directors/commonDirectors fields."
+            },
+            {
+              "label": "REPORTED, NOT YET IN ATLAS'S SPV GRID",
+              "value": "\"Smartworld Heights\" -- reported board seat; this project is not currently tracked as a spvDefs entry (only the six HRERA-registered + Trump Tower Noida projects are). Not added as a new SPV without an independent CIN/RERA cross-check."
+            }
+          ]
+        },
+        {
+          "heading": "GRADE",
+          "rows": [
+            {
+              "label": "GRADE",
+              "value": "[A] for the Riverday/Etsy seats (already MCA/HRERA-sourced elsewhere in this file). [D] for Smartworld Heights until independently verified."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "vijay-kumar-aggarwal": {
+      "title": "Vijay Kumar Aggarwal",
+      "subtitle": "Cross-entity director -- M3M India, Aawam Residency, Lavish Buildmart (Trump Tower Noida)",
+      "sections": [
+        {
+          "heading": "KNOWN DIRECTORSHIPS (BY NAME)",
+          "rows": [
+            {
+              "label": "M3M INDIA PVT LTD",
+              "value": "Reported as a director alongside Roop Kumar Bansal and Pankaj Bansal."
+            },
+            {
+              "label": "AAWAM RESIDENCY PVT LTD",
+              "value": "Current director, per MCA data (see aawam-residency entry). No DIN given for this listing."
+            },
+            {
+              "label": "LAVISH BUILDMART PVT LTD (TRUMP TOWER NOIDA SPV)",
+              "value": "Current director, DIN 05170472, appointed Sep 2019 -- the only one of these three listings that came with an explicit DIN."
+            }
+          ]
+        },
+        {
+          "heading": "IDENTITY CONFIRMATION STATUS",
+          "rows": [
+            {
+              "label": "GRADE",
+              "value": "[D] for treating these three as the same individual. The name recurs consistently across an M3M-adjacent apex entity and two SPVs in different states, which is suggestive, but only one of the three listings (Lavish Buildmart) came with a DIN. Common Indian names make name-only matching unreliable; a DIN cross-match across all three filings would move this to [A]."
             }
           ]
         }
