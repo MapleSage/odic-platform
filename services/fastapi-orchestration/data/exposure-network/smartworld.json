@@ -337,6 +337,53 @@
               "value": "Deed/sale-certificate/licence PDF chain, environment-clearance closure, contractor/consultant/lender stack, and buyer-complaint history remain open."
             }
           ]
+        },
+        {
+          "heading": "CAPITALIZATION -- EQUITY VS. DEBT (MCA RECORDS)",
+          "rows": [
+            {
+              "label": "INCORPORATION",
+              "value": "Riverday Infrastructure Pvt Ltd reportedly incorporated 29.09.2021."
+            },
+            {
+              "label": "PAID-UP CAPITAL",
+              "value": "Reported as Rs. 5,00,000 -- against a project with per-unit pricing reported in the Rs. 4.5-6.5 crore range. If accurate, promoter equity formally at risk in the SPV is small relative to project scale; the bulk of exposure sits in external debt, contractor credit, and buyer advances."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] Reported MCA figures, not independently re-verified here against the primary MCA filing. Consistent in kind with the low-initial-equity pattern described for Dignity Buildcon (2007) in the platform-level SHADOW CAPITAL BLUEPRINT section -- a comparable structural pattern, not evidence that the two transactions are otherwise connected."
+            }
+          ]
+        },
+        {
+          "heading": "PROXY DIRECTOR OVERLAP -- ASPIS BUILDCON / RIVERDAY",
+          "rows": [
+            {
+              "label": "REPORTED TIMING",
+              "value": "Davinder Singh Malik reportedly appointed to Aspis Buildcon's board in Jul 2022, while also sitting on Riverday Infrastructure's board -- Aspis Buildcon being one of the disclosed prior land licensees in Sky Arc's own land-ownership chain (see LAND OWNERSHIP CHAIN above)."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] for the board-seat/timing facts (Malik's Riverday seat is already [A]-graded elsewhere in this file via HRERA filings; the Aspis Buildcon appointment date specifically is reported, not yet cross-checked). [D] for characterizing this overlap as a deliberate title-laundering mechanism rather than routine nominee-director practice -- both are consistent with the same facts, and this file does not have grounds to prefer one interpretation."
+            }
+          ]
+        },
+        {
+          "heading": "UNCONFIRMED -- POSSIBLE TRUMP RESIDENCES GURGAON LINK (DO NOT RELY ON THIS WITHOUT VERIFICATION)",
+          "rows": [
+            {
+              "label": "THE CLAIM",
+              "value": "That Riverday Infrastructure Pvt Ltd -- the same SPV holding Sky Arc -- is also the licensee executing a separate \"Trump Residences Gurgaon\" (Sector 69) project via Tribeca/DT Marks Gurgaon 69 LLC, creating cross-collateral risk between Sky Arc and that project."
+            },
+            {
+              "label": "WHY THIS IS FLAGGED SEPARATELY",
+              "value": "\"Trump Residences Gurgaon\" via Tribeca in Sector 69 is plausibly a real, independently known project. What is NOT independently confirmed here is that Riverday Infrastructure specifically -- rather than a similarly-named or unrelated entity -- is its licensee. This is the single highest-stakes, least-verifiable claim in this file: if wrong, it would misstate a material fact about Sky Arc's own SPV."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Unconfirmed. No primary source (Tribeca/DT Marks Gurgaon 69 LLC disclosure document, MCA filing naming Riverday specifically) has been retrieved and checked. Treat as a lead requiring independent confirmation -- e.g. against Riverday's actual MCA filings or a direct Tribeca/Trump Organization disclosure -- before use in any negotiation or decision."
+            }
+          ]
         }
       ]
     },
