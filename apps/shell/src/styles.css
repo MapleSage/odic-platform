@@ -35,13 +35,12 @@ button {
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 212px minmax(0, 1fr) 56px 0;
+  /* GIA used to reserve a 4th grid column (up to 380px) whenever open, squeezing the
+     main content -- "on its own trip", per report. It's now a floating widget
+     (position:fixed, see .gia-panel/.gia-blob below), so the grid no longer reserves
+     space for it at all, open or closed. */
+  grid-template-columns: 212px minmax(0, 1fr) 56px;
   grid-template-rows: 64px minmax(0, 1fr);
-  transition: grid-template-columns 200ms ease;
-}
-
-.app-shell.gia-open {
-  grid-template-columns: 212px minmax(0, 1fr) 56px 380px;
 }
 
 .sidebar,
@@ -1000,20 +999,74 @@ button.facet-button {
   background: #e7f4f5;
 }
 
+/* GIA chat: a floating widget (blob trigger + popup panel), not a persistent grid
+   panel that pushes the rest of the app around -- "on its own trip", per report.
+   position:fixed means placement in the component tree doesn't matter, same as the
+   modal/chartEntity overlays in ExposureNetwork.tsx. */
+.gia-blob {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f7761f;
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  box-shadow: 0 6px 20px rgba(15, 23, 32, 0.3);
+  cursor: pointer;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .gia-panel {
-  grid-column: 4;
-  grid-row: 2;
-  width: 0;
-  overflow: hidden;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  height: 560px;
+  max-height: calc(100vh - 48px);
   background: white;
-  border-left: 1px solid #dce4ea;
-  transition: width 200ms ease, padding 200ms ease;
-  padding: 0;
+  border: 1px solid #dce4ea;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(15, 23, 32, 0.25);
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  padding: 18px;
+  overflow-y: auto;
 }
 
 .gia-panel.open {
-  width: 380px;
-  padding: 18px;
+  display: flex;
+}
+
+.gia-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.gia-panel-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #162433;
+}
+
+.gia-panel-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: #667686;
+  cursor: pointer;
+  padding: 4px;
 }
 
 .gia-search {
@@ -1354,16 +1407,6 @@ button.facet-button {
   background: transparent;
 }
 
-@media (max-width: 1440px) {
-  .app-shell.gia-open {
-    grid-template-columns: 212px minmax(0, 1fr) 56px 320px;
-  }
-
-  .gia-panel.open {
-    width: 320px;
-  }
-}
-
 @media (max-width: 1220px) {
   .app-shell {
     grid-template-columns: 92px minmax(0, 1fr) 56px;
@@ -1385,21 +1428,6 @@ button.facet-button {
     grid-column: 2 / span 2;
   }
 
-  .gia-panel {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    width: 100%;
-    height: 0;
-    border-left: 0;
-    border-top: 0;
-  }
-
-  .gia-panel.open {
-    width: 100%;
-    height: auto;
-    border-top: 1px solid #dce4ea;
-  }
-
   .stats-grid,
   .graph-stats,
   .graph-detail-grid,
@@ -1412,5 +1440,61 @@ button.facet-button {
 
   .topbar {
     flex-wrap: wrap;
+  }
+}
+
+/* Genuine phone breakpoint -- the 1220px query above targets tablet/narrow-laptop
+   widths (sidebar collapses to icon-only, grids go single-column), but nothing
+   previously targeted phone widths specifically. */
+@media (max-width: 640px) {
+  .main-content {
+    padding: 14px;
+  }
+
+  /* .graph-workspace-embed's -24px margin cancels .main-content's desktop 24px
+     padding to bleed edge-to-edge -- must track the padding above or it over-cancels
+     into negative space on phones. */
+  .graph-workspace-embed {
+    margin: -14px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .global-search {
+    max-width: none;
+  }
+
+  .workspace-pill-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* GIA as a small floating widget makes little sense on a phone-sized viewport --
+     go near-full-screen instead, same pattern most mobile chat widgets use. */
+  .gia-panel {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    width: auto;
+    max-width: none;
+    height: min(560px, calc(100vh - 16px));
+  }
+
+  .gia-blob {
+    right: 16px;
+    bottom: 16px;
   }
 }

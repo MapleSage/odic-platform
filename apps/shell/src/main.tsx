@@ -811,14 +811,19 @@ function App() {
       </main>
 
       <aside className="utility-rail">
-        {activeOrg.packs.includes('gia') && (
-          <button className={`utility-button ${giaOpen ? 'active' : ''}`} onClick={() => setGiaOpen((v) => !v)}>✦</button>
-        )}
         <button className="utility-button">12</button>
         <button className="utility-button">⌘</button>
       </aside>
 
+      {activeOrg.packs.includes('gia') && !giaVisible && (
+        <button className="gia-blob" onClick={() => setGiaOpen(true)} aria-label="Ask Atlas">✦</button>
+      )}
+
       <aside className={`gia-panel ${giaVisible ? 'open' : ''}`}>
+        <div className="gia-panel-header">
+          <span className="gia-panel-title">Ask Atlas</span>
+          <button className="gia-panel-close" onClick={() => setGiaOpen(false)} aria-label="Close">&times;</button>
+        </div>
         <form
           onSubmit={(e) => {
             e.preventDefault();

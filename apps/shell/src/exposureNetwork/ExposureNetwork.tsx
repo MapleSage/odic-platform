@@ -291,17 +291,17 @@ export function ExposureNetwork({
   const breadcrumbsVisible = drillStack.length > 1;
   const chartEntity = chartView ? ENTITY_REGISTRY[chartView] : null;
 
-  // Non-fullscreen minHeight was '100%' -- a percentage height, which only resolves
-  // correctly when every ancestor up the chain has an explicit (non-auto) height. The
-  // Graph tab's embed container doesn't guarantee that, so this could silently collapse
-  // instead of sizing to the canvas below it. Same root-cause category as the
-  // vh-in-embed-boundary bug the original design handoff hit and fixed (see
-  // design_handoff_odic_intelligence_platform README, "reported matrix background bug"
-  // note) -- fixed here with a concrete pixel floor instead of a relative unit, since the
-  // canvas area itself is a fixed 1600x900 (see the overflowX:auto wrapper below).
+  // Layout per the original design handoff: header bars and the Evidence Inspector are
+  // fixed in place; only the canvas/supplementary-sections region between them scrolls.
+  // Requires a bounded `height` (not minHeight) on the outer flex column so the middle
+  // region's flex:1 + overflow:auto has something concrete to compute a scroll area
+  // against -- percentage/auto heights are exactly what caused the earlier clipping bug
+  // (see the minHeight:'100%' fix above this component, and
+  // design_handoff_odic_intelligence_platform README's "reported matrix background bug"
+  // note for the same root-cause category in the original design source).
   const containerStyle: React.CSSProperties = fullScreen
-    ? { position: 'fixed', inset: 0, zIndex: 30, overflowY: 'auto', background: '#050810' }
-    : { minHeight: 900, background: '#050810', borderRadius: 18, overflow: 'hidden' };
+    ? { position: 'fixed', inset: 0, zIndex: 30, background: '#050810', display: 'flex', flexDirection: 'column' }
+    : { height: 'calc(100vh - 64px)', background: '#050810', borderRadius: 18, overflow: 'hidden', display: 'flex', flexDirection: 'column' };
 
   const emptyStateStyle: React.CSSProperties = {
     minHeight: fullScreen ? '100vh' : '100%',
@@ -355,7 +355,7 @@ export function ExposureNetwork({
 
   return (
     <div style={{ ...containerStyle, color: 'oklch(94% 0.01 240)', fontFamily: "'IBM Plex Mono', monospace" }}>
-      <div style={{ background: '#0A0F1A', borderBottom: '1px solid #1E2E40', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', flexShrink: 0, overflowX: 'auto', gap: 10 }}>
+      <div style={{ background: '#0A0F1A', borderBottom: '1px solid #1E2E40', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', flexShrink: 0, overflowX: 'auto', gap: 10, width: '100%', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           {fullScreen ? (
             <button onClick={onCloseFullScreen} style={{ background: 'none', border: 0, font: 'inherit', fontSize: 11, color: '#7FA8BD', cursor: 'pointer' }}>
@@ -391,7 +391,11 @@ export function ExposureNetwork({
         </div>
       </div>
 
-      <div style={{ overflowX: 'auto', padding: '20px 0 10px' }}>
+      {/* Scrollable middle: canvas + supplementary sections. Header bars above and the
+          Evidence Inspector below are flexShrink:0 siblings of this div, so they stay in
+          place while only this region scrolls -- per the original design handoff. */}
+      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ overflowX: 'auto', padding: '20px 0 10px', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ position: 'relative', width: 1600, minHeight: 900, margin: '0 auto' }}>
           <svg width={1600} height={900} style={{ position: 'absolute', top: 0, left: 0 }}>
             {fanLines.map((ln, i) => (
@@ -438,22 +442,6 @@ export function ExposureNetwork({
               <div style={{ fontSize: 11, color: '#7FA8BD', marginTop: 4 }}>{s.spv}</div>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1600, margin: '0 auto', padding: '0 28px 20px' }}>
-        <div style={{ background: '#0E1826', border: '1.5px solid #3D9CA2', borderRadius: 8, padding: '16px 20px' }}>
-          <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#3D9CA2', marginBottom: 8 }}>EVIDENCE INSPECTOR</div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: 'oklch(96% 0.005 240)' }}>{selected.title}</div>
-          <div style={{ fontSize: 12, color: '#7FA8BD', marginTop: 2, fontFamily: "'IBM Plex Sans', sans-serif" }}>{selected.subtitle}</div>
-          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 10 }}>
-            {selected.rows.map((r) => (
-              <div key={r.label}>
-                <div style={{ fontSize: 9.5, color: '#7FA8BD', letterSpacing: 0.4 }}>{r.label}</div>
-                <div style={{ fontSize: 12.5, color: 'oklch(94% 0.01 240)', fontFamily: "'IBM Plex Sans', sans-serif" }}>{r.value}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -614,6 +602,25 @@ export function ExposureNetwork({
               <span style={{ color: '#7FA8BD' }}> -- {il.bridges}</span>
             </div>
           ))}
+        </div>
+      </div>
+      </div>
+
+      {/* EVIDENCE INSPECTOR -- fixed footer, flexShrink:0 sibling of the scrollable
+          middle above, so it stays visible regardless of scroll position within it. */}
+      <div style={{ flexShrink: 0, maxWidth: 1600, margin: '0 auto', padding: '12px 28px 20px', width: '100%', boxSizing: 'border-box' }}>
+        <div style={{ background: '#0E1826', border: '1.5px solid #3D9CA2', borderRadius: 8, padding: '16px 20px' }}>
+          <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#3D9CA2', marginBottom: 8 }}>EVIDENCE INSPECTOR</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: 'oklch(96% 0.005 240)' }}>{selected.title}</div>
+          <div style={{ fontSize: 12, color: '#7FA8BD', marginTop: 2, fontFamily: "'IBM Plex Sans', sans-serif" }}>{selected.subtitle}</div>
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 10 }}>
+            {selected.rows.map((r) => (
+              <div key={r.label}>
+                <div style={{ fontSize: 9.5, color: '#7FA8BD', letterSpacing: 0.4 }}>{r.label}</div>
+                <div style={{ fontSize: 12.5, color: 'oklch(94% 0.01 240)', fontFamily: "'IBM Plex Sans', sans-serif" }}>{r.value}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
