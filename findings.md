@@ -1,3 +1,7 @@
+> **SUPERSEDED 2026-07-26.** Last maintained 2026-07-19. Live state is now in
+> `STATUS.md` (current) and `LOG.md` (chronological). Retained per decision D4
+> — nothing gets deleted — but do **not** read anything below as current.
+
 # Findings
 
 ## 2026-07-19
