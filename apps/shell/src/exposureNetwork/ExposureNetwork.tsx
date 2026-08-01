@@ -285,8 +285,13 @@ export function ExposureNetwork({
     [spvCards],
   );
 
-  const extraClickHandler = (e: { name: string; role: string; grade: Grade; note: string }) => () =>
+  const extraClickHandler = (e: { id?: string; name: string; role: string; grade: Grade; note: string }) => () => {
+    if (e.id && ENTITY_REGISTRY[e.id]) {
+      openEntity(e.id);
+      return;
+    }
     setSelected({ title: e.name, subtitle: e.role, rows: [{ label: 'GRADE', value: `[${e.grade}] ${GRADE_LABEL[e.grade]}` }, { label: 'EVIDENCE', value: e.note }] });
+  };
 
   const breadcrumbsVisible = drillStack.length > 1;
   const chartEntity = chartView ? ENTITY_REGISTRY[chartView] : null;

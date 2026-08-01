@@ -76,7 +76,10 @@ export type FlankDef = {
   src: string;
 };
 
-export type ExtraDef = { name: string; role: string; grade: Grade; note: string };
+// id is optional: when present and it resolves in entityRegistry, clicking this extra
+// opens the full drill-down instead of the simple 4-field inline modal -- same pattern
+// as PromoterLead.id below.
+export type ExtraDef = { id?: string; name: string; role: string; grade: Grade; note: string };
 
 // id is optional: when present and it resolves in entityRegistry, clicking this lead
 // opens the full drill-down (same pattern FlankDef uses) instead of a simple inline modal.

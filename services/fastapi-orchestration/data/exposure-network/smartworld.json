@@ -768,6 +768,13 @@
       "role": "Regulatory licensing & project oversight -- all SPVs",
       "grade": "A",
       "note": "Statutory authority granting licenses, RERA certs, and hearing orders across all project SPVs."
+    },
+    {
+      "id": "tribeca-developers",
+      "name": "Tribeca Developers",
+      "role": "Trump-brand licensing intermediary -- claimed JV link to Riverday/Sky Arc (unconfirmed)",
+      "grade": "D",
+      "note": "Reported as the entity behind a 'Trump Residences Gurgaon' project executed via Riverday Infrastructure -- the same SPV as Smartworld Sky Arc. This specific SPV linkage is unconfirmed; see the dedicated entity record for full grading and Sky Arc's own UNCONFIRMED section."
     }
   ],
   "rightExtras": [
@@ -1415,6 +1422,94 @@
             {
               "label": "GRADE",
               "value": "[D] for treating these three as the same individual. The name recurs consistently across an M3M-adjacent apex entity and two SPVs in different states, which is suggestive, but only one of the three listings (Lavish Buildmart) came with a DIN. Common Indian names make name-only matching unreliable; a DIN cross-match across all three filings would move this to [A]."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "tribeca-developers": {
+      "title": "Tribeca Developers",
+      "subtitle": "Trump-brand licensing intermediary and private-equity-style development partner",
+      "sections": [
+        {
+          "heading": "FOUNDERS & BACKGROUND",
+          "rows": [
+            {
+              "label": "Kalpesh Jitendra Mehta",
+              "value": "Founder & Managing Director. Reported background: Wharton MBA; VP at Lehman Brothers Real Estate Private Equity Fund (Mumbai); prior at The Carlyle Group (New York). Founded Tribeca in 2012."
+            },
+            {
+              "label": "Dharam Jeetendra Mehta",
+              "value": "Managing Partner, Tribeca Estates. Reported background: Wharton; prior at WeWork India and Delta Corp."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] Reported professional-profile facts, not independently cross-checked here."
+            }
+          ]
+        },
+        {
+          "heading": "CORPORATE STRUCTURE -- LLP GRID",
+          "rows": [
+            {
+              "label": "CORE ENTITY",
+              "value": "Tribeca Developers LLP -- reported incorporated Nov 2014, Lower Parel, Mumbai. Kalpesh and Dharam Mehta as designated partners."
+            },
+            {
+              "label": "RELATED LLPs",
+              "value": "Reported designated-partner presence across Tribeca Creators LLP, Tribeca Buildtech LLP, Tribeca Habitat LLP, Tribeca Infrastructure LLP, Tribeca Real Estate LLP, and Tribeca Buildinfra LLP (reported incorporated Feb 2026) -- reportedly all registered at the same Lower Parel, Mumbai address (Unit 603B, Piramal Tower)."
+            },
+            {
+              "label": "CAPITALIZATION",
+              "value": "Reported LLP 'Total Obligation of Contribution': Tribeca Developers LLP ~Rs 1,00,000; Tribeca Buildtech LLP ~Rs 50,000; Tribeca Buildinfra LLP ~Rs 0. A comparable low-initial-capital pattern to Riverday Infrastructure's reported Rs 5 lakh paid-up capital (see Sky Arc's CAPITALIZATION section) -- a similar structural pattern, not evidence the entities are otherwise connected."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] Reported LLP-registry figures, not independently re-verified here against a primary MCA/LLP-registry filing."
+            }
+          ]
+        },
+        {
+          "heading": "DEVELOPER SPV CROSSOVER",
+          "rows": [
+            {
+              "label": "REPORTED DIRECTORSHIPS",
+              "value": "Kalpesh and/or Dharam Mehta reportedly hold or have held directorships in Olive Realcon Pvt Ltd and Greenfinch Developers Pvt Ltd -- local-developer-side entities distinct from the Tribeca LLP grid itself."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Reported, not yet independently checked. No connection between these two entities and Smartworld/M3M specifically has been shown -- a general pattern of Tribeca embedding into local developer structures, not a Smartworld-specific finding."
+            }
+          ]
+        },
+        {
+          "heading": "BROADER TRUMP-BRAND PORTFOLIO (CONTEXT, NOT SMARTWORLD-SPECIFIC)",
+          "rows": [
+            {
+              "label": "REPORTED PROJECTS",
+              "value": "Trump Towers Delhi NCR/Gurugram (JV with M3M India); Trump Tower Kolkata (with Unimark Group); Trump Tower Pune (with Panchshil Realty) -- Tribeca's wider portfolio of Trump-branded India projects, cited for context on Tribeca's general business model, not as claims about Smartworld entities specifically."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] General reported portfolio facts."
+            }
+          ]
+        },
+        {
+          "heading": "CLAIMED LINK TO SKY ARC / RIVERDAY (UNCONFIRMED)",
+          "rows": [
+            {
+              "label": "THE CLAIM",
+              "value": "That Tribeca, via a 'Trump Residences Gurgaon' project in Sector 69, operates through Riverday Infrastructure Pvt Ltd -- the same SPV that holds Smartworld Sky Arc."
+            },
+            {
+              "label": "STATUS",
+              "value": "Not independently confirmed from here. See Sky Arc's own UNCONFIRMED -- POSSIBLE TRUMP RESIDENCES GURGAON LINK section for the full caveat. Restating this claim with more confidence in a later message is not new verification -- the grade is unchanged."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Unconfirmed."
             }
           ]
         }
