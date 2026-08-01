@@ -43,6 +43,94 @@
             "value": "Brand overlays distinct SPVs bound by shared registered offices and recurring executive directors, not a single balance sheet."
           }
         ]
+      },
+      {
+        "heading": "ENFORCEMENT & REGULATORY HISTORY (GROUP-LEVEL, NOT SPV-SPECIFIC)",
+        "rows": [
+          {
+            "label": "RSIPL / ED FINDING",
+            "value": "Enforcement Directorate alleges M3M's RS Infrastructure Pvt Ltd (RSIPL) obtained commercial colony licenses by claiming \"extreme hardship\" on acquired land, then flipped the company/licenses for Rs. 726 crore without developing the land. ED identified Rs. 300.15 crore of this as Proceeds of Crime diverted into M3M operations."
+          },
+          {
+            "label": "2023 PMLA ACTION",
+            "value": "IREO Group-related fund routing led to 2023 PMLA arrests of promoters and asset attachments, per public reporting."
+          },
+          {
+            "label": "2026 EOW CHARGESHEET",
+            "value": "Fresh charges reported from the Economic Offences Wing regarding an approx. Rs. 450 crore land exchange matter involving MGF Developments, alleging mutated land used to secure residential licenses."
+          },
+          {
+            "label": "SUPREME COURT ASSET SUBSTITUTION (JUL 2025)",
+            "value": "Supreme Court reportedly permitted M3M India Pvt Ltd to substitute a provisionally attached land parcel (~Rs. 317 crore) with built-up commercial units of matching value, allowing that land to be unfrozen while the underlying ED matter continued."
+          },
+          {
+            "label": "GRADE",
+            "value": "[C] Reported public-record/press claims, not independently cross-checked here against the primary ED/court filings or case numbers. Treat as a starting point for primary-source verification, not as confirmed fact -- no case/order numbers have been retrieved yet."
+          },
+          {
+            "label": "SCOPE NOTE",
+            "value": "These are group/promoter-level enforcement matters, not findings about any specific Smartworld project SPV. None of the six Smartworld-branded project SPVs tracked in this file (Riverday, Nourish, Suposhaa, Etsy, Adhikaansh, Svabhumi) has been shown to be a named party in these matters."
+          }
+        ]
+      },
+      {
+        "heading": "HISTORICAL ORIGIN -- 1980s-1990s LAND ACQUISITION ERA (BACKGROUND CONTEXT)",
+        "rows": [
+          {
+            "label": "REPORTED PATTERN",
+            "value": "During the Bansi Lal and Om Prakash Chautala-era Haryana administrations, a commonly reported pattern in Gurugram real estate: the state issues Land Acquisition Act Section 4/6 notifications signaling intent to acquire farmland, private aggregators buy the land cheaply from farmers fearing low state compensation, the state then quietly drops acquisition proceedings, and the aggregator receives a TCP license."
+          },
+          {
+            "label": "SCOPE OF THE CLAIM",
+            "value": "This describes a general industry pattern reported for Gurugram real estate development broadly during this period, not a specific documented transaction involving M3M/the Bansals or any named parcel. No specific parcel, notification number, or transaction tying this group to this mechanism has been retrieved."
+          },
+          {
+            "label": "GRADE",
+            "value": "[D] Analytical/background context -- useful as a diligence lens (see MANDATORY DILIGENCE CHECKS below), not as a claim about any specific asset in this file."
+          }
+        ]
+      },
+      {
+        "heading": "SHADOW CAPITAL BLUEPRINT -- DIGNITY BUILDCON (2007)",
+        "rows": [
+          {
+            "label": "REPORTED TRANSACTION",
+            "value": "Dignity Buildcon Pvt Ltd reportedly incorporated in 2007 with approx. Rs. 1 lakh promoter equity, received an unsecured loan of approx. Rs. 22.8 crore from RHC Holdings, used it to acquire land in Sector 66, and by 2009 the entity was sold for approx. Rs. 588.92 crore."
+          },
+          {
+            "label": "RHC HOLDINGS",
+            "value": "Reported as controlled by the Singh brothers (Ranbaxy/Religare); the Singh brothers were separately subject to fraud investigations in later, unrelated matters (the Fortis/Religare corporate governance matter). Stated as two separate facts -- a lending relationship in 2007, and unrelated later allegations against the lender's principals -- not as evidence that this transaction itself was improper."
+          },
+          {
+            "label": "GRADE",
+            "value": "[C] Reported public-record claim (share-transfer/company-archive figures), not independently cross-checked here against a primary MCA filing or the actual sale agreement. Specific rupee figures and dates are as supplied; not re-verified."
+          },
+          {
+            "label": "DILIGENCE RELEVANCE",
+            "value": "If accurate, this is a template for high-leverage, low-promoter-equity SPV structuring. Worth testing whether any of the six currently-tracked Smartworld project SPVs show a similar low-initial-equity, debt-heavy capitalization pattern -- not yet tested against any of them."
+          }
+        ]
+      },
+      {
+        "heading": "MANDATORY DILIGENCE CHECKS -- PROPOSED METHODOLOGY (APPLY PER SPV)",
+        "rows": [
+          {
+            "label": "1. CHAIN OF TITLE ORIGIN",
+            "value": "Was the land initially acquired under the shadow of a Land Acquisition Act Section 4/6 notification? Not yet checked for any of the six tracked SPVs."
+          },
+          {
+            "label": "2. INITIAL EQUITY VS. DEBT",
+            "value": "How much actual promoter equity is in the SPV vs. unsecured loans from related/shadow financiers? Not yet checked for any of the six tracked SPVs."
+          },
+          {
+            "label": "3. LICENSE EXEMPTION CHECK",
+            "value": "Was the DTCP license granted under standard protocol, or via an \"extreme hardship\" or other discretionary exemption under the Haryana Development and Regulation of Urban Areas Act, 1975? Not yet checked for any of the six tracked SPVs."
+          },
+          {
+            "label": "STATUS",
+            "value": "Proposed framework, not yet applied. This is a methodology note for future diligence work, not a finding."
+          }
+        ]
       }
     ]
   },

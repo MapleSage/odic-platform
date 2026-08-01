@@ -411,6 +411,155 @@ function mergeWorkspaceData(base: WorkspaceData, api: ApiWorkspaceData): Workspa
   };
 }
 
+// Floating chat widget: a draggable blob trigger + popup panel, extracted so it can be
+// rendered both in the normal shell and in ExposureNetwork's fullscreen graph view --
+// previously the fullscreen branch was an early `return` of just <ExposureNetwork>,
+// which skipped this entirely and made GIA disappear whenever Graph fullscreen opened.
+function GiaWidget({
+  visible,
+  giaOpen,
+  setGiaOpen,
+  giaInput,
+  setGiaInput,
+  giaMessages,
+  giaLoading,
+  giaError,
+  askGia,
+  quickActions,
+  cards,
+}: {
+  visible: boolean;
+  giaOpen: boolean;
+  setGiaOpen: (v: boolean) => void;
+  giaInput: string;
+  setGiaInput: (v: string) => void;
+  giaMessages: { role: 'user' | 'assistant'; content: string }[];
+  giaLoading: boolean;
+  giaError: string | null;
+  askGia: (message: string) => void;
+  quickActions: string[];
+  cards: GiaCard[];
+}) {
+  const [blobPos, setBlobPos] = useState<{ x: number; y: number } | null>(() => {
+    try {
+      const saved = localStorage.getItem('atlas-gia-blob-pos');
+      return saved ? (JSON.parse(saved) as { x: number; y: number }) : null;
+    } catch {
+      return null;
+    }
+  });
+  const draggingRef = React.useRef(false);
+  const dragMovedRef = React.useRef(false);
+  const dragOffsetRef = React.useRef({ dx: 0, dy: 0 });
+
+  if (!visible) return null;
+
+  const onBlobPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    draggingRef.current = true;
+    dragMovedRef.current = false;
+    const rect = e.currentTarget.getBoundingClientRect();
+    dragOffsetRef.current = { dx: e.clientX - rect.left, dy: e.clientY - rect.top };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onBlobPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!draggingRef.current) return;
+    dragMovedRef.current = true;
+    const x = Math.min(Math.max(0, e.clientX - dragOffsetRef.current.dx), window.innerWidth - 56);
+    const y = Math.min(Math.max(0, e.clientY - dragOffsetRef.current.dy), window.innerHeight - 56);
+    setBlobPos({ x, y });
+  };
+  const onBlobPointerUp = () => {
+    draggingRef.current = false;
+    if (dragMovedRef.current) {
+      setBlobPos((pos) => {
+        if (pos) {
+          try {
+            localStorage.setItem('atlas-gia-blob-pos', JSON.stringify(pos));
+          } catch {
+            // localStorage unavailable -- position just won't persist across reloads
+          }
+        }
+        return pos;
+      });
+    }
+  };
+  const onBlobClick = () => {
+    if (dragMovedRef.current) return; // suppress the click-to-open that follows a drag
+    setGiaOpen(true);
+  };
+
+  return (
+    <>
+      {!giaOpen && (
+        <button
+          className="gia-blob"
+          style={blobPos ? { left: blobPos.x, top: blobPos.y, right: 'auto', bottom: 'auto' } : undefined}
+          onPointerDown={onBlobPointerDown}
+          onPointerMove={onBlobPointerMove}
+          onPointerUp={onBlobPointerUp}
+          onClick={onBlobClick}
+          aria-label="Ask Atlas"
+        >
+          &#10022;
+        </button>
+      )}
+
+      <aside className={`gia-panel ${giaOpen ? 'open' : ''}`}>
+        <div className="gia-panel-header">
+          <span className="gia-panel-title">Ask Atlas</span>
+          <button className="gia-panel-close" onClick={() => setGiaOpen(false)} aria-label="Close">&times;</button>
+        </div>
+
+        <div className="gia-panel-body">
+          <div className="gia-actions">
+            {quickActions.map((action) => (
+              <button key={action} className="gia-action-pill" onClick={() => askGia(action)} disabled={giaLoading}>{action}</button>
+            ))}
+          </div>
+
+          {giaMessages.length > 0 && (
+            <div className="gia-message-list">
+              {giaMessages.map((msg, i) => (
+                <div key={i} className={`gia-message ${msg.role}`}>{msg.content}</div>
+              ))}
+              {giaLoading && <div className="gia-message assistant gia-message-loading">Thinking...</div>}
+            </div>
+          )}
+          {giaError && <div className="gia-error">{giaError}</div>}
+
+          <div className="gia-card-list">
+            {cards.map((card) => (
+              <div key={card.title} className="gia-card">
+                <div className="gia-card-title">{card.title}</div>
+                <div className="gia-card-body">{card.body}</div>
+                <button className="gia-card-action" onClick={() => askGia(`${card.action}: ${card.title} -- ${card.body}`)} disabled={giaLoading}>{card.action}</button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pinned at the bottom, like every other chat UI -- previously this input sat
+            above the message list, which read backwards. */}
+        <form
+          className="gia-input-row"
+          onSubmit={(e) => {
+            e.preventDefault();
+            askGia(giaInput);
+          }}
+        >
+          <input
+            className="gia-search gia-search-input"
+            placeholder="Ask Atlas anything about this workspace..."
+            value={giaInput}
+            onChange={(e) => setGiaInput(e.target.value)}
+            disabled={giaLoading}
+          />
+        </form>
+      </aside>
+    </>
+  );
+}
+
 function SignInScreen() {
   const { login, authError } = useAuth();
   return (
@@ -588,12 +737,32 @@ function App() {
         context = `Organization: ${activeOrg.name} -- registered with a source mapping but not yet ingested into an Atlas workspace record. Say so plainly rather than guessing at details.`;
       } else if (activeOrg.packs.includes('exposure-network')) {
         const exposureData = await getExposureNetworkData(activeOrg.id, getAccessToken);
+        // Previously only sent project/spv/status per SPV -- everything actually
+        // researched (deepDiligence sections, entityRegistry drill-downs, interlocks,
+        // key personnel) was silently dropped, so GIA had almost nothing to work with
+        // on exactly the questions this workspace exists to answer. Send all of it.
         context = !exposureData
           ? `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, but no data file exists for it yet.`
           : [
-              `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, not a CRM-style org record.`,
-              `Tracked projects/SPVs: ${exposureData.spvDefs.map((s) => `${s.project} (${s.spv}) -- ${s.status}`).join('; ')}`,
-              `Promoter & family office network (pending verification -- do not overstate confidence): ${exposureData.promoterNetwork.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; ')}`,
+              `Organization: ${activeOrg.name} -- an Exposure Network due-diligence workspace, not a CRM-style org record. Every fact below carries an [A-D] evidence grade (A=primary source, B=independent verification, C=first-party disclosure, D=analytical hypothesis) -- state the grade when citing a fact, and do not upgrade a D-graded hypothesis to a stated fact.`,
+              `--- PLATFORM / GROUP-LEVEL (${exposureData.platformModal.title}) ---`,
+              exposureData.platformModal.sections.map((sec) => `[${sec.heading}] ${sec.rows.map((r) => `${r.label}: ${r.value}`).join(' | ')}`).join('\n'),
+              `--- SPVs / PROJECTS ---`,
+              exposureData.spvDefs.map((s) => [
+                `${s.project} (${s.spv}) -- ${s.status}. CIN: ${s.cin}. RERA: ${s.rera}. Directors: ${s.directors}. Notes: ${s.notes}`,
+                ...(s.deepDiligence ?? []).map((sec) => `  [${sec.heading}] ${sec.rows.map((r) => `${r.label}: ${r.value}`).join(' | ')}`),
+              ].join('\n')).join('\n\n'),
+              `--- ENTITY REGISTRY (people/companies with dedicated records) ---`,
+              Object.values(exposureData.entityRegistry).map((e) => [
+                `${e.title} -- ${e.subtitle}`,
+                ...e.sections.map((sec) => `  [${sec.heading}] ${sec.rows.map((r) => `${r.label}: ${r.value}`).join(' | ')}`),
+              ].join('\n')).join('\n\n'),
+              `--- INTERLOCKING DIRECTORATE ---`,
+              exposureData.interlocks.map((il) => `${il.name}: ${il.bridges}`).join('; '),
+              `--- KEY PERSONNEL & OPERATIONAL DIRECTORS (confirmed roles) ---`,
+              (exposureData.keyPersonnel ?? []).map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; '),
+              `--- PROMOTER & FAMILY OFFICE NETWORK (pending verification -- do not overstate confidence) ---`,
+              exposureData.promoterNetwork.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('; '),
             ].join('\n');
       } else {
         context = `Organization: ${activeOrg.name} -- no workspace data configured for this org.`;
@@ -648,13 +817,28 @@ function App() {
     : organizations;
 
   if (exposureFullScreen) {
-    return <ExposureNetwork orgId={activeOrg.id} fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />;
+    return (
+      <>
+        <ExposureNetwork orgId={activeOrg.id} fullScreen onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />
+        <GiaWidget
+          visible={activeOrg.packs.includes('gia')}
+          giaOpen={giaOpen}
+          setGiaOpen={setGiaOpen}
+          giaInput={giaInput}
+          setGiaInput={setGiaInput}
+          giaMessages={giaMessages}
+          giaLoading={giaLoading}
+          giaError={giaError}
+          askGia={askGia}
+          quickActions={workspace.giaQuickActions}
+          cards={hasWorkspaceData ? workspace.giaCards : []}
+        />
+      </>
+    );
   }
 
-  const giaVisible = activeOrg.packs.includes('gia') && giaOpen;
-
   return (
-    <div className={`app-shell ${giaVisible ? 'gia-open' : ''}`}>
+    <div className="app-shell">
       <aside className="sidebar">
         <div className="sidebar-brand">
           <div className="brand-mark"><img src="/favicon.svg" alt="SageSure" /></div>
@@ -815,55 +999,19 @@ function App() {
         <button className="utility-button">⌘</button>
       </aside>
 
-      {activeOrg.packs.includes('gia') && !giaVisible && (
-        <button className="gia-blob" onClick={() => setGiaOpen(true)} aria-label="Ask Atlas">✦</button>
-      )}
-
-      <aside className={`gia-panel ${giaVisible ? 'open' : ''}`}>
-        <div className="gia-panel-header">
-          <span className="gia-panel-title">Ask Atlas</span>
-          <button className="gia-panel-close" onClick={() => setGiaOpen(false)} aria-label="Close">&times;</button>
-        </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            askGia(giaInput);
-          }}
-        >
-          <input
-            className="gia-search gia-search-input"
-            placeholder="Ask Atlas anything about this workspace..."
-            value={giaInput}
-            onChange={(e) => setGiaInput(e.target.value)}
-            disabled={giaLoading}
-          />
-        </form>
-        <div className="gia-actions">
-          {workspace.giaQuickActions.map((action) => (
-            <button key={action} className="gia-action-pill" onClick={() => askGia(action)} disabled={giaLoading}>{action}</button>
-          ))}
-        </div>
-
-        {giaMessages.length > 0 && (
-          <div className="gia-message-list">
-            {giaMessages.map((msg, i) => (
-              <div key={i} className={`gia-message ${msg.role}`}>{msg.content}</div>
-            ))}
-            {giaLoading && <div className="gia-message assistant gia-message-loading">Thinking...</div>}
-          </div>
-        )}
-        {giaError && <div className="gia-error">{giaError}</div>}
-
-        <div className="gia-card-list">
-          {(hasWorkspaceData ? workspace.giaCards : []).map((card) => (
-            <div key={card.title} className="gia-card">
-              <div className="gia-card-title">{card.title}</div>
-              <div className="gia-card-body">{card.body}</div>
-              <button className="gia-card-action" onClick={() => askGia(`${card.action}: ${card.title} -- ${card.body}`)} disabled={giaLoading}>{card.action}</button>
-            </div>
-          ))}
-        </div>
-      </aside>
+      <GiaWidget
+        visible={activeOrg.packs.includes('gia')}
+        giaOpen={giaOpen}
+        setGiaOpen={setGiaOpen}
+        giaInput={giaInput}
+        setGiaInput={setGiaInput}
+        giaMessages={giaMessages}
+        giaLoading={giaLoading}
+        giaError={giaError}
+        askGia={askGia}
+        quickActions={workspace.giaQuickActions}
+        cards={hasWorkspaceData ? workspace.giaCards : []}
+      />
     </div>
   );
 }

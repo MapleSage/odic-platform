@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: atlas-shell
-          image: sageinfranewdev01.azurecr.io/odic/shell:v23
+          image: sageinfranewdev01.azurecr.io/odic/shell:v24
           ports:
             - name: http
               containerPort: 80

@@ -1038,7 +1038,9 @@ button.facet-button {
   display: none;
   flex-direction: column;
   padding: 18px;
-  overflow-y: auto;
+  /* No overflow/scroll here -- header and the input row below are flexShrink:0 and
+     stay put; only .gia-panel-body (flex:1) scrolls, same fixed-top/bottom pattern
+     as the Graph tab's header/Evidence-Inspector/scrolling-middle. */
 }
 
 .gia-panel.open {
@@ -1051,6 +1053,18 @@ button.facet-button {
   justify-content: space-between;
   margin-bottom: 12px;
   flex-shrink: 0;
+}
+
+.gia-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gia-input-row {
+  flex-shrink: 0;
+  margin-top: 12px;
 }
 
 .gia-panel-title {

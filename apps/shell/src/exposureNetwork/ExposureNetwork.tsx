@@ -394,8 +394,8 @@ export function ExposureNetwork({
       {/* Scrollable middle: canvas + supplementary sections. Header bars above and the
           Evidence Inspector below are flexShrink:0 siblings of this div, so they stay in
           place while only this region scrolls -- per the original design handoff. */}
-      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
-      <div style={{ overflowX: 'auto', padding: '20px 0 10px', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ overflowX: 'auto', padding: '20px 0 10px', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ position: 'relative', width: 1600, minHeight: 900, margin: '0 auto' }}>
           <svg width={1600} height={900} style={{ position: 'absolute', top: 0, left: 0 }}>
             {fanLines.map((ln, i) => (
