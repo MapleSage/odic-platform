@@ -1206,15 +1206,15 @@ button.facet-button {
   color: #667686;
 }
 
-/* A real, explicit height (not min-height, which is only a floor) -- ExposureNetwork's
-   own non-fullscreen sizing is height:100%, so THIS is the single place the
-   viewport-relative math lives. Previously ExposureNetwork computed calc(100vh - 64px)
-   itself while this container had no matching real height, so the two disagreed about
-   how tall the widget actually was -- root cause of the reported scroll jank. */
+/* No height/overflow control at all, deliberately -- ExposureNetwork's embedded case
+   now has no special sizing either (see ExposureNetwork.tsx's containerStyle comment).
+   Two prior attempts at coordinating calc(100vh - 64px) between this file and that
+   component both produced scroll jank; removing the coordination requirement entirely
+   beats getting it more precisely right. This just bleeds the dark canvas to
+   .main-content's edges and lets content flow at its natural height, scrolled by
+   .main-content the same as every other tab. */
 .graph-workspace-embed {
-  height: calc(100vh - 64px);
   margin: -24px;
-  overflow: hidden;
 }
 
 .graph-workspace {

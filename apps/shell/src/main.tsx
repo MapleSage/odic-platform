@@ -971,8 +971,10 @@ function App() {
             <ReportsWorkspace reports={workspace.reports} />
           ) : pendingWorkspaceData ? (
             <PendingIngestionState orgName={activeOrg.name} />
+          ) : activeOrg.packs.includes('exposure-network') ? (
+            <ExposureNetworkReport orgId={activeOrg.id} orgName={activeOrg.name} getAccessToken={getAccessToken} />
           ) : (
-            <NoOrgDataState orgName={activeOrg.name} suggestion="Standing reports aren't built for Exposure Network workspaces yet -- see the Organization tab for tracked projects and the Graph tab for full diligence." />
+            <NoOrgDataState orgName={activeOrg.name} />
           )
         )}
         {activeView === 'graph' && (
@@ -1596,6 +1598,111 @@ function SearchWorkspace({
       </Card>
     </div>
   );
+}
+
+// Builds a standing report directly from the SAME graded evidence the Graph tab
+// renders -- no separate authoring, no LLM call, nothing that can drift out of sync
+// with the underlying data. Answers "why is there no report when there's this much
+// data" for exposure-network orgs, which previously got a static "not built yet"
+// message regardless of how much was actually in their exposure-network file.
+function synthesizeExposureNetworkReport(data: ExposureNetworkData): ReportsViewData {
+  const gradeCount: Record<string, number> = { A: 0, B: 0, C: 0, D: 0 };
+  const countGrade = (g: string) => {
+    if (g in gradeCount) gradeCount[g] += 1;
+  };
+  [...data.leftDefs, ...data.rightDefs, ...data.leftExtras, ...data.rightExtras].forEach((d) => countGrade(d.grade));
+
+  const sections: ReportSection[] = [];
+
+  sections.push({
+    id: 'exec',
+    label: 'Executive Summary',
+    body: `${data.orgName} is tracked as an Exposure Network due-diligence workspace, not a CRM-style org record. ${data.spvDefs.length} project SPV${data.spvDefs.length === 1 ? '' : 's'} tracked, with ${gradeCount.A} primary-source-graded relationships, ${gradeCount.B} independently verified, ${gradeCount.C} first-party disclosures, and ${gradeCount.D} analytical hypotheses still pending verification. Generated directly from the same graded evidence rendered in the Graph tab -- nothing here is separately authored, and it updates automatically as that data changes.`,
+  });
+
+  if (data.platformModal.sections.length > 0) {
+    sections.push({
+      id: 'platform',
+      label: 'Corporate Platform & Group Context',
+      body: data.platformModal.sections.map((sec) => `${sec.heading}\n${sec.rows.map((r) => `${r.label}: ${r.value}`).join('\n')}`).join('\n\n'),
+    });
+  }
+
+  sections.push({
+    id: 'spvs',
+    label: 'Tracked Projects / SPVs',
+    body: data.spvDefs.map((s) => `${s.project} (${s.spv}) -- ${s.status}. ${s.notes}`).join('\n\n') || 'No SPVs tracked yet.',
+  });
+
+  const riskFlags = data.spvDefs.flatMap((s) =>
+    (s.deepDiligence ?? [])
+      .filter((sec) => /RISK|SUO MOTU|UNCONFIRMED|CAPITALIZATION|DISRUPTION|ENFORCEMENT/i.test(sec.heading))
+      .map((sec) => `${s.project} -- [${sec.heading}]\n${sec.rows.map((r) => `${r.label}: ${r.value}`).join('\n')}`),
+  );
+  sections.push({
+    id: 'risks',
+    label: 'Key Risk Flags',
+    body: riskFlags.length > 0 ? riskFlags.join('\n\n') : 'No specific risk-flag sections identified in current deep-diligence data.',
+  });
+
+  if (data.interlocks.length > 0) {
+    sections.push({
+      id: 'interlocks',
+      label: 'Interlocking Directorate',
+      body: data.interlocks.map((il) => `${il.name}: ${il.bridges}`).join('\n'),
+    });
+  }
+
+  if ((data.keyPersonnel ?? []).length > 0) {
+    sections.push({
+      id: 'personnel',
+      label: 'Key Personnel & Operational Directors',
+      body: data.keyPersonnel.map((p) => `${p.name} (${p.role}) -- ${p.note}`).join('\n'),
+    });
+  }
+
+  sections.push({
+    id: 'evidence',
+    label: 'Evidence Grading',
+    body: `[A] Primary source (MCA/HRERA/DTCP/court filings). [B] Independent verification (2+ corroborating non-official sources). [C] First-party disclosure (official company/press statements, not independently cross-checked). [D] Analytical hypothesis (pattern-based reasoning, not yet evidenced). Current distribution across the flanking relationships above: A=${gradeCount.A}, B=${gradeCount.B}, C=${gradeCount.C}, D=${gradeCount.D}.`,
+  });
+
+  return { title: `${data.orgName} -- Exposure Network Report`, sections };
+}
+
+function ExposureNetworkReport({
+  orgId,
+  orgName,
+  getAccessToken,
+}: {
+  orgId: string;
+  orgName: string;
+  getAccessToken: () => Promise<string | null>;
+}) {
+  const [exposureData, setExposureData] = useState<ExposureNetworkData | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    getExposureNetworkData(orgId, getAccessToken).then((result) => {
+      if (!cancelled) {
+        setExposureData(result);
+        setLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [orgId, getAccessToken]);
+
+  if (loading) {
+    return <NoOrgDataState orgName={orgName} suggestion="Loading Exposure Network report..." />;
+  }
+  if (!exposureData) {
+    return <NoOrgDataState orgName={orgName} suggestion="No Exposure Network has been built for this organization yet." />;
+  }
+  return <ReportsWorkspace reports={synthesizeExposureNetworkReport(exposureData)} />;
 }
 
 function ReportsWorkspace({ reports }: { reports: ReportsViewData }) {

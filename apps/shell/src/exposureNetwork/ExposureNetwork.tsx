@@ -296,18 +296,23 @@ export function ExposureNetwork({
   const breadcrumbsVisible = drillStack.length > 1;
   const chartEntity = chartView ? ENTITY_REGISTRY[chartView] : null;
 
-  // Layout per the original design handoff: header bars and the Evidence Inspector are
-  // fixed in place; only the canvas/supplementary-sections region between them scrolls.
-  // Requires a bounded `height` (not minHeight/percentage) on the outer flex column so
-  // the middle region's flex:1 + overflow:auto has something concrete to compute a
-  // scroll area against. The non-fullscreen case fills its parent (.graph-workspace-embed
-  // in styles.css) rather than recomputing the viewport math itself -- that container is
-  // the single place the calc(100vh - 64px) anchor lives; duplicating it here as well was
-  // the actual root cause of the reported scroll jank (the two disagreed about how tall
-  // the widget was whenever they drifted out of sync).
+  // Two DIFFERENT layouts, not one shared one. Fullscreen (position:fixed;inset:0, no
+  // siblings) can safely do the fixed-header/fixed-footer/scrolling-middle treatment
+  // from the original design handoff, because it's the only thing on screen. The
+  // embedded case (inside the normal page, .graph-workspace-embed) kept getting the
+  // scroll wrong across multiple attempts at coordinating a flex-column + explicit
+  // height across two files -- every version had some nested-scroll-container
+  // interaction that produced the reported "gets stuck" jank. Simplifying instead of
+  // debugging further: the embedded case has NO special height/overflow at all and
+  // just flows as normal block content, scrolled by .main-content the same as every
+  // other tab. One scroll container, native browser behavior, nothing to coordinate.
   const containerStyle: React.CSSProperties = fullScreen
     ? { position: 'fixed', inset: 0, zIndex: 30, background: '#050810', display: 'flex', flexDirection: 'column' }
-    : { height: '100%', background: '#050810', borderRadius: 18, overflow: 'hidden', display: 'flex', flexDirection: 'column' };
+    : { background: '#050810', borderRadius: 18 };
+
+  const middleStyle: React.CSSProperties = fullScreen
+    ? { flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }
+    : {};
 
   const emptyStateStyle: React.CSSProperties = {
     minHeight: fullScreen ? '100vh' : '100%',
@@ -400,7 +405,7 @@ export function ExposureNetwork({
       {/* Scrollable middle: canvas + supplementary sections. Header bars above and the
           Evidence Inspector below are flexShrink:0 siblings of this div, so they stay in
           place while only this region scrolls -- per the original design handoff. */}
-      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
+      <div style={middleStyle}>
       <div style={{ overflowX: 'auto', padding: '20px 0 10px', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ position: 'relative', width: 1600, minHeight: 900, margin: '0 auto' }}>
           <svg width={1600} height={900} style={{ position: 'absolute', top: 0, left: 0 }}>
