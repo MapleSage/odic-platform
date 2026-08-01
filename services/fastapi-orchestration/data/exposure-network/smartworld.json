@@ -14,12 +14,20 @@
             "value": "M3M IFC, Sector-66, Gurugram, Haryana"
           },
           {
+            "label": "CIN",
+            "value": "U70109HR2021PTC092343"
+          },
+          {
             "label": "AUM CLAIM",
             "value": "\u20b940,000 CR"
           },
           {
             "label": "DELIVERED",
             "value": "~6.5M SQ FT across 6 project SPVs"
+          },
+          {
+            "label": "KEY DIRECTORS",
+            "value": "Gaurav Bansal, Davinder Singh Malik, Hari Easwaran, Ashish Jerath, Rajat Jain (Naman Gupta -- past director)"
           }
         ]
       },
@@ -355,7 +363,7 @@
       "rera": "UPRERAPRJ794824/10/2025",
       "address": "Sector 94, Noida, Uttar Pradesh",
       "directors": "Vijay Kumar Aggarwal (DIN 05170472, appointed Sep 2019); Anuj Kumar Tiwari (DIN 10419282, appointed Dec 2023)",
-      "commonDirectors": "No current director overlap with the other six SPVs -- outside the Haryana M3M IFC/Urbana cluster. Historical linkage instead: Basant Kumar Bansal (director until Dec 2010) and Roop Kumar Bansal (director until Mar 2011) both previously served on this SPV, per MCA company master data.",
+      "commonDirectors": "No confirmed current director overlap with the Haryana project-SPV cluster (Riverday/Nourish/Etsy/Svabhumi/Suposhaa/Adhikaansh) directly. Possible bridge one level out: a 'Vijay Kumar Aggarwal' is a current director of both Aawam Residency Pvt Ltd (Gems-linked flanking entity) and this SPV -- name match only, DIN not yet cross-confirmed as the same individual.",
       "status": "Public-source dossier synthesized 2026-07-27, CIN and director history added 2026-07-27 -- deep-diligence gaps remain (funding/escrow, contractor stack, licensing agreement terms)",
       "notes": "First Smartworld/M3M-ecosystem SPV registered outside Haryana. Routed through Uttar Pradesh's RERA/DTCP regime rather than Haryana's, and through a distinct promoter entity (Lavish Buildmart) outside the M3M IFC/Urbana director cluster. The Trump brand is a licensing arrangement only: per public disclosure, the licensor (Trump Organization) holds zero financial, equity, or construction risk, and M3M India holds sole financial responsibility for the project.",
       "deepDiligence": [
@@ -460,7 +468,8 @@
       "target": "skyarc",
       "edgeLabel": "licensee_structure_with",
       "note": "Registered dev. rights agreement; DTCP Licence 90 of 2024, migrated from Licence 29 of 2009.",
-      "src": "HRERA-007"
+      "src": "HRERA-007",
+      "id": "modgen-developers"
     },
     {
       "name": "Aspis Buildcon & Starcity",
@@ -496,7 +505,8 @@
       "target": "gems",
       "edgeLabel": "land_licensee_of",
       "note": "Later Gems 2 filing shifts to collaborator model over Aawam Residency Pvt Ltd.",
-      "src": "HRERA-004;HRERA-011"
+      "src": "HRERA-004;HRERA-011",
+      "id": "aawam-residency"
     },
     {
       "name": "M3M India Infrastructures Pvt Ltd",
@@ -535,7 +545,8 @@
       "target": "skyarc",
       "edgeLabel": "commercial_off_taker",
       "note": "Conveyed 3.1875-acre existing building with 08.11.2019 OC.",
-      "src": "SWD-Sky-Arc-02"
+      "src": "SWD-Sky-Arc-02",
+      "id": "neil-maxinfra"
     },
     {
       "name": "9k Expressway Catchment",
@@ -639,6 +650,10 @@
     {
       "name": "M3M IFC / M3M Urbana address clusters",
       "bridges": "Shared registered-office infrastructure links Riverday, Nourish, Etsy, Svabhumi (IFC) and Suposhaa, Adhikaansh (Urbana)"
+    },
+    {
+      "name": "Vijay Kumar Aggarwal (unconfirmed bridge)",
+      "bridges": "Possible link between Aawam Residency Pvt Ltd (Gems-linked, Haryana) and Lavish Buildmart Pvt Ltd (Trump Tower Noida SPV, Uttar Pradesh) -- if the same person, this would be the first known current director bridge between the Haryana cluster and the UP SPV. Name match only; DIN not yet cross-confirmed."
     }
   ],
   "promoterNetwork": [
@@ -961,6 +976,133 @@
             {
               "label": "GRADE",
               "value": "[D] Analytical hypothesis -- no dedicated record yet"
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "modgen-developers": {
+      "title": "Modgen Developers Pvt Ltd",
+      "subtitle": "Licensee -- SARFAESI title migration into Sky Arc (Riverday Infrastructure)",
+      "sections": [
+        {
+          "heading": "CORPORATE IDENTITY (MCA RECORDS)",
+          "rows": [
+            {
+              "label": "CIN",
+              "value": "U70109HR2021PTC094805"
+            },
+            {
+              "label": "REGISTERED ADDRESS",
+              "value": "41st Floor, Tower-1, M3M International Financial Center, Sector-66, Badshahpur, Gurgaon, Haryana"
+            },
+            {
+              "label": "CURRENT DIRECTORS",
+              "value": "Amit Raj; Mukesh Sharma"
+            }
+          ]
+        },
+        {
+          "heading": "NETWORK LINK",
+          "rows": [
+            {
+              "label": "ADDRESS OVERLAP",
+              "value": "Registered at M3M IFC Tower-1, distinct from the Tower-2 address used by Riverday/Nourish/Etsy/Svabhumi."
+            },
+            {
+              "label": "DIRECTOR BRIDGE",
+              "value": "Naman Gupta, a past director of Smartworld Developers (the platform node) and current/past director of the Orchard/Gems cluster (Suposhaa Realcon, Adhikaansh Realtors), served as a director here until Jun 2022."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] Primary source (MCA records) for CIN, address, and directorship dates. Director-bridge significance (whether it reflects coordinated group control vs. routine shared-services staffing) is [D] analytical."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "aawam-residency": {
+      "title": "Aawam Residency Pvt Ltd",
+      "subtitle": "Owner-licensee / later collaborator entity -- Smartworld Gems (Adhikaansh Realtors)",
+      "sections": [
+        {
+          "heading": "CORPORATE IDENTITY (MCA RECORDS)",
+          "rows": [
+            {
+              "label": "CIN",
+              "value": "U70109HR2020PTC091883"
+            },
+            {
+              "label": "REGISTERED ADDRESS",
+              "value": "41st Floor, Tower-1, M3M International Financial Center, Sector-66, Badshahpur, Gurgaon, Haryana"
+            },
+            {
+              "label": "CURRENT DIRECTORS",
+              "value": "Vijay Kumar Aggarwal; Mohsin Khan"
+            }
+          ]
+        },
+        {
+          "heading": "NETWORK LINK",
+          "rows": [
+            {
+              "label": "ADDRESS OVERLAP",
+              "value": "Registered at M3M IFC Tower-1, same as Modgen Developers."
+            },
+            {
+              "label": "DIRECTOR BRIDGE (INTO HARYANA CLUSTER)",
+              "value": "Naman Gupta, past director of Smartworld Developers and the Orchard/Gems cluster, served as a director here until Jul 2021."
+            },
+            {
+              "label": "POSSIBLE DIRECTOR BRIDGE (INTO TRUMP TOWER NOIDA)",
+              "value": "A 'Vijay Kumar Aggarwal' is also named as a current director of Lavish Buildmart Pvt Ltd (Trump Tower Noida SPV, DIN 05170472, appointed Sep 2019). Name match only -- no DIN given for this entity's Vijay Kumar Aggarwal, so same-person identity is not yet confirmed. If confirmed, this would be the first known current director bridge between the Haryana cluster and the Uttar Pradesh SPV."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] for CIN, address, and directorship dates. [D] for the Trump Tower Noida bridge specifically, pending DIN cross-match."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "neil-maxinfra": {
+      "title": "Neil Maxinfra Pvt Ltd",
+      "subtitle": "Bulk buyer -- conveyed OC asset (Sky Arc / Riverday Infrastructure)",
+      "sections": [
+        {
+          "heading": "CORPORATE IDENTITY (MCA RECORDS)",
+          "rows": [
+            {
+              "label": "CIN",
+              "value": "U45201HR2020PTC104929"
+            },
+            {
+              "label": "REGISTERED ADDRESS",
+              "value": "01, Sector 69, Unitech Badshahpur, Gurgaon, Haryana"
+            },
+            {
+              "label": "CURRENT DIRECTORS",
+              "value": "Satpal Singh; Hirender"
+            }
+          ]
+        },
+        {
+          "heading": "NETWORK LINK",
+          "rows": [
+            {
+              "label": "SECTOR",
+              "value": "Civil engineering / construction, distinct from the M3M IFC-registered entities -- no shared address with the core SPV cluster."
+            },
+            {
+              "label": "ROLE",
+              "value": "Conveyed a 3.1875-acre existing building with 08.11.2019 OC from the earlier Sky Arc land chain (see skyarc deepDiligence -> LAND OWNERSHIP CHAIN)."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] Primary source (MCA records) for CIN, address, and directors."
             }
           ]
         }
