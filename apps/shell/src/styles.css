@@ -1206,9 +1206,15 @@ button.facet-button {
   color: #667686;
 }
 
+/* A real, explicit height (not min-height, which is only a floor) -- ExposureNetwork's
+   own non-fullscreen sizing is height:100%, so THIS is the single place the
+   viewport-relative math lives. Previously ExposureNetwork computed calc(100vh - 64px)
+   itself while this container had no matching real height, so the two disagreed about
+   how tall the widget actually was -- root cause of the reported scroll jank. */
 .graph-workspace-embed {
-  min-height: 900px;
+  height: calc(100vh - 64px);
   margin: -24px;
+  overflow: hidden;
 }
 
 .graph-workspace {

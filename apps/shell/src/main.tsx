@@ -977,10 +977,20 @@ function App() {
         )}
         {activeView === 'graph' && (
           activeOrg.packs.includes('exposure-network') ? (
-            <div className="graph-workspace-embed">
-              <ExposureNetwork orgId={activeOrg.id} fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />
-              <IntelligenceCard status={intelligenceStatus} events={intelligenceEvents} />
-            </div>
+            <>
+              {/* A bounded, self-contained viewport-height widget (matches the original
+                  design handoff's own fixed-height embed pattern) -- IntelligenceCard is
+                  deliberately NOT inside it. Two elements with conflicting height
+                  strategies sharing one container (one sized to the viewport, one sized
+                  to its content) is exactly what produced the reported "graph gets
+                  stuck" scroll jank; they're now separate blocks in normal page flow. */}
+              <div className="graph-workspace-embed">
+                <ExposureNetwork orgId={activeOrg.id} fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <IntelligenceCard status={intelligenceStatus} events={intelligenceEvents} />
+              </div>
+            </>
           ) : (
             <NoOrgDataState orgName={activeOrg.name} suggestion="No Exposure Network has been built for this organization yet." />
           )

@@ -298,15 +298,16 @@ export function ExposureNetwork({
 
   // Layout per the original design handoff: header bars and the Evidence Inspector are
   // fixed in place; only the canvas/supplementary-sections region between them scrolls.
-  // Requires a bounded `height` (not minHeight) on the outer flex column so the middle
-  // region's flex:1 + overflow:auto has something concrete to compute a scroll area
-  // against -- percentage/auto heights are exactly what caused the earlier clipping bug
-  // (see the minHeight:'100%' fix above this component, and
-  // design_handoff_odic_intelligence_platform README's "reported matrix background bug"
-  // note for the same root-cause category in the original design source).
+  // Requires a bounded `height` (not minHeight/percentage) on the outer flex column so
+  // the middle region's flex:1 + overflow:auto has something concrete to compute a
+  // scroll area against. The non-fullscreen case fills its parent (.graph-workspace-embed
+  // in styles.css) rather than recomputing the viewport math itself -- that container is
+  // the single place the calc(100vh - 64px) anchor lives; duplicating it here as well was
+  // the actual root cause of the reported scroll jank (the two disagreed about how tall
+  // the widget was whenever they drifted out of sync).
   const containerStyle: React.CSSProperties = fullScreen
     ? { position: 'fixed', inset: 0, zIndex: 30, background: '#050810', display: 'flex', flexDirection: 'column' }
-    : { height: 'calc(100vh - 64px)', background: '#050810', borderRadius: 18, overflow: 'hidden', display: 'flex', flexDirection: 'column' };
+    : { height: '100%', background: '#050810', borderRadius: 18, overflow: 'hidden', display: 'flex', flexDirection: 'column' };
 
   const emptyStateStyle: React.CSSProperties = {
     minHeight: fullScreen ? '100vh' : '100%',
