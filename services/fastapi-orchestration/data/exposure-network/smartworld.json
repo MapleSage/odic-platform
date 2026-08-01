@@ -74,6 +74,27 @@
         ]
       },
       {
+        "heading": "DEVELOPMENT-RIGHTS ENGINEERING (OPERATING STRATEGY, GROUP-LEVEL)",
+        "rows": [
+          {
+            "label": "REPORTED STRATEGY",
+            "value": "Group reportedly acquires standard group-housing land, then stacks Transit-Oriented Development, Transfer of Development Rights, and GRIHA green-building bonuses to multiply buildable Floor Area Ratio beyond what a standard residential license alone would permit."
+          },
+          {
+            "label": "COMMERCIAL TDR INJECTION",
+            "value": "Reported pattern of injecting commercial TDR into residential-licensed plots (cited example: M3M Capital Phase 2, not one of the six SPVs tracked in this file) to convert standard plots into higher-margin mixed-use development."
+          },
+          {
+            "label": "SCOPE OF THE CLAIM",
+            "value": "Describes a reported general operating strategy for the group, not a specific transaction on any of the six tracked Smartworld project SPVs. Worth testing directly against each SPV's actual licensed FAR/TDR filings -- not yet done for any of them."
+          },
+          {
+            "label": "GRADE",
+            "value": "[D] Analytical/reported strategy description -- no specific primary-source filing has been retrieved tying this mechanism to a named Smartworld SPV."
+          }
+        ]
+      },
+      {
         "heading": "HISTORICAL ORIGIN -- 1980s-1990s LAND ACQUISITION ERA (BACKGROUND CONTEXT)",
         "rows": [
           {
