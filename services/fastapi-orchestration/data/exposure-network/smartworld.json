@@ -351,12 +351,12 @@
       "project": "Trump Tower Noida (M3M The Cullinan II)",
       "spv": "Lavish Buildmart Pvt Ltd",
       "row": 6,
-      "cin": "Not yet retrieved",
+      "cin": "U45300HR2007PTC056065",
       "rera": "UPRERAPRJ794824/10/2025",
       "address": "Sector 94, Noida, Uttar Pradesh",
-      "directors": "Not yet retrieved",
-      "commonDirectors": "Not yet retrieved -- outside the Haryana M3M IFC/Urbana director cluster tracked for the other six SPVs; first UP-registered SPV in this portfolio",
-      "status": "Public-source dossier synthesized 2026-07-27 -- deep-diligence gaps remain (director set, CIN, funding/escrow, contractor stack not yet retrieved)",
+      "directors": "Vijay Kumar Aggarwal (DIN 05170472, appointed Sep 2019); Anuj Kumar Tiwari (DIN 10419282, appointed Dec 2023)",
+      "commonDirectors": "No current director overlap with the other six SPVs -- outside the Haryana M3M IFC/Urbana cluster. Historical linkage instead: Basant Kumar Bansal (director until Dec 2010) and Roop Kumar Bansal (director until Mar 2011) both previously served on this SPV, per MCA company master data.",
+      "status": "Public-source dossier synthesized 2026-07-27, CIN and director history added 2026-07-27 -- deep-diligence gaps remain (funding/escrow, contractor stack, licensing agreement terms)",
       "notes": "First Smartworld/M3M-ecosystem SPV registered outside Haryana. Routed through Uttar Pradesh's RERA/DTCP regime rather than Haryana's, and through a distinct promoter entity (Lavish Buildmart) outside the M3M IFC/Urbana director cluster. The Trump brand is a licensing arrangement only: per public disclosure, the licensor (Trump Organization) holds zero financial, equity, or construction risk, and M3M India holds sole financial responsibility for the project.",
       "deepDiligence": [
         {
@@ -369,6 +369,27 @@
             {
               "label": "ACQUISITION COST",
               "value": "Approx. Rs. 827.4 crore (public-source figure; not yet cross-verified against a primary filing or source ID)."
+            }
+          ]
+        },
+        {
+          "heading": "CORPORATE IDENTITY & PROMOTER LINKAGE (MCA RECORDS)",
+          "rows": [
+            {
+              "label": "CIN",
+              "value": "U45300HR2007PTC056065"
+            },
+            {
+              "label": "CURRENT DIRECTORS",
+              "value": "Vijay Kumar Aggarwal (DIN 05170472, appointed Sep 2019); Anuj Kumar Tiwari (DIN 10419282, appointed Dec 2023)."
+            },
+            {
+              "label": "PAST DIRECTORS -- M3M PROMOTER LINKAGE",
+              "value": "Basant Kumar Bansal, director until Dec 2010; Roop Kumar Bansal, director until Mar 2011. Both are M3M Group promoters -- this is a direct, MCA-sourced historical link between Lavish Buildmart and the M3M promoter family, not an inference from branding or address overlap."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] Primary source (MCA company master data) for the fact of past directorship. Historical directorship establishes group lineage; it does not by itself establish present-day operational or financial control of the SPV."
             }
           ]
         },
@@ -411,11 +432,11 @@
           "rows": [
             {
               "label": "HYPOTHESIS",
-              "value": "Locating this project in Uttar Pradesh, through an SPV (Lavish Buildmart) outside the Haryana M3M IFC/Urbana director/address cluster, may functionally wall off this project's cash flow from enforcement actions targeting the Haryana parent structure."
+              "value": "Locating this project in Uttar Pradesh, through an SPV (Lavish Buildmart) with a confirmed historical M3M-promoter directorship but no current cross-SPV director overlap with the Haryana cluster, may functionally wall off this project's cash flow from enforcement actions targeting the Haryana parent structure."
             },
             {
               "label": "GRADE",
-              "value": "[D] Analytical hypothesis -- consistent with the group's known Haryana SPV-isolation pattern, but no filing directly ties this project's cash flow to any Haryana enforcement matter."
+              "value": "[D] Analytical hypothesis for the isolation-intent claim specifically. The M3M-promoter linkage itself is now [A] (MCA records, see CORPORATE IDENTITY section) -- but historical directorship and present-day enforcement-motivated structuring are two different claims, and only the first is filing-backed."
             }
           ]
         },
@@ -424,7 +445,7 @@
           "rows": [
             {
               "label": "MISSING",
-              "value": "Lavish Buildmart's CIN, director set, and registered address; UP RERA project filing detail beyond the registration number; funding/escrow bank; contractor and consultant stack; Trump Organization licensing agreement terms."
+              "value": "UP RERA project filing detail beyond the registration number; funding/escrow bank; contractor and consultant stack; Trump Organization licensing agreement terms; independent cross-check of the MCA director data against the primary MCA filing (currently taken from a reported summary, not the raw filing itself)."
             }
           ]
         }
