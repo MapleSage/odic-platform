@@ -32,8 +32,18 @@ button {
   cursor: pointer;
 }
 
+/* height (not min-height): the actual root cause found via screen recording, predating
+   every Graph-tab-specific attempt at this. min-height only sets a floor -- with grid
+   row 2 as minmax(0, 1fr) and no cap on the grid itself, any tab taller than one
+   viewport (Graph being the obvious case) made the WHOLE grid grow past 100vh instead
+   of .main-content's own overflow:auto kicking in. The sidebar and topbar are separate
+   grid cells, not position:fixed, so when the outer grid grew, they scrolled away with
+   everything else -- on a short tab the chrome stays, on a tall tab it vanishes, which
+   reads exactly like "gets stuck / behaves inconsistently". Capping the grid at exactly
+   the viewport forces .main-content to be the one and only thing that scrolls, always. */
 .app-shell {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: grid;
   /* GIA used to reserve a 4th grid column (up to 380px) whenever open, squeezing the
      main content -- "on its own trip", per report. It's now a floating widget
@@ -56,6 +66,10 @@ button {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* .app-shell now caps at exactly height:100vh with overflow:hidden -- if the nav/recent
+     list ever grows past available height, this needs to scroll internally rather than
+     get clipped by the parent's hidden overflow. */
+  overflow-y: auto;
 }
 
 .sidebar-brand {
@@ -973,6 +987,12 @@ button.facet-button {
 .report-section p {
   margin: 0;
   color: #4f6170;
+  /* Report bodies can contain embedded \n (synthesizeExposureNetworkReport joins
+     multiple fact rows this way) -- plain <p> collapses newlines into spaces by
+     default, which turned a multi-row report section into one run-on paragraph.
+     pre-line preserves \n as line breaks while still collapsing repeated spaces and
+     wrapping normally. */
+  white-space: pre-line;
 }
 
 .utility-rail {

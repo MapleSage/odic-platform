@@ -1925,11 +1925,16 @@ function ExposureNetworkSummary({
         <div className="list-stack">
           {exposureData.spvDefs.map((spv) => (
             <div key={spv.id} className="info-row">
+              {/* status used to go in .row-meta (white-space:nowrap, designed for short
+                  values like "6d ago") -- SPV status is a full sentence for some entries
+                  (e.g. Trump Tower Noida's), which forced that column wide enough to fit
+                  on one line and squeezed row-title down to a few characters per line.
+                  Wrapping content belongs in the normal-flow column, not a nowrap one. */}
               <div className="activity-copy">
                 <div className="row-title">{spv.project}</div>
                 <div className="row-sub">{spv.spv}</div>
+                <div className="row-sub" style={{ marginTop: 2 }}>{spv.status}</div>
               </div>
-              <div className="row-meta">{spv.status}</div>
             </div>
           ))}
         </div>
