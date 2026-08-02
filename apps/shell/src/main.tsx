@@ -611,7 +611,9 @@ function App() {
   const { isAuthenticated, isLoading, user, logout, getAccessToken } = useAuth();
   const [activeView, setActiveView] = useState<ViewId>('organization');
   const [activeOrgTab, setActiveOrgTab] = useState<OrgTabId>('overview');
-  const [giaOpen, setGiaOpen] = useState(true);
+  // GIA must not open automatically on every page load -- open/close is user-controlled,
+  // default closed.
+  const [giaOpen, setGiaOpen] = useState(false);
   const [giaInput, setGiaInput] = useState('');
   const [giaMessages, setGiaMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [giaLoading, setGiaLoading] = useState(false);

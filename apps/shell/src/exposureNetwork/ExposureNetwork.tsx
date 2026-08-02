@@ -296,23 +296,28 @@ export function ExposureNetwork({
   const breadcrumbsVisible = drillStack.length > 1;
   const chartEntity = chartView ? ENTITY_REGISTRY[chartView] : null;
 
-  // Two DIFFERENT layouts, not one shared one. Fullscreen (position:fixed;inset:0, no
-  // siblings) can safely do the fixed-header/fixed-footer/scrolling-middle treatment
-  // from the original design handoff, because it's the only thing on screen. The
-  // embedded case (inside the normal page, .graph-workspace-embed) kept getting the
-  // scroll wrong across multiple attempts at coordinating a flex-column + explicit
-  // height across two files -- every version had some nested-scroll-container
-  // interaction that produced the reported "gets stuck" jank. Simplifying instead of
-  // debugging further: the embedded case has NO special height/overflow at all and
-  // just flows as normal block content, scrolled by .main-content the same as every
-  // other tab. One scroll container, native browser behavior, nothing to coordinate.
+  // The fixed-header/fixed-Evidence-Inspector/scrolling-middle contract requires a
+  // bounded-height flex column with a flex:1 scrollable middle -- there is no way to
+  // have "only the middle scrolls" without that. Commit 7a73d04 removed this entirely
+  // for embedded mode (containerStyle had no height/flex, middleStyle was {}) on the
+  // theory that removing scroll-container coordination would fix the reported "gets
+  // stuck" jank. It didn't -- it just gave up the fixed-header contract, and the later
+  // .app-shell/.main-content min-height:0 fixes couldn't restore a mechanism that had
+  // been deleted at this component level. Restoring it: both modes now get the same
+  // bounded-flex-column + flex:1-middle structure. Embedded fills its parent
+  // (.graph-workspace-embed, which needs a real height + min-height:0 of its own --
+  // see styles.css) rather than computing viewport math itself.
   const containerStyle: React.CSSProperties = fullScreen
     ? { position: 'fixed', inset: 0, zIndex: 30, background: '#050810', display: 'flex', flexDirection: 'column' }
-    : { background: '#050810', borderRadius: 18 };
+    : { height: '100%', minHeight: 0, overflow: 'hidden', background: '#050810', borderRadius: 18, display: 'flex', flexDirection: 'column' };
 
-  const middleStyle: React.CSSProperties = fullScreen
-    ? { flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }
-    : {};
+  const middleStyle: React.CSSProperties = {
+    flex: 1,
+    minHeight: 0,
+    overflowY: 'auto',
+    overscrollBehavior: 'contain',
+    WebkitOverflowScrolling: 'touch',
+  };
 
   const emptyStateStyle: React.CSSProperties = {
     minHeight: fullScreen ? '100vh' : '100%',

@@ -1248,7 +1248,15 @@ button.facet-button {
    beats getting it more precisely right. This just bleeds the dark canvas to
    .main-content's edges and lets content flow at its natural height, scrolled by
    .main-content the same as every other tab. */
+/* height + min-height:0 restored -- ExposureNetwork's embedded containerStyle is back
+   to height:'100%' (see that file's comment), which needs a real, definite height on
+   this parent to resolve against. .main-content is a CSS Grid item inside .app-shell
+   (height:100vh, a definite height), so .main-content itself gets a definite
+   grid-computed height even without its own explicit height property -- this then
+   propagates correctly to this normal block child via height:100%. */
 .graph-workspace-embed {
+  height: 100%;
+  min-height: 0;
   margin: -24px;
 }
 
