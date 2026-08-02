@@ -411,7 +411,19 @@ export function ExposureNetwork({
           Evidence Inspector below are flexShrink:0 siblings of this div, so they stay in
           place while only this region scrolls -- per the original design handoff. */}
       <div style={middleStyle}>
-      <div style={{ overflowX: 'auto', padding: '20px 0 10px', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
+      {/* overflowY explicitly 'hidden', not left to default. Per CSS spec, overflowX:auto
+          with no explicit overflowY forces overflowY to compute as auto -- and this
+          wrapper's own padding (20px top + 10px bottom) gave it a spurious ~30-36px of
+          real vertical scroll range even though it isn't meant to handle vertical scroll
+          at all (that's .middleStyle's job, one level up). Verified with Playwright
+          real-wheel-gesture testing (page.mouse.wheel(), not element.scrollTop
+          assignment -- the former is what an actual trackpad/mouse produces): every
+          scroll gesture that started with the pointer over the canvas spent its first
+          ~36px silently filling this inner sliver before the outer region would even
+          start moving -- a real, if minor, dead-zone/stutter on exactly the gesture a
+          user performs most (scrolling while pointing at the graph). overflowY:hidden
+          removes the sliver entirely; horizontal scroll (overflowX:auto) is unaffected. */}
+      <div style={{ overflowX: 'auto', overflowY: 'hidden', padding: '20px 0 10px', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ position: 'relative', width: 1600, minHeight: 900, margin: '0 auto' }}>
           <svg width={1600} height={900} style={{ position: 'absolute', top: 0, left: 0 }}>
             {fanLines.map((ln, i) => (
