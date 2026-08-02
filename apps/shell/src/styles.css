@@ -68,8 +68,12 @@ button {
   gap: 12px;
   /* .app-shell now caps at exactly height:100vh with overflow:hidden -- if the nav/recent
      list ever grows past available height, this needs to scroll internally rather than
-     get clipped by the parent's hidden overflow. */
+     get clipped by the parent's hidden overflow. min-height:0 is required alongside
+     overflow-y:auto -- as a grid item this defaults to min-height:auto (never shrink
+     below content size), which silently defeats overflow handling; see .main-content
+     for the fuller explanation of the same pitfall. */
   overflow-y: auto;
+  min-height: 0;
 }
 
 .sidebar-brand {
@@ -348,6 +352,17 @@ button {
   background: #eff3f7;
   padding: 24px;
   overflow: auto;
+  /* The actual missing piece from the last fix. Grid items default to
+     min-height:auto ("never shrink below your content's intrinsic size"), which
+     silently overrides the minmax(0, 1fr) track sizing on the *container* -- the
+     track was already allowed to shrink to 0, but this item refused to. That meant
+     overflow:auto here never actually engaged; the box just grew to fit all content
+     regardless. Combined with .app-shell's new overflow:hidden, that turned into
+     hard-clipping anything past one viewport instead of making it scrollable --
+     worse than the previous "whole page scrolls, chrome disappears" behavior, not
+     just still broken. min-height:0 is what makes a flex/grid item actually respect
+     its track's sizing instead of insisting on its content size. */
+  min-height: 0;
 }
 
 .page-head {
