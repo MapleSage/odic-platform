@@ -38,6 +38,14 @@ export const msalConfig: Configuration = {
   },
 };
 
-// User.Read covers sign-in/profile; the API scope is what's actually sent to our own backend.
-export const loginRequest = { scopes: ['User.Read', ENTRA_API_SCOPE] };
+// `user` (AccountInfo) comes from the ID token's own claims (name, preferred_username)
+// via MSAL's account cache -- this app never calls Microsoft Graph for anything, so
+// User.Read was never actually needed. It used to be requested here anyway, alongside
+// the custom API scope -- combining a Microsoft Graph scope with a custom "expose an
+// API" App ID URI scope in one request fails for this app's signInAudience
+// (AzureADandPersonalMicrosoftAccount) with AADSTS70011 "scopes ... are not compatible
+// with each other". Removing the unused scope removes the whole class of risk rather
+// than working around the specific rejection. MSAL adds openid/profile/offline_access
+// to every interactive login automatically -- no need to list them.
+export const loginRequest = { scopes: [ENTRA_API_SCOPE] };
 export const apiTokenRequest = { scopes: [ENTRA_API_SCOPE] };
