@@ -1188,6 +1188,96 @@ button.facet-button {
   font-style: italic;
 }
 
+/* GIA assistant replies render through react-markdown (see main.tsx) -- these rules
+   restyle its default block-element output (h1-h6, p, ul/ol, table, code, blockquote)
+   down to the chat panel's compact 13px scale instead of inheriting oversized heading
+   defaults meant for full-page prose. */
+.gia-message-markdown > *:first-child {
+  margin-top: 0;
+}
+
+.gia-message-markdown > *:last-child {
+  margin-bottom: 0;
+}
+
+.gia-message-markdown p {
+  margin: 0 0 8px;
+}
+
+.gia-message-markdown h1,
+.gia-message-markdown h2,
+.gia-message-markdown h3,
+.gia-message-markdown h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  margin: 12px 0 6px;
+  color: #0d2b3d;
+}
+
+.gia-message-markdown ul,
+.gia-message-markdown ol {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+
+.gia-message-markdown li {
+  margin-bottom: 3px;
+}
+
+.gia-message-markdown strong {
+  font-weight: 700;
+}
+
+.gia-message-markdown a {
+  color: #3d9ca2;
+}
+
+.gia-message-markdown code {
+  background: rgba(13, 43, 61, 0.08);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.gia-message-markdown pre {
+  background: rgba(13, 43, 61, 0.08);
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  margin: 0 0 8px;
+}
+
+.gia-message-markdown pre code {
+  background: none;
+  padding: 0;
+}
+
+.gia-message-markdown blockquote {
+  margin: 0 0 8px;
+  padding-left: 10px;
+  border-left: 3px solid #3d9ca2;
+  color: #4f6170;
+}
+
+.gia-message-markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+.gia-message-markdown th,
+.gia-message-markdown td {
+  border: 1px solid #dce4ea;
+  padding: 4px 8px;
+  text-align: left;
+}
+
+.gia-message-markdown th {
+  background: rgba(13, 43, 61, 0.06);
+}
+
 .gia-error {
   color: #ad4339;
   font-size: 12px;

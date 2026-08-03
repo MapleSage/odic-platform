@@ -49,15 +49,15 @@
         "rows": [
           {
             "label": "RSIPL / ED FINDING",
-            "value": "Enforcement Directorate alleges M3M's RS Infrastructure Pvt Ltd (RSIPL) obtained commercial colony licenses by claiming \"extreme hardship\" on acquired land, then flipped the company/licenses for Rs. 726 crore without developing the land. ED identified Rs. 300.15 crore of this as Proceeds of Crime diverted into M3M operations."
+            "value": "RS Infrastructure Pvt Ltd (RSIPL) matter stems from a CBI FIR naming Bhupinder Singh Hooda (former Haryana CM), Trilok Chand Gupta (former DTCP director), and 14 colonizer companies including RSIPL, which ED states is beneficially owned by Basant and Roop Bansal. Alleged mechanism: Section 4/6 notifications under the Land Acquisition Act, 1894 were used to pressure landowners into distress sales to RSIPL, after which the acquisition threat was dropped and RSIPL obtained DTCP licenses for a commercial colony on 10.35 acres by claiming \"extreme hardship\" -- without ever building the commercial colony the license required. RSIPL, its shares, and the licensed land were then sold to Lowe Realty Pvt Ltd (Religare Group-linked) for Rs 726 crore. ED identifies Rs 300.15 crore of this as proceeds of crime, and in July 2024 provisionally attached 88.29 acres in Basharia village (Harsaru tehsil, Gurugram), held by M3M India Infrastructures Pvt Ltd, valued at Rs 300.11 crore, as an equivalent-value asset."
           },
           {
             "label": "2023 PMLA ACTION",
-            "value": "IREO Group-related fund routing led to 2023 PMLA arrests of promoters and asset attachments, per public reporting."
+            "value": "IREO-linked matter: ED alleges M3M sold development rights on land it valued at ~Rs 4 crore to five shell companies for Rs 10 crore combined; ED states those companies were in fact M3M-controlled. The shell companies then resold the same rights to IREO for ~Rs 400 crore, with funds routed back to M3M through multiple corporate layers -- ED's stated position is that IREO never developed the land and the proceeds \"remained with the M3M group\". Coordinated raids on M3M/IREO locations occurred 01.06.2023; Roop Kumar Bansal was arrested and remanded to ED custody under PMLA by a special court in Panchkula, Haryana."
           },
           {
             "label": "2026 EOW CHARGESHEET",
-            "value": "Fresh charges reported from the Economic Offences Wing regarding an approx. Rs. 450 crore land exchange matter involving MGF Developments, alleging mutated land used to secure residential licenses."
+            "value": "A Delhi court took cognizance of this EOW chargesheet on 31.01.2026, against M3M India Pvt Ltd and Basant, Roop, and Pankaj Bansal, alleging a fraudulent ~Rs 450 crore land-exchange inducing MGF Developments Ltd, with land mutated to secure a building-project license; the court has summoned the accused for a hearing on 04.04.2026."
           },
           {
             "label": "SUPREME COURT ASSET SUBSTITUTION (JUL 2025)",
@@ -65,11 +65,19 @@
           },
           {
             "label": "GRADE",
-            "value": "[C] Reported public-record/press claims, not independently cross-checked here against the primary ED/court filings or case numbers. Treat as a starting point for primary-source verification, not as confirmed fact -- no case/order numbers have been retrieved yet."
+            "value": "[C] Reported public-record/press claims (ET Realty, The Hindu, Times of India and similar reporting of ED/CBI/EOW statements and court proceedings), not independently cross-checked here against primary ED/court filings, case numbers, or FIR numbers. Treat as a well-sourced starting point for primary-source verification, not as independently confirmed fact."
           },
           {
             "label": "SCOPE NOTE",
-            "value": "These are group/promoter-level enforcement matters, not findings about any specific Smartworld project SPV. None of the six Smartworld-branded project SPVs tracked in this file (Riverday, Nourish, Suposhaa, Etsy, Adhikaansh, Svabhumi) has been shown to be a named party in these matters."
+            "value": "These are primarily group/promoter-level enforcement matters, not findings against the Smartworld-branded project SPVs (Riverday, Nourish, Suposhaa, Etsy, Adhikaansh, Svabhumi) themselves. One partial exception: the 2022 EOW FIR above names Gaurav Bansal, a current director of Riverday Infrastructure (Sky Arc) tracked elsewhere in this file, in his capacity as a director of a different entity (Noirish Developers) -- a named-individual overlap with an active Sky Arc director, not a finding against Riverday itself or against Sky Arc as a project."
+          },
+          {
+            "label": "ACB JUDICIAL CORRUPTION CASE (JUN 2023) -- SEPARATE FROM THE IREO MATTER",
+            "value": "After the 01.06.2023 IREO-linked raids, Basant Bansal and Pankaj Bansal reportedly secured interim anticipatory-bail protection from the Delhi High Court (valid to 05.07.2023). ED reportedly bypassed that protection by arresting both on 14.06.2023 in a separate money-laundering case tied to an April 2023 Haryana Anti-Corruption Bureau (ACB) FIR, which reportedly implicated a former special-court judge in Panchkula, his nephew, and Roop Kumar Bansal -- alleging the judge showed favoritism in ED/CBI rulings concerning M3M and IREO directors (including IREO's Lalit Goyal). The judge was reportedly suspended by the Punjab and Haryana High Court."
+          },
+          {
+            "label": "2022 EOW FIR -- NOIRISH DEVELOPERS (~RS 450 CR, DIFFERENT MATTER FROM THE 2026 CHARGESHEET)",
+            "value": "A March 2022 EOW FIR reportedly alleged a ~Rs 450 crore land-cheating matter involving MGF Developments, naming Gaurav Bansal and Naman Gupta in their capacity as directors of Noirish Developers Pvt Ltd, alongside Basant, Roop, and Pankaj Bansal. This directly names two individuals already tracked in this file's interlocks (Gaurav Bansal -- Riverday/Suposhaa/Adhikaansh; Naman Gupta -- past Smartworld/Modgen/Aawam director) in a formal enforcement matter, not just a corporate-structure overlap."
           }
         ]
       },
@@ -183,6 +191,18 @@
             {
               "label": "STATUS",
               "value": "Layered and non-trivial. Underlying conveyance deed, sale certificate, and title chain documents not yet obtained -- not treated as fully verified."
+            },
+            {
+              "label": "LICENSE MIGRATION & DEVELOPER CHANGE (DATES)",
+              "value": "Per Haryana RERA's own comprehensive project detail filing: the consolidated 11.66875-acre parcel was migrated from the legacy 2009 license to DTCP License No. 90 of 2024, dated 18.07.2024. Riverday Infrastructure Pvt Ltd obtained formal 'Change of Developer' status on 09.09.2024. Building plans and a five-stage phasing plan were approved 19.09.2024, clearing the path to HARERA registration."
+            },
+            {
+              "label": "GENPACT TENANCY (EXCLUDED COMMERCIAL PARCEL)",
+              "value": "The 3.1875-acre excluded commercial building (OC 08.11.2019, conveyed to Neil Maxinfra Pvt Ltd) was, per this same filing, already fully operational and leased to Genpact prior to the SARFAESI conveyance of the residential balance to Modgen Developers -- i.e. a live, tenanted commercial asset sits inside the same historical parcel as the residential towers, permanently carved out of the residential master plan."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] Haryana RERA's own 'Comprehensive Project Details' page for this project (haryanarera.gov.in/view_project/searchprojectDetail/3075), which is the primary regulator's own record of the license and developer-change history -- not press reporting of it."
             }
           ]
         },
@@ -241,8 +261,20 @@
               "value": "Kotak Mahindra Bank, Corporate Sewa Park, Gurugram -- surfaced publicly on the refreshed HRERA preview (2026-07-21)."
             },
             {
-              "label": "MISSING",
-              "value": "Current project lender and charge/security trustee filings still not identified."
+              "label": "PROJECT COST BREAKDOWN (HARERA COST DISCLOSURE)",
+              "value": "Land cost Rs 849.24 crore; other costs Rs 998.11 crore; infrastructure cost Rs 90.28 crore; apartment construction cost Rs 1,470.01 crore -- total estimated project cost Rs 3,407.65 crore, consistent with the ~Rs 3,408 crore figure already recorded above under PROJECT ECONOMICS."
+            },
+            {
+              "label": "COLLECTION ACCOUNTS & CHARGES (MCA)",
+              "value": "Primary buyer-collection accounts held with Kotak Mahindra Bank (branch code 000261) and ICICI Bank. MCA charge records show Kotak Mahindra Bank holding an active/open charge of Rs 19.61 crore and State Bank of India an active/open charge of Rs 10.89 crore, both created 12.03.2023. Historical (satisfied) charges: Axis Bank Rs 23.16 crore, and two earlier SBI charges of Rs 9.75 crore and Rs 4.70 crore."
+            },
+            {
+              "label": "SPV DIRECTORS (PER FILING)",
+              "value": "Gaurav Bansal and Davinder Singh Malik are listed as directors of the Sky Arc SPV in this cost disclosure -- consistent with both individuals' other Riverday/interlock entries already in this file."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] for the HARERA cost-disclosure figures and MCA charge amounts/dates (primary filings). [C] for the collection-account bank/branch detail, reported and not independently re-verified here."
             }
           ]
         },
@@ -369,19 +401,27 @@
           ]
         },
         {
-          "heading": "UNCONFIRMED -- POSSIBLE TRUMP RESIDENCES GURGAON LINK (DO NOT RELY ON THIS WITHOUT VERIFICATION)",
+          "heading": "CONFIRMED -- TRUMP RESIDENCES GURGAON SHARES THIS SPV & LAND PARCEL (SECTOR 69 DENSITY MASKING)",
           "rows": [
             {
-              "label": "THE CLAIM",
-              "value": "That Riverday Infrastructure Pvt Ltd -- the same SPV holding Sky Arc -- is also the licensee executing a separate \"Trump Residences Gurgaon\" (Sector 69) project via Tribeca/DT Marks Gurgaon 69 LLC, creating cross-collateral risk between Sky Arc and that project."
+              "label": "UPGRADE FROM PRIOR [D] FLAG",
+              "value": "This section previously flagged the Sky Arc / Trump Residences Gurgaon SPV link as an unconfirmed [D] hypothesis, pending a primary source naming Riverday Infrastructure specifically. That source has now been retrieved: Haryana RERA's own 'Comprehensive Project Details' page lists both projects against the same developer and land history -- RERA-GRG-1723-2024 (Smartworld Sky Arc, received 30.08.2024) and RERA-GRG-1850-2025 (Trump Residences Gurgaon, received 24.01.2025), both under Riverday Infrastructure Pvt Ltd, both drawn from the same 11.66875-acre master parcel. This is a genuine evidence upgrade, not a re-grading on confidence of restatement alone."
             },
             {
-              "label": "WHY THIS IS FLAGGED SEPARATELY",
-              "value": "\"Trump Residences Gurgaon\" via Tribeca in Sector 69 is plausibly a real, independently known project. What is NOT independently confirmed here is that Riverday Infrastructure specifically -- rather than a similarly-named or unrelated entity -- is its licensee. This is the single highest-stakes, least-verifiable claim in this file: if wrong, it would misstate a material fact about Sky Arc's own SPV."
+              "label": "DECLARED LAND SPLIT (PER RERA FILINGS)",
+              "value": "Smartworld Sky Arc registration declares 6.97635 acres for 952 units (952/6.97635 = ~136.6 units/acre). Trump Residences Gurgaon registration declares only 0.633 acres for 298 units -- a standalone figure of 298/0.633 = ~473 units/acre, which is not a real physical density but an artifact of how the master parcel was apportioned across the two RERA filings."
+            },
+            {
+              "label": "TRUE COMBINED DENSITY (BOTH PROJECTS, ONE PHYSICAL SITE)",
+              "value": "Both projects sit on the same 11.66875-acre physical parcel and will share ingress/egress, groundwater, electrical load, and traffic corridors. Combined: 1,250 units (952 + 298) across 11.66875 acres = ~107.1 units/acre -- the true density Trump Residences buyers will experience, versus the isolated 0.633-acre figure on its own RERA filing."
+            },
+            {
+              "label": "CONSUMER-IMPACT DETAIL (SKY ARC UNIT ECONOMICS)",
+              "value": "Sky Arc's proposed FAR is 3.36 against a permissible maximum of 3.62 (aggressive but within limits). Its 2,355 sq ft 3BHK units carry a reported carpet area of only 1,217 sq ft (~52% carpet efficiency, a heavy super-built-up loading for this price segment), with one car park allotted per unit at a ~Rs 4.5-6.5 crore price point."
             },
             {
               "label": "GRADE",
-              "value": "[D] Unconfirmed. No primary source (Tribeca/DT Marks Gurgaon 69 LLC disclosure document, MCA filing naming Riverday specifically) has been retrieved and checked. Treat as a lead requiring independent confirmation -- e.g. against Riverday's actual MCA filings or a direct Tribeca/Trump Organization disclosure -- before use in any negotiation or decision."
+              "value": "[A] for the RERA registration numbers, declared acreages, and unit counts -- Haryana RERA's own filings, both independently retrievable. [D] for the characterization that this split was deliberately engineered to mask density from Trump Residences buyers -- that is an analytical inference from the numbers, not a documented admission of intent by the developer or Tribeca/Trump Organization."
             }
           ]
         }
@@ -610,6 +650,23 @@
             {
               "label": "MISSING",
               "value": "UP RERA project filing detail beyond the registration number; funding/escrow bank; contractor and consultant stack; Trump Organization licensing agreement terms; independent cross-check of the MCA director data against the primary MCA filing (currently taken from a reported summary, not the raw filing itself)."
+            }
+          ]
+        },
+        {
+          "heading": "DISTRESS FINANCING -- PAG ASIA BOND (FEB 2024)",
+          "rows": [
+            {
+              "label": "TRANSACTION",
+              "value": "PAG Asia, via its Asia Pragati Strategic Investment Fund, reportedly structured an INR 4 billion (~$48 million) credit investment into bonds of Lavish Buildmart Pvt Ltd -- the SPV executing M3M The Cullinan / Trump Tower Noida (Sector 94, Noida) -- in early 2024. Stated purpose: refinance existing debt and fund new land acquisition."
+            },
+            {
+              "label": "WHY THIS IS FLAGGED",
+              "value": "Foreign alternative-credit financing at this scale, into a specific ring-fenced subsidiary, is consistent with (not proof of) constrained access to ordinary domestic bank credit at the group level during the same period as the ED/PMLA actions against M3M's apex promoters -- domestic lenders often pull back from promoters under active federal enforcement. This is an analytical inference, not a documented statement of cause from PAG or M3M."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] Reported deal terms (trade press / PE-VC roundup reporting), not independently re-verified here against the underlying bond documents. [D] for the causal inference about why this financing route was used."
             }
           ]
         }

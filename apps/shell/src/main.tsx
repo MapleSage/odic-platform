@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { AuthProvider, useAuth } from '@odic/auth';
 import { ExposureNetwork } from './exposureNetwork/ExposureNetwork';
 import { getExposureNetworkData } from './exposureNetwork/registry';
@@ -520,7 +522,15 @@ function GiaWidget({
           {giaMessages.length > 0 && (
             <div className="gia-message-list">
               {giaMessages.map((msg, i) => (
-                <div key={i} className={`gia-message ${msg.role}`}>{msg.content}</div>
+                <div key={i} className={`gia-message ${msg.role}`}>
+                  {msg.role === 'assistant' ? (
+                    <div className="gia-message-markdown">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
+                </div>
               ))}
               {giaLoading && <div className="gia-message assistant gia-message-loading">Thinking...</div>}
             </div>
