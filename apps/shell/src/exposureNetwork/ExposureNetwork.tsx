@@ -295,6 +295,13 @@ export function ExposureNetwork({
 
   const breadcrumbsVisible = drillStack.length > 1;
   const chartEntity = chartView ? ENTITY_REGISTRY[chartView] : null;
+  // Reference check, not deep-equal: setSelected always constructs a fresh object on
+  // every real selection, and nothing ever resets `selected` back to the DEFAULT_INSPECTOR
+  // reference except the mobile sheet's own close button below -- so this is a reliable
+  // "has the user picked something" flag, used to turn the Evidence Inspector from an
+  // always-present desktop footer into an on-demand mobile bottom sheet (see
+  // .evidence-inspector in styles.css).
+  const hasSelection = selected !== DEFAULT_INSPECTOR;
 
   // The fixed-header/fixed-Evidence-Inspector/scrolling-middle contract requires a
   // bounded-height flex column with a flex:1 scrollable middle -- there is no way to
@@ -634,11 +641,18 @@ export function ExposureNetwork({
       </div>
       </div>
 
-      {/* EVIDENCE INSPECTOR -- fixed footer, flexShrink:0 sibling of the scrollable
-          middle above, so it stays visible regardless of scroll position within it. */}
-      <div style={{ flexShrink: 0, maxWidth: 1600, margin: '0 auto', padding: '12px 28px 20px', width: '100%', boxSizing: 'border-box' }}>
-        <div style={{ background: '#0E1826', border: '1.5px solid #3D9CA2', borderRadius: 8, padding: '16px 20px' }}>
-          <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#3D9CA2', marginBottom: 8 }}>EVIDENCE INSPECTOR</div>
+      {/* EVIDENCE INSPECTOR -- on desktop/tablet, a fixed footer (flexShrink:0 sibling of
+          the scrollable middle above) that's always visible regardless of scroll
+          position. Below 640px, styles.css repositions this as a bottom sheet that's
+          off-screen until a selection exists (data-has-selection) -- the always-visible
+          footer would otherwise permanently claim ~120px of an already-cramped phone
+          viewport even with nothing selected. */}
+      <div className="evidence-inspector" data-has-selection={hasSelection} style={{ flexShrink: 0, maxWidth: 1600, margin: '0 auto', padding: '12px 28px 20px', width: '100%', boxSizing: 'border-box' }}>
+        <div className="evidence-inspector-card" style={{ background: '#0E1826', border: '1.5px solid #3D9CA2', padding: '16px 20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <div style={{ fontSize: 10.5, letterSpacing: 0.5, color: '#3D9CA2' }}>EVIDENCE INSPECTOR</div>
+            <button className="evidence-inspector-close" onClick={() => setSelected(DEFAULT_INSPECTOR)} aria-label="Close">&times;</button>
+          </div>
           <div style={{ fontSize: 15, fontWeight: 700, color: 'oklch(96% 0.005 240)' }}>{selected.title}</div>
           <div style={{ fontSize: 12, color: '#7FA8BD', marginTop: 2, fontFamily: "'IBM Plex Sans', sans-serif" }}>{selected.subtitle}</div>
           <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 10 }}>

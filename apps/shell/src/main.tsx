@@ -1013,6 +1013,18 @@ function App() {
         <button className="utility-button">⌘</button>
       </aside>
 
+      <nav className="bottom-nav">
+        {NAV_ITEMS.map((item) => {
+          const active = item.id === activeView;
+          return (
+            <button key={item.id} className={`bottom-nav-item ${active ? 'active' : ''}`} onClick={() => setActiveView(item.id)}>
+              <span className="bottom-nav-chip">{item.code}</span>
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+
       <GiaWidget
         visible={activeOrg.packs.includes('gia')}
         giaOpen={giaOpen}
