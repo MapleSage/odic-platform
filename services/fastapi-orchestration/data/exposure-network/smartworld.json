@@ -749,7 +749,8 @@
       "target": "skyarc",
       "edgeLabel": "prior_lender_sarfaesi",
       "note": "Conveyance deed & sale certificate dated 08.12.2022 to Modgen.",
-      "src": "SWD-Sky-Arc-01"
+      "src": "SWD-Sky-Arc-01",
+      "id": "indiabulls-housing-finance"
     },
     {
       "name": "Neil Maxinfra Pvt Ltd",
@@ -768,7 +769,8 @@
       "target": "onedxp",
       "edgeLabel": "buyer_catchment",
       "note": "Sales & catchment claim tied to One DXP corridor positioning.",
-      "src": "HRERA-001"
+      "src": "HRERA-001",
+      "id": "9k-expressway-catchment"
     },
     {
       "name": "Sector 61 Retail Buyers",
@@ -777,7 +779,8 @@
       "target": "orchard",
       "edgeLabel": "buyer_catchment",
       "note": "HRERA hearing allottees tied to Orchard registrations.",
-      "src": "HRERA-003"
+      "src": "HRERA-003",
+      "id": "sector-61-retail-buyers"
     },
     {
       "name": "Sector 66 HNI/UHNI Pool",
@@ -786,7 +789,8 @@
       "target": "edition",
       "edgeLabel": "buyer_catchment",
       "note": "Targeted HNI/UHNI catchment within 5km of The Edition.",
-      "src": "HRERA-002"
+      "src": "HRERA-002",
+      "id": "sector-66-hni-pool"
     },
     {
       "name": "Global City Catchment Links",
@@ -795,7 +799,8 @@
       "target": "naturescourt",
       "edgeLabel": "buyer_catchment",
       "note": "Institutional & retail buyer links disclosed alongside M3M bridge.",
-      "src": "HRERA-005"
+      "src": "HRERA-005",
+      "id": "global-city-catchment-links"
     },
     {
       "name": "Escrow Banks & Trustees",
@@ -804,7 +809,8 @@
       "target": "ALL",
       "edgeLabel": "escrow_account_holder",
       "note": "Statutory RERA banking charge and institutional debt security across all project SPVs.",
-      "src": "RERA-statute"
+      "src": "RERA-statute",
+      "id": "escrow-banks-trustees"
     }
   ],
   "leftExtras": [
@@ -1567,6 +1573,171 @@
             {
               "label": "GRADE",
               "value": "[D] Unconfirmed."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "indiabulls-housing-finance": {
+      "title": "Indiabulls Housing Finance Ltd",
+      "subtitle": "Prior lender -- SARFAESI deed node (Sky Arc / Riverday Infrastructure)",
+      "sections": [
+        {
+          "heading": "STRUCTURAL ROLE",
+          "rows": [
+            {
+              "label": "SARFAESI ACTION",
+              "value": "Held the underlying security interest over the Sector 69 land bank prior to the current developer's involvement, and enforced that interest under the SARFAESI Act -- conveyance deed and sale certificate to Modgen Developers Pvt Ltd, both dated 08.12.2022 (see Sky Arc's own LAND OWNERSHIP CHAIN section)."
+            },
+            {
+              "label": "NOT YET ESTABLISHED -- ASPIS BUILDCON",
+              "value": "A separate thread in this file (Sky Arc's PROXY DIRECTOR OVERLAP section) notes Davinder Singh Malik sits on both Aspis Buildcon and Riverday Infrastructure's boards. That is a director-overlap observation, not a shown link between Indiabulls' specific SARFAESI action on this parcel and Aspis Buildcon -- no document has been retrieved connecting the two threads. Treat them as separate until a primary source ties Aspis Buildcon into this specific conveyance."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] For the conveyance deed/sale certificate dates and parties (already independently recorded elsewhere in this file). [D] for any characterization of Indiabulls using a 'proxy network' to execute this specific enforcement -- not shown by any source retrieved so far."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "escrow-banks-trustees": {
+      "title": "Escrow Banks & Trustees",
+      "subtitle": "Statutory RERA escrow custodians and project banking -- Sky Arc / Riverday Infrastructure",
+      "sections": [
+        {
+          "heading": "VERIFIED BANKING FACTS (ALREADY CROSS-REFERENCED IN THIS FILE)",
+          "rows": [
+            {
+              "label": "KOTAK MAHINDRA BANK -- CORPORATE CHARGE",
+              "value": "Active/open MCA charge of Rs 19.61 crore over Riverday Infrastructure, created 12.03.2023 -- see Sky Arc's FUNDING/ESCROW section."
+            },
+            {
+              "label": "KOTAK MAHINDRA BANK -- BUYER-DEPOSIT BANK",
+              "value": "Named as a buyer-deposit bank (Corporate Sewa Park, Gurugram branch) in HRERA proceedings, per Sky Arc's FUNDING/ESCROW section."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A]/[C] as already graded in the Sky Arc SPV entry this cross-references -- see that section for the specific split."
+            }
+          ]
+        },
+        {
+          "heading": "RAISED CLAIM -- UNREGISTERED \"MASTER ACCOUNT\" ALLEGED TO BYPASS THE ICICI RERA ESCROW",
+          "rows": [
+            {
+              "label": "THE CLAIM",
+              "value": "That the developer's Booking Application Form (Schedule III, Note 4) instructs buyers to wire funds to a Kotak Mahindra Bank account styled 'RIPL SMARTWORLD SKY ARC MASTER ACCOUNT' (A/c 0249883334), distinct from the statutory 70% RERA escrow account HRERA registration RC/REP/HARERA/GGM/878/610/2024/105 lists as held with ICICI Bank (A/c 777705983764) -- and that routing buyer funds to the former instead of the latter constitutes bypassing the statutory escrow mechanism."
+            },
+            {
+              "label": "WHY THIS IS RECORDED AS A RAISED CLAIM, NOT A VERIFIED FACT",
+              "value": "The account numbers and the HRERA registration number were supplied via description of a Booking Application Form and the HRERA portal, not by retrieving and checking those documents directly here -- this file's standing rule is that a description of a source is not the source. The 'bypasses RERA'/'unregistered' characterization is, by its own framing, a legal conclusion reached by comparing two documents, not a statement either document makes about itself -- that makes it an analytical conclusion, the same evidentiary category as every other inference-from-facts claim in this file (e.g. the Sector 69 density-masking 'engineered to mask' framing), not a primary-source fact."
+            },
+            {
+              "label": "IF THIS SHOULD BE UPGRADED",
+              "value": "Upgrading this to [A] requires the actual Booking Application Form page and/or the HRERA registration certificate/portal page to be retrieved and checked directly -- the same bar every other [A]-graded claim in this file has cleared (e.g. the Sky Arc/Trump Residences Gurgaon shared-parcel finding, upgraded from [D] only once the Haryana RERA project page itself was retrieved and checked)."
+            },
+            {
+              "label": "GRADE",
+              "value": "[C] for the account numbers and HRERA registration number themselves (reported, matching the specificity of a real filing, not independently re-verified here). [D] for the 'bypasses RERA'/'unregistered account' legal characterization -- an analytical conclusion, not a documented finding by HRERA, ED, or any court."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "9k-expressway-catchment": {
+      "title": "9k Expressway Catchment",
+      "subtitle": "Retail & institutional buyer pool -- Smartworld One DXP corridor",
+      "sections": [
+        {
+          "heading": "STRATEGIC ROLE",
+          "rows": [
+            {
+              "label": "TARGET PROFILE / ROLE",
+              "value": "Commercial and retail investor base targeted along the Dwarka Expressway / NH-8 corridor, tied to One DXP's mixed-use positioning."
+            },
+            {
+              "label": "SCOPE NOTE",
+              "value": "Not an MCA/HARERA corporate-registry fact -- a strategic/marketing categorization describing who a project's pre-launch and EOI collection activity targets. Recorded as a structural observation about the developer's capital-raising pattern, not as a claim about any specific individual or transaction."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Analytical/strategic characterization of a marketing pattern, not a primary-source fact about a specific document or transaction."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "sector-61-retail-buyers": {
+      "title": "Sector 61 Retail Buyers",
+      "subtitle": "Retail allottee base -- Smartworld Orchard",
+      "sections": [
+        {
+          "heading": "STRATEGIC ROLE",
+          "rows": [
+            {
+              "label": "TARGET PROFILE / ROLE",
+              "value": "End-user and retail-investor allottees absorbed into the Smartworld Orchard project, per HRERA hearing records tied to its registrations."
+            },
+            {
+              "label": "SCOPE NOTE",
+              "value": "Not an MCA/HARERA corporate-registry fact -- a strategic/marketing categorization describing who a project's pre-launch and EOI collection activity targets. Recorded as a structural observation about the developer's capital-raising pattern, not as a claim about any specific individual or transaction."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Analytical/strategic characterization of a marketing pattern, not a primary-source fact about a specific document or transaction."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "sector-66-hni-pool": {
+      "title": "Sector 66 HNI/UHNI Pool",
+      "subtitle": "High-net-worth target allocations -- Smartworld The Edition",
+      "sections": [
+        {
+          "heading": "STRATEGIC ROLE",
+          "rows": [
+            {
+              "label": "TARGET PROFILE / ROLE",
+              "value": "HNI/UHNI buyers targeted within roughly 5km of The Edition, centered around the M3M International Financial Center (IFC) hub."
+            },
+            {
+              "label": "SCOPE NOTE",
+              "value": "Not an MCA/HARERA corporate-registry fact -- a strategic/marketing categorization describing who a project's pre-launch and EOI collection activity targets. Recorded as a structural observation about the developer's capital-raising pattern, not as a claim about any specific individual or transaction."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Analytical/strategic characterization of a marketing pattern, not a primary-source fact about a specific document or transaction."
+            }
+          ]
+        }
+      ],
+      "children": []
+    },
+    "global-city-catchment-links": {
+      "title": "Global City Catchment Links",
+      "subtitle": "Institutional & retail buyer links -- Smartworld Nature's Court I",
+      "sections": [
+        {
+          "heading": "STRATEGIC ROLE",
+          "rows": [
+            {
+              "label": "TARGET PROFILE / ROLE",
+              "value": "Institutional and retail buyer links disclosed alongside the Haryana Government's 'Global City' project, tied to Nature's Court I positioning."
+            },
+            {
+              "label": "SCOPE NOTE",
+              "value": "Not an MCA/HARERA corporate-registry fact -- a strategic/marketing categorization describing who a project's pre-launch and EOI collection activity targets. Recorded as a structural observation about the developer's capital-raising pattern, not as a claim about any specific individual or transaction."
+            },
+            {
+              "label": "GRADE",
+              "value": "[D] Analytical/strategic characterization of a marketing pattern, not a primary-source fact about a specific document or transaction."
             }
           ]
         }

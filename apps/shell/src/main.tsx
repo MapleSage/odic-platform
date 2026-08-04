@@ -1063,7 +1063,7 @@ function App() {
               <div className="graph-workspace-embed">
                 <ExposureNetwork orgId={activeOrg.id} fullScreen={false} onOpenFullScreen={() => setExposureFullScreen(true)} onCloseFullScreen={() => setExposureFullScreen(false)} getAccessToken={getAccessToken} />
               </div>
-              <div style={{ marginTop: 20 }}>
+              <div style={{ marginTop: 20, flex: '0 0 auto' }}>
                 <IntelligenceCard status={intelligenceStatus} events={intelligenceEvents} />
               </div>
             </>
