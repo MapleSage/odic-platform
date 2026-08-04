@@ -306,6 +306,70 @@ button {
   font-family: inherit;
 }
 
+.user-menu {
+  position: relative;
+}
+
+.user-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 19;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #0d2b3d;
+  border: 1px solid #26476080;
+  border-radius: 10px;
+  padding: 6px;
+  min-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-menu-identity {
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid #26476080;
+  margin-bottom: 4px;
+}
+
+.user-menu-name {
+  color: #f4fbff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.user-menu-email {
+  color: #7fa8bd;
+  font-size: 11.5px;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu-signout {
+  background: none;
+  border: none;
+  color: #f7761f;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.user-menu-signout:hover {
+  background: #174d6d;
+}
+
 .signin-screen {
   width: 100vw;
   height: 100vh;

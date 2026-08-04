@@ -700,6 +700,7 @@ function App() {
   const [activeOrgId, setActiveOrgId] = useState(ORGANIZATIONS[0].id);
   const [orgSwitcherOpen, setOrgSwitcherOpen] = useState(false);
   const [orgSwitcherFilter, setOrgSwitcherFilter] = useState('');
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const activeOrg = organizations.find((o) => o.id === activeOrgId) ?? organizations[0];
   const [dataState, setDataState] = useState<'seed' | 'live'>('seed');
   const [apiError, setApiError] = useState<string | null>(null);
@@ -985,7 +986,25 @@ function App() {
         {activeOrg.packs.includes('gia') && (
           <button className="gia-toggle" onClick={() => setGiaOpen((v) => !v)}>Ask Atlas</button>
         )}
-        <button className="avatar" title={`Sign out (${user?.username ?? ''})`} onClick={() => logout()}>{userInitials}</button>
+        <div className="user-menu">
+          <button className="avatar" title={user?.name ?? user?.username ?? ''} onClick={() => setUserMenuOpen((v) => !v)}>{userInitials}</button>
+          {userMenuOpen && (
+            <>
+              {/* Transparent full-screen backdrop that closes the menu on any click
+                  elsewhere -- the workspace-switcher dropdown doesn't have this either
+                  (a separate, pre-existing gap), but a menu whose one item is an
+                  irreversible sign-out shouldn't stay open by accident. */}
+              <div className="user-menu-backdrop" onClick={() => setUserMenuOpen(false)} />
+              <div className="user-menu-dropdown">
+                <div className="user-menu-identity">
+                  <div className="user-menu-name">{user?.name ?? 'Signed in'}</div>
+                  <div className="user-menu-email">{user?.username ?? ''}</div>
+                </div>
+                <button className="user-menu-signout" onClick={() => logout()}>Sign out</button>
+              </div>
+            </>
+          )}
+        </div>
       </header>
 
       <main className="main-content">
