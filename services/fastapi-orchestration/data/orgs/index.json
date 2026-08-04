@@ -19,7 +19,8 @@
         "azureSearch": {
           "entityId": null
         }
-      }
+      },
+      "restricted": false
     },
     {
       "id": "smartworld",
@@ -46,7 +47,8 @@
         "azureSearch": {
           "entityId": "organization:smartworld-developers"
         }
-      }
+      },
+      "restricted": true
     },
     {
       "id": "the-yurconic-agency",
@@ -81,7 +83,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 9
-      }
+      },
+      "restricted": false
     },
     {
       "id": "trmg-the-risk-management",
@@ -116,7 +119,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 7
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ambridge-ambridge-partners",
@@ -151,7 +155,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 5
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ifc-national-marketing",
@@ -186,7 +191,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 5
-      }
+      },
+      "restricted": false
     },
     {
       "id": "liberty-mutual-insurance",
@@ -221,7 +227,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 3
-      }
+      },
+      "restricted": false
     },
     {
       "id": "manulife",
@@ -256,7 +263,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 3
-      }
+      },
+      "restricted": false
     },
     {
       "id": "canngen-insurance-services",
@@ -291,7 +299,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 2
-      }
+      },
+      "restricted": false
     },
     {
       "id": "dtric-insurance",
@@ -326,7 +335,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 2
-      }
+      },
+      "restricted": false
     },
     {
       "id": "etiqa-insurance-singapore",
@@ -361,7 +371,8 @@
         "country": "Singapore",
         "industry": "INSURANCE",
         "associatedContacts": 2
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insur-fi",
@@ -396,7 +407,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 2
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ngl-insurance",
@@ -431,7 +443,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 2
-      }
+      },
+      "restricted": false
     },
     {
       "id": "sterling-insurance-brokers",
@@ -466,7 +479,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 2
-      }
+      },
+      "restricted": false
     },
     {
       "id": "agicins-com",
@@ -501,7 +515,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "amica-mutual-insurance",
@@ -536,7 +551,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ando",
@@ -571,7 +587,8 @@
         "country": "New Zealand",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "apollo-insurance-solutions-apollo-insurance-agency",
@@ -606,7 +623,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "arabia-falcon-insurance",
@@ -641,7 +659,8 @@
         "country": "Oman",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "asp-benefits",
@@ -676,7 +695,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "associated-specialty-insurance-agency",
@@ -711,7 +731,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "assuredpartners",
@@ -746,7 +767,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "bamboo",
@@ -781,7 +803,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "barton-mutual",
@@ -816,7 +839,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "blue-zebra-insurance",
@@ -851,7 +875,8 @@
         "country": "Australia",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "boxx-insurance",
@@ -886,7 +911,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "canada-life",
@@ -921,7 +947,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "canada-life-reinsurance",
@@ -956,7 +983,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "canadian-claims-services",
@@ -991,7 +1019,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "cayuga-mutual-insurance",
@@ -1026,7 +1055,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ccc-auto-insurance",
@@ -1061,7 +1091,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "continental-general",
@@ -1096,7 +1127,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "couch-braunsdorf-insurance",
@@ -1131,7 +1163,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "covenant-underwriters",
@@ -1166,7 +1199,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "crest",
@@ -1201,7 +1235,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "csaa",
@@ -1236,7 +1271,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "cyber-insurance-academy",
@@ -1271,7 +1307,8 @@
         "country": "Israel",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "cypress-dental",
@@ -1306,7 +1343,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "empire-life",
@@ -1341,7 +1379,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "erie-mutual-insurance",
@@ -1376,7 +1415,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "fedins-com",
@@ -1411,7 +1451,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "frankenmuth-insurance",
@@ -1446,7 +1487,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "fringe-benefit",
@@ -1481,7 +1523,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "gainsco",
@@ -1516,7 +1559,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "goosehead",
@@ -1551,7 +1595,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "greater-new-york-insurance",
@@ -1586,7 +1631,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "grinnell-mutual",
@@ -1621,7 +1667,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "heritage-insurance",
@@ -1656,7 +1703,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "iba-tpa",
@@ -1691,7 +1739,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "indiana-farm-bureau-insurance",
@@ -1726,7 +1775,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurance-bureau-of-canada",
@@ -1761,7 +1811,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurance-council-of-australia",
@@ -1796,7 +1847,8 @@
         "country": "Australia",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurance-hub",
@@ -1831,7 +1883,8 @@
         "country": "United Arab Emirates",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurance-nation",
@@ -1866,7 +1919,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurance-office-of-america",
@@ -1901,7 +1955,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurance-samadhan",
@@ -1936,7 +1991,8 @@
         "country": "India",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "isc",
@@ -1971,7 +2027,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ivari",
@@ -2006,7 +2063,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "kansas-city-life-insurance",
@@ -2041,7 +2099,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "kent-essex",
@@ -2076,7 +2135,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "knight-insurance",
@@ -2111,7 +2171,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "lifeley-insurance",
@@ -2146,7 +2207,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "metlife",
@@ -2181,7 +2243,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "metlife-com-tr",
@@ -2216,7 +2279,8 @@
         "country": "Turkey",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "miway-insurance",
@@ -2251,7 +2315,8 @@
         "country": "Norway",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "mountain-west-farm-bureau-mutual-insurance",
@@ -2286,7 +2351,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "msi",
@@ -2321,7 +2387,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "munn-insurance",
@@ -2356,7 +2423,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "mwcia-minnesota-workers-compensation-insurers-association",
@@ -2391,7 +2459,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "nadler-insurance",
@@ -2426,7 +2495,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "national-council-on-compensation-insurance",
@@ -2461,7 +2531,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "national-safety-and-risk-national-safety-risk-natsr",
@@ -2496,7 +2567,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "neitclem",
@@ -2531,7 +2603,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "nirvana-tech",
@@ -2566,7 +2639,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "nlc-mutual",
@@ -2601,7 +2675,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "northwestern-mutual",
@@ -2636,7 +2711,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "nsure-com-nsure-insurance-agency",
@@ -2671,7 +2747,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "oakbridge",
@@ -2706,7 +2783,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "pekin-insurance",
@@ -2741,7 +2819,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "penn-mutual",
@@ -2776,7 +2855,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "personalumbrella",
@@ -2811,7 +2891,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "pib-secure",
@@ -2846,7 +2927,8 @@
         "country": "United Arab Emirates",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "preferred-mutual",
@@ -2881,7 +2963,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "progressive",
@@ -2916,7 +2999,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "prudent-brokers",
@@ -2951,7 +3035,8 @@
         "country": "India",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "psc-insurance-brokers",
@@ -2986,7 +3071,8 @@
         "country": "Australia",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "r-e-chaix-associates",
@@ -3021,7 +3107,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "raheja-qbe",
@@ -3056,7 +3143,8 @@
         "country": "India",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "rci-insurance",
@@ -3091,7 +3179,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "rollo-insurance",
@@ -3126,7 +3215,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "safepoint",
@@ -3161,7 +3251,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "sif",
@@ -3196,7 +3287,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "slide-insurance",
@@ -3231,7 +3323,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "softlogic-life-insurance",
@@ -3266,7 +3359,8 @@
         "country": "Sri Lanka",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "sun-coast-general-insurance",
@@ -3301,7 +3395,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "sun-life",
@@ -3336,7 +3431,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "the-mutual",
@@ -3371,7 +3467,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "tpl-insurance",
@@ -3406,7 +3503,8 @@
         "country": "Pakistan",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "transre",
@@ -3441,7 +3539,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "tuscarora-wayne-insurance",
@@ -3476,7 +3575,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "united-auto",
@@ -3511,7 +3611,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "united-insurance",
@@ -3546,7 +3647,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "velocity-risk",
@@ -3581,7 +3683,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "vermont-mutual-insurance",
@@ -3616,7 +3719,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "walkerhughes-insurance",
@@ -3651,7 +3755,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "wangins",
@@ -3686,7 +3791,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "wawanesa-insurance",
@@ -3721,7 +3827,8 @@
         "country": "Canada",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "we-insure",
@@ -3756,7 +3863,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "westan-insurance",
@@ -3791,7 +3899,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "xperitus",
@@ -3826,7 +3935,8 @@
         "country": "India",
         "industry": "INSURANCE",
         "associatedContacts": 1
-      }
+      },
+      "restricted": false
     },
     {
       "id": "ais-auto-insurance-specialists",
@@ -3860,7 +3970,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "associated-insurance-and-risk-management-advisors-associated-advisors",
@@ -3894,7 +4005,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "baldwin-risk-partners",
@@ -3928,7 +4040,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "chubb",
@@ -3962,7 +4075,8 @@
         "country": "Switzerland",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "cover-desk",
@@ -3996,7 +4110,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "embrace-pet-insurance",
@@ -4030,7 +4145,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "estrella-insurance",
@@ -4064,7 +4180,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "insurezone",
@@ -4098,7 +4215,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "majesco",
@@ -4132,7 +4250,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "marsh-mclennan-agency",
@@ -4166,7 +4285,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "orion180",
@@ -4200,7 +4320,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "policybazaar-uae",
@@ -4234,7 +4355,8 @@
         "country": "United Arab Emirates",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "specialty-program",
@@ -4268,7 +4390,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "swisslife",
@@ -4302,7 +4425,8 @@
         "country": "France",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "uais-insurance-services",
@@ -4336,7 +4460,8 @@
         "country": "United States",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     },
     {
       "id": "za-tech",
@@ -4370,7 +4495,8 @@
         "country": "China",
         "industry": "INSURANCE",
         "associatedContacts": 0
-      }
+      },
+      "restricted": false
     }
   ]
 }

@@ -10,7 +10,7 @@ from connectors import ConnectorResponse, now_iso, unavailable, unmapped
 from exposure_network import get_exposure_network_data
 from gia import ChatRequest, ChatResponse, ask_gia
 from intelligence import get_intelligence_evidence, get_intelligence_events, get_intelligence_status, get_source_registry
-from orgs import get_organizations, get_source_mapping, get_workspace_data
+from orgs import get_organizations, get_source_mapping, get_workspace_data, require_org_access
 from search import local_search
 
 app = FastAPI(title="ODIC Orchestration")
@@ -37,21 +37,32 @@ def organizations():
 
 
 @api.get('/api/workspace')
-def workspace(org: str = "meridian"):
+def workspace(org: str = "meridian", user: dict = Depends(get_current_user)):
+    require_org_access(org, user)
     return get_workspace_data(org)
 
 
 @api.get('/api/workspace/organization')
-def workspace_organization(org: str = "meridian"):
+def workspace_organization(org: str = "meridian", user: dict = Depends(get_current_user)):
+    require_org_access(org, user)
     return get_workspace_data(org)["organization"]
 
 
 @api.get('/api/search')
-def search(q: str = "", org: str | None = None, facet: str | None = None):
+def search(q: str = "", org: str | None = None, facet: str | None = None, user: dict = Depends(get_current_user)):
     """Search across every registered org. Azure AI Search is used when
     configured (ATLAS_AZURE_SEARCH_ENDPOINT/INDEX + AZURE_SEARCH_API_KEY);
     otherwise -- and if a configured live request fails -- falls back to a
-    deterministic local search over the file-backed org registry."""
+    deterministic local search over the file-backed org registry.
+
+    KNOWN GAP: when `org` is None (search-all-orgs mode), results are not filtered
+    against per-org restriction -- there is no single org_id to check here, and the
+    underlying search index/local_search result set isn't currently annotated with
+    which org each hit came from in a way this can filter on before returning. A
+    restricted org's content could surface in an all-orgs search snippet. Scoped search
+    (the org-specific branch below) is fully enforced; the all-orgs case is not yet."""
+    if org:
+        require_org_access(org, user)
     if azure_search_configured():
         try:
             return azure_search_query(query=q, org=org, facet=facet)
@@ -64,24 +75,28 @@ def search(q: str = "", org: str | None = None, facet: str | None = None):
 
 
 @api.get('/api/workspace/search')
-def workspace_search(org: str = "meridian", q: str = "", facet: str | None = None):
+def workspace_search(org: str = "meridian", q: str = "", facet: str | None = None, user: dict = Depends(get_current_user)):
+    require_org_access(org, user)
     if q or facet:
         return search(q=q, org=org, facet=facet)
     return get_workspace_data(org)["search"]
 
 
 @api.get('/api/workspace/reports')
-def workspace_reports(org: str = "meridian"):
+def workspace_reports(org: str = "meridian", user: dict = Depends(get_current_user)):
+    require_org_access(org, user)
     return get_workspace_data(org)["reports"]
 
 
 @api.get('/api/workspace/graph')
-def workspace_graph(org: str = "meridian"):
+def workspace_graph(org: str = "meridian", user: dict = Depends(get_current_user)):
+    require_org_access(org, user)
     return get_workspace_data(org)["graph"]
 
 
 @api.get('/api/orgs/{org_id}/exposure-network')
-def org_exposure_network(org_id: str):
+def org_exposure_network(org_id: str, user: dict = Depends(get_current_user)):
+    require_org_access(org_id, user)
     data = get_exposure_network_data(org_id)
     if data is None:
         raise HTTPException(status_code=404, detail=f"No Exposure Network data file for organization '{org_id}'")
@@ -128,9 +143,10 @@ def _azure_search_source_status(org_id: str) -> ConnectorResponse:
 
 
 @api.get('/api/organizations/{org_id}/sources', response_model=dict[str, ConnectorResponse])
-def organization_sources(org_id: str):
+def organization_sources(org_id: str, user: dict = Depends(get_current_user)):
     """Per-connector status for one org -- resolved by explicit ID mapping only,
     never by matching org name. 404s (unknown org) propagate from get_source_mapping."""
+    require_org_access(org_id, user)
     return {
         "hubspot": _hubspot_source_status(org_id),
         "neo4j": _neo4j_source_status(org_id),

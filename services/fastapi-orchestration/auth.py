@@ -53,3 +53,11 @@ def get_current_user(authorization: str | None = Header(default=None)) -> dict:
         raise HTTPException(status_code=401, detail="Missing bearer token")
     token = authorization.split(" ", 1)[1]
     return verify_token(token)
+
+
+# Entra App Roles assigned to a user appear in the token's "roles" claim automatically --
+# no extra scope request needed. "Atlas.Admin" is the only role defined so far (see the
+# App Registration); more granular roles can be added the same way later without
+# changing how callers use is_admin().
+def is_admin(user: dict) -> bool:
+    return "Atlas.Admin" in (user.get("roles") or [])
