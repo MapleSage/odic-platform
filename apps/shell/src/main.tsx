@@ -570,6 +570,41 @@ function GiaWidget({
   );
 }
 
+function MicrosoftLogo() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+      <rect x="1" y="1" width="7.5" height="7.5" fill="#F25022" />
+      <rect x="9.5" y="1" width="7.5" height="7.5" fill="#7FBA00" />
+      <rect x="1" y="9.5" width="7.5" height="7.5" fill="#00A4EF" />
+      <rect x="9.5" y="9.5" width="7.5" height="7.5" fill="#FFB900" />
+    </svg>
+  );
+}
+
+function GoogleLogo() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+      <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.56 2.7-3.87 2.7-6.62z" />
+      <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.83.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.98v2.33A9 9 0 0 0 9 18z" />
+      <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.98A9 9 0 0 0 0 9c0 1.45.35 2.83.98 4.03l2.97-2.33z" />
+      <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0A9 9 0 0 0 .98 4.97l2.97 2.33C4.66 5.17 6.65 3.58 9 3.58z" />
+    </svg>
+  );
+}
+
+function FingerprintIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+      <path d="M9 3.2c3.3 0 6 2.5 6 6v2.4" strokeLinecap="round" />
+      <path d="M3 11.6V9.2c0-3.5 2.7-6 6-6" strokeLinecap="round" />
+      <path d="M9 6c2 0 3.6 1.5 3.6 3.6v1.9" strokeLinecap="round" />
+      <path d="M5.4 11.5V9.6C5.4 7.6 7 6 9 6" strokeLinecap="round" />
+      <path d="M9 9v3.4c0 1.2.5 2.3 1.3 3.1" strokeLinecap="round" />
+      <path d="M7.2 9.4v2.6c0 1.6.7 3 1.8 4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function SignInScreen() {
   const { login, authError } = useAuth();
   return (
@@ -578,11 +613,38 @@ function SignInScreen() {
         <div className="brand-mark"><img src="/favicon.svg" alt="SageSure" /></div>
         <div className="brand-title">Atlas</div>
         <div className="brand-subtitle">Enterprise Intelligence OS</div>
-        {authError ? (
-          <div className="auth-error">Sign-in is unavailable right now: {authError}</div>
-        ) : (
-          <button className="gia-toggle" onClick={() => login()}>Sign in with Microsoft</button>
-        )}
+
+        <div className="signin-panel">
+          <div className="signin-panel-heading">Secure Access Portal</div>
+          <div className="signin-panel-subheading">Sign in to continue to your workspace</div>
+
+          {authError ? (
+            <div className="auth-error">Sign-in is unavailable right now: {authError}</div>
+          ) : (
+            <>
+              <button className="signin-btn signin-btn-ms" onClick={() => login()}>
+                <MicrosoftLogo />
+                Sign in with Microsoft
+              </button>
+
+              <div className="signin-divider"><span>MORE OPTIONS</span></div>
+
+              {/* Not wired yet -- visibly disabled rather than a button that looks
+                  real but silently does nothing. Passkey/WebAuthn and social-provider
+                  login are separate follow-up projects, each requiring their own
+                  backend work (credential storage + verification for biometrics;
+                  a registered OAuth client + new accepted issuer for Google). */}
+              <button className="signin-btn signin-btn-disabled" disabled title="Coming soon">
+                <span className="signin-btn-label"><FingerprintIcon /> Use Biometric Authentication</span>
+                <span className="signin-badge">Coming soon</span>
+              </button>
+              <button className="signin-btn signin-btn-disabled" disabled title="Coming soon">
+                <span className="signin-btn-label"><GoogleLogo /> Sign in with Google</span>
+                <span className="signin-badge">Coming soon</span>
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
