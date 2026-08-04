@@ -1625,23 +1625,23 @@
           ]
         },
         {
-          "heading": "RAISED CLAIM -- UNREGISTERED \"MASTER ACCOUNT\" ALLEGED TO BYPASS THE ICICI RERA ESCROW",
+          "heading": "KOTAK \"MASTER ACCOUNT\" -- PAYMENT-INSTRUCTION DETAILS CONFIRMED; \"BYPASSES RERA\" CHARACTERIZATION NOT SUPPORTED",
           "rows": [
             {
-              "label": "THE CLAIM",
-              "value": "That the developer's Booking Application Form (Schedule III, Note 4) instructs buyers to wire funds to a Kotak Mahindra Bank account styled 'RIPL SMARTWORLD SKY ARC MASTER ACCOUNT' (A/c 0249883334), distinct from the statutory 70% RERA escrow account HRERA registration RC/REP/HARERA/GGM/878/610/2024/105 lists as held with ICICI Bank (A/c 777705983764) -- and that routing buyer funds to the former instead of the latter constitutes bypassing the statutory escrow mechanism."
+              "label": "CONFIRMED (PRIMARY DOCUMENT DIRECTLY REVIEWED)",
+              "value": "A Riverday Infrastructure / Smartworld Sky Arc payment-plan document (ref ARC-0855, HRERA registration RC/REP/HARERA/GGM/878/610/2024/105, company seal present) directly reviewed here instructs buyers to pay into: 'Bank Details of master account (100%) for payment' -- Payment in favour of RIPL SMARTWORLD SKY ARC MASTER ACCOUNT, Account No. 0249883334, IFSC KKBK0000261, Kotak Mahindra Bank Limited, Unit No. 8 and 9, Seva Corporate Park, MG Road, Gurgaon. This matches the account/IFSC/bank details previously reported, now confirmed directly against the primary document rather than a description of it."
             },
             {
-              "label": "WHY THIS IS RECORDED AS A RAISED CLAIM, NOT A VERIFIED FACT",
-              "value": "The account numbers and the HRERA registration number were supplied via description of a Booking Application Form and the HRERA portal, not by retrieving and checking those documents directly here -- this file's standing rule is that a description of a source is not the source. The 'bypasses RERA'/'unregistered' characterization is, by its own framing, a legal conclusion reached by comparing two documents, not a statement either document makes about itself -- that makes it an analytical conclusion, the same evidentiary category as every other inference-from-facts claim in this file (e.g. the Sector 69 density-masking 'engineered to mask' framing), not a primary-source fact."
+              "label": "WHY \"BYPASSES RERA\" IS NOT RECORDED AS A FINDING",
+              "value": "The document's own label -- 'master account (100%) for payment' -- describes standard RERA collection architecture used across the industry: 100% of buyer payments land in one master/collection account first, and the bank then auto-splits 70% into the project's RERA escrow sub-account and 30% into a free-use account, per RERA rules. A 100%-collection master account existing alongside a separate 70% escrow account is not itself unusual or a violation -- it is the normal mechanism, not an alternative to it. This document does not show the ICICI escrow account, does not show any failure to transfer the mandated 70% into it, and makes no statement about RERA compliance either way. Nothing reviewed here supports 'bypasses RERA' or 'unregistered account' as a finding -- if anything, the document's own terminology is consistent with ordinary compliant structure, not evidence against it."
             },
             {
-              "label": "IF THIS SHOULD BE UPGRADED",
-              "value": "Upgrading this to [A] requires the actual Booking Application Form page and/or the HRERA registration certificate/portal page to be retrieved and checked directly -- the same bar every other [A]-graded claim in this file has cleared (e.g. the Sky Arc/Trump Residences Gurgaon shared-parcel finding, upgraded from [D] only once the Haryana RERA project page itself was retrieved and checked)."
+              "label": "STILL NOT INDEPENDENTLY VERIFIED",
+              "value": "The ICICI escrow account number (777705983764) and its HRERA registration citation have still only been supplied by description, not by directly reviewing the HRERA portal page or registration certificate -- unlike the Kotak master-account details above, that side of the comparison has not cleared this file's bar for [A]."
             },
             {
               "label": "GRADE",
-              "value": "[C] for the account numbers and HRERA registration number themselves (reported, matching the specificity of a real filing, not independently re-verified here). [D] for the 'bypasses RERA'/'unregistered account' legal characterization -- an analytical conclusion, not a documented finding by HRERA, ED, or any court."
+              "value": "[A] For the Kotak master-account payment-instruction details (account/IFSC/bank/branch), now directly confirmed against the primary document. [C] for the ICICI escrow account number and HRERA registration citation (still by description only). No grade assigned to a 'bypasses RERA' finding -- not supported by anything reviewed."
             }
           ]
         }
