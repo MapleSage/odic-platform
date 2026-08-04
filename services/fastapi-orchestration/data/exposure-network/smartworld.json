@@ -424,6 +424,27 @@
               "value": "[A] for the RERA registration numbers, declared acreages, and unit counts -- Haryana RERA's own filings, both independently retrievable. [D] for the characterization that this split was deliberately engineered to mask density from Trump Residences buyers -- that is an analytical inference from the numbers, not a documented admission of intent by the developer or Tribeca/Trump Organization."
             }
           ]
+        },
+        {
+          "heading": "CLP-2 PAYMENT PLAN STRUCTURE (REGISTERED BBA, SCHEDULE VI) -- SECTION 13 ALIGNMENT",
+          "rows": [
+            {
+              "label": "SOURCE",
+              "value": "A registered Agreement for Sale (BBA) for a Sky Arc unit, directly reviewed here (56 pages, HRERA registration RC/REP/HARERA/GGM/878/610/2024/105 cited throughout, company seals present). Buyer-identifying details from this specific document are deliberately not recorded in this file."
+            },
+            {
+              "label": "THE PAYMENT PLAN'S OWN STRUCTURE",
+              "value": "Schedule VI's Construction-Linked Plan (CLP-2) sequences collection as: 'On Booking' (0.22% of Total Consideration Value) + 'On or before 13 Nov 2024' (9.78%) = exactly 10% cumulative -- then the next tranche (15%) is explicitly tied to 'Within 30 days of Allotment or On Start of Excavation whichever is later (On Execution/Signing of Agreement for Sale)'. The plan's own design caps pre-BBA collection at exactly the Section 13(1) 10% threshold before the next tranche requires the Agreement for Sale to exist."
+            },
+            {
+              "label": "WHY THIS MATTERS",
+              "value": "This is a structural fact about the CLP-2 payment plan itself (applies to any buyer on this plan), not a claim about any specific buyer's actual payment history. It shows the contract was drafted with Section 13(1) compliance in mind -- which makes any instance of actual collections departing from this sequence (i.e. exceeding 10% before a registered Agreement for Sale existed) a deviation from the developer's own documented plan, not merely a generic timing question."
+            },
+            {
+              "label": "GRADE",
+              "value": "[A] Payment plan structure and percentages directly reviewed in Schedule VI of a registered BBA."
+            }
+          ]
         }
       ]
     },
