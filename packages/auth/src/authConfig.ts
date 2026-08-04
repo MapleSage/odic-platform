@@ -19,7 +19,12 @@ const redirectUri = readEnv('VITE_ENTRA_REDIRECT_URI', typeof window !== 'undefi
 export const msalConfig: Configuration = {
   auth: {
     clientId: ENTRA_CLIENT_ID,
-    authority: 'https://login.microsoftonline.com/common',
+    // Single-tenant: only SageSure's own Entra org, no personal Microsoft accounts and no
+    // other organization's tenant. Matches the App Registration's signInAudience
+    // (AzureADMyOrg) -- the tenant-specific authority is what makes Azure AD reject
+    // outside accounts at the sign-in screen itself, rather than relying solely on
+    // backend token validation to catch them after the fact.
+    authority: `https://login.microsoftonline.com/${ENTRA_TENANT_ID}`,
     redirectUri,
     postLogoutRedirectUri: redirectUri,
     navigateToLoginRequestUrl: false,
