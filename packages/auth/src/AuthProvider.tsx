@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { PublicClientApplication, AccountInfo, InteractionRequiredAuthError } from '@azure/msal-browser';
+import { PublicClientApplication, AccountInfo } from '@azure/msal-browser';
 import { msalConfig, loginRequest, apiTokenRequest } from './authConfig';
 
 // Constructing PublicClientApplication can throw (e.g. Web Crypto unavailable in this
@@ -92,10 +92,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await msalInstance.acquireTokenSilent({ ...apiTokenRequest, account: activeAccount });
       return response.accessToken;
     } catch (error) {
-      if (error instanceof InteractionRequiredAuthError) {
-        await msalInstance.acquireTokenRedirect(apiTokenRequest);
-      }
-      console.error('[Auth] Token acquisition error:', error);
+      console.error('[Auth] Silent token acquisition failed, redirecting to re-authenticate:', error);
+      // Previously this only redirected for InteractionRequiredAuthError specifically and
+      // silently returned null for every other failure (network hiccup, stale/invalid
+      // cached token, etc.) -- the caller would then send requests with no Authorization
+      // header at all, surfacing as a confusing "401 Missing bearer token" from the
+      // backend instead of prompting the user to sign back in. Any silent-refresh failure
+      // now redirects to re-auth -- that's the only recovery path that actually works.
+      await msalInstance.acquireTokenRedirect(apiTokenRequest);
       return null;
     }
   }, []);
